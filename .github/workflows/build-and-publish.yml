@@ -60,7 +60,7 @@ jobs:
         run: |
           dotnet pack src/MDFileToRazor.Components/MDFileToRazor.Components.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
           dotnet pack src/MDFileToRazor.CodeGeneration/MDFileToRazor.CodeGeneration.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
-          dotnet pack src/MDFileToRazor.MSBuild/MDFileToRazor.MSBuild.csproj --configuration Release --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
+          dotnet pack src/MDFileToRazor.MSBuild/MDFileToRazor.MSBuild.csproj --configuration Release --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }} /p:NoPackageAnalysis=true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

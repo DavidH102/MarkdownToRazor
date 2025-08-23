@@ -19,7 +19,9 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,17 +38,13 @@
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
     <None Include="build\**\*" Pack="true" PackagePath="build\" />
     <None Include="buildTransitive\**\*" Pack="true" PackagePath="buildTransitive\" />
+    <!-- Include task assemblies directly -->
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).dll" Visible="false" />
+    <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).pdb" Visible="false" />
+    <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.dll" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.dll" Visible="false" />
+    <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.xml" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.xml" Visible="false" />
   </ItemGroup>
 
-  <!-- Include the task assembly and dependencies in the package -->
-  <Target Name="GetTargetPath" />
-  <Target Name="IncludeTaskAssembly" BeforeTargets="GenerateNuspec">
-    <ItemGroup>
-      <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).dll" />
-      <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).pdb" />
-      <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.dll" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.dll" />
-      <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.xml" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.xml" />
-    </ItemGroup>
-  </Target>
+  <!-- Remove the custom target since we're including directly -->
 
 </Project>
