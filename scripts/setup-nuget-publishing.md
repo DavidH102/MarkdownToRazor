@@ -64,21 +64,23 @@ git push origin v1.0.0
 
 ## 📦 **Publishing Behavior:**
 
-| Trigger | GitHub Packages | NuGet.org | GitHub Release |
-|---------|----------------|-----------|----------------|
-| Push to `main` | ✅ Published | ❌ No | ❌ No |
-| Create tag `v*.*.*` | ✅ Published | ✅ Published | ✅ Created |
-| Pull Request | ❌ Build only | ❌ No | ❌ No |
+| Trigger             | GitHub Packages | NuGet.org    | GitHub Release |
+| ------------------- | --------------- | ------------ | -------------- |
+| Push to `main`      | ✅ Published    | ❌ No        | ❌ No          |
+| Create tag `v*.*.*` | ✅ Published    | ✅ Published | ✅ Created     |
+| Pull Request        | ❌ Build only   | ❌ No        | ❌ No          |
 
 ## 🧪 **Test the Pipeline:**
 
 1. **Create a test tag:**
+
    ```bash
    git tag v0.1.0-test
    git push origin v0.1.0-test
    ```
 
 2. **Watch the workflow:**
+
    - Go to **Actions** tab in your GitHub repo
    - Monitor the "Build and Publish NuGet Packages" workflow
    - Check for any errors
@@ -90,14 +92,17 @@ git push origin v1.0.0
 ## 🚨 **Troubleshooting:**
 
 ### ❌ **"401 Unauthorized" error:**
+
 - Your `NUGET_API_KEY` secret is incorrect or expired
 - Create a new API key and update the secret
 
 ### ❌ **"Package already exists" error:**
+
 - NuGet.org doesn't allow overwriting existing versions
 - Increment your version number in the tag (e.g., `v1.0.1`)
 
 ### ❌ **Workflow doesn't trigger:**
+
 - Ensure your tag starts with `v` (e.g., `v1.0.0`)
 - Check the workflow file permissions
 
@@ -131,5 +136,6 @@ git push origin v1.0.0
 ```
 
 Your packages will be available within minutes at:
+
 - **NuGet.org**: https://www.nuget.org/packages/MDFileToRazor.Components
 - **GitHub Packages**: In your repository's Packages section

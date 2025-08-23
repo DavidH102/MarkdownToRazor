@@ -19,11 +19,11 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 
 ## 📦 Available Packages
 
-| Package                          | Purpose                                           | NuGet.org                                                                                   | GitHub Packages                                                                                                      |
-| -------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| **MDFileToRazor.Components**     | Runtime Blazor components for markdown rendering  | `dotnet add package MDFileToRazor.Components`                                             | `dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json`     |
-| **MDFileToRazor.CodeGeneration** | Build-time markdown-to-Razor page generation      | `dotnet add package MDFileToRazor.CodeGeneration`                                         | `dotnet add package MDFileToRazor.CodeGeneration --source https://nuget.pkg.github.com/DavidH102/index.json` |
-| **MDFileToRazor.MSBuild**        | MSBuild integration for automated processing      | `dotnet add package MDFileToRazor.MSBuild`                                                | `dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json`        |
+| Package                          | Purpose                                          | NuGet.org                                         | GitHub Packages                                                                                              |
+| -------------------------------- | ------------------------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **MDFileToRazor.Components**     | Runtime Blazor components for markdown rendering | `dotnet add package MDFileToRazor.Components`     | `dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json`     |
+| **MDFileToRazor.CodeGeneration** | Build-time markdown-to-Razor page generation     | `dotnet add package MDFileToRazor.CodeGeneration` | `dotnet add package MDFileToRazor.CodeGeneration --source https://nuget.pkg.github.com/DavidH102/index.json` |
+| **MDFileToRazor.MSBuild**        | MSBuild integration for automated processing     | `dotnet add package MDFileToRazor.MSBuild`        | `dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json`        |
 
 ## 🚀 Quick Start
 
