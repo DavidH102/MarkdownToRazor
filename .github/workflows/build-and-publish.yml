@@ -101,8 +101,16 @@ jobs:
       - name: Publish to GitHub Packages
         run: |
           for pkg in ./packages/*.nupkg; do
-            echo "Publishing $pkg"
+            echo "Publishing $pkg to GitHub Packages"
             dotnet nuget push "$pkg" --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+          done
+
+      - name: Publish to NuGet.org
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          for pkg in ./packages/*.nupkg; do
+            echo "Publishing $pkg to NuGet.org"
+            dotnet nuget push "$pkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
           done
 
       - name: Create GitHub Release (for tags)
@@ -122,12 +130,28 @@ jobs:
 
             ## NuGet Packages
 
-            The following packages have been published to GitHub Packages:
+            The following packages have been published to **NuGet.org** and GitHub Packages:
 
-            - `MDFileToRazor.Components` - Blazor components for runtime markdown rendering
-            - `MDFileToRazor.CodeGeneration` - Build-time code generation tools
-            - `MDFileToRazor.MSBuild` - MSBuild integration tasks
+            ### 📦 **Install from NuGet.org:**
+            ```bash
+            dotnet add package MDFileToRazor.Components
+            dotnet add package MDFileToRazor.CodeGeneration
+            dotnet add package MDFileToRazor.MSBuild
+            ```
 
-            ## Installation
+            ### 🐙 **Install from GitHub Packages:**
+            ```bash
+            dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json
+            dotnet add package MDFileToRazor.CodeGeneration --source https://nuget.pkg.github.com/DavidH102/index.json
+            dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json
+            ```
 
-            See [USAGE.md](docs/USAGE.md) for installation instructions.
+            ## Package Descriptions
+
+            - **`MDFileToRazor.Components`** - Blazor components for runtime markdown rendering with FluentUI styling
+            - **`MDFileToRazor.CodeGeneration`** - Build-time code generation tools for converting markdown to Razor pages
+            - **`MDFileToRazor.MSBuild`** - MSBuild integration tasks for automated markdown processing
+
+            ## Installation & Usage
+
+            See [README.md](README.md) for complete installation and usage instructions.
