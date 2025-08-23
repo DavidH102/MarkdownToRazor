@@ -98,7 +98,7 @@ jobs:
         run: |
           for pkg in ./packages/*.nupkg; do
             echo "Publishing $pkg"
-            dotnet nuget push "$pkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+            dotnet nuget push "$pkg" --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
           done
 
       - name: Create GitHub Release (for tags)
