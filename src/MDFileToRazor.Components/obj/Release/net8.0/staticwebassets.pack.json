@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "H:\\MDFIleTORazor\\src\\MDFileToRazor.Components\\Components\\MarkdownSection.razor.js",
+      "PackagePath": "staticwebassets\\Components\\MarkdownSection.razor.js"
+    },
+    {
+      "Id": "H:\\MDFIleTORazor\\src\\MDFileToRazor.Components\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\MDFileToRazor.Components.bundle.scp.css",
+      "PackagePath": "staticwebassets\\MDFileToRazor.Components.qgc3j7ntzl.bundle.scp.css"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.MDFileToRazor.Components.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.MDFileToRazor.Components.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.MDFileToRazor.Components.props",
+      "PackagePath": "build\\MDFileToRazor.Components.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.MDFileToRazor.Components.props",
+      "PackagePath": "buildMultiTargeting\\MDFileToRazor.Components.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.MDFileToRazor.Components.props",
+      "PackagePath": "buildTransitive\\MDFileToRazor.Components.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

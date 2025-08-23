@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MDFileToRazor.CodeGeneration</id>
+    <version>1.0.0-preview.1</version>
+    <title>MDFileToRazor Code Generation</title>
+    <authors>MDFileToRazor Team</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/your-org/mdfiletorazor</projectUrl>
+    <description>Build-time code generation tools to convert Markdown files to Blazor Razor pages
+      with YAML frontmatter support</description>
+    <tags>blazor,markdown,razor,codegen,build-time,yaml,frontmatter</tags>
+    <repository type="git" url="https://github.com/your-org/mdfiletorazor" />
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="Markdig" version="0.38.0" exclude="Build,Analyzers" />
+        <dependency id="YamlDotNet" version="15.1.4" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\bin\Release\net8.0\MDFileToRazor.CodeGeneration.dll" target="lib\net8.0\MDFileToRazor.CodeGeneration.dll" />
+    <file src="H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\bin\Release\net8.0\MDFileToRazor.CodeGeneration.xml" target="lib\net8.0\MDFileToRazor.CodeGeneration.xml" />
+    <file src="H:\MDFIleTORazor\README.md" target="\README.md" />
+  </files>
+</package>

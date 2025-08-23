@@ -1,0 +1,14 @@
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\bin\Release\net8.0\MDFileToRazor.CodeGeneration.deps.json
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\bin\Release\net8.0\MDFileToRazor.CodeGeneration.dll
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\bin\Release\net8.0\MDFileToRazor.CodeGeneration.pdb
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\bin\Release\net8.0\MDFileToRazor.CodeGeneration.xml
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.csproj.AssemblyReference.cache
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.GeneratedMSBuildEditorConfig.editorconfig
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.AssemblyInfoInputs.cache
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.AssemblyInfo.cs
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.csproj.CoreCompileInputs.cache
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.dll
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\refint\MDFileToRazor.CodeGeneration.dll
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.xml
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\MDFileToRazor.CodeGeneration.pdb
+H:\MDFIleTORazor\src\MDFileToRazor.CodeGeneration\obj\Release\net8.0\ref\MDFileToRazor.CodeGeneration.dll

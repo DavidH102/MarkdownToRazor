@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>MDFileToRazor.MSBuild</PackageId>
+    <Title>MDFileToRazor MSBuild Integration</Title>
+    <Description>MSBuild tasks and targets for integrating markdown-to-Razor code generation into
+      your build process</Description>
+    <Authors>MDFileToRazor Team</Authors>
+    <Company>MDFileToRazor</Company>
+    <PackageTags>msbuild,blazor,markdown,razor,codegen,build-integration</PackageTags>
+    <PackageProjectUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MDFileToRazor.CodeGeneration\MDFileToRazor.CodeGeneration.csproj"
+      PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="build\**\*" Pack="true" PackagePath="build\" />
+    <None Include="buildTransitive\**\*" Pack="true" PackagePath="buildTransitive\" />
+  </ItemGroup>
+
+</Project>

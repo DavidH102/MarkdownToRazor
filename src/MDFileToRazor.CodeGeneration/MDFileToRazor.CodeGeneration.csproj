@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>MDFileToRazor.CodeGeneration</PackageId>
+    <Title>MDFileToRazor Code Generation</Title>
+    <Description>Build-time code generation tools to convert Markdown files to Blazor Razor pages
+      with YAML frontmatter support</Description>
+    <Authors>MDFileToRazor Team</Authors>
+    <Company>MDFileToRazor</Company>
+    <PackageTags>blazor,markdown,razor,codegen,build-time,yaml,frontmatter</PackageTags>
+    <PackageProjectUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="15.1.4" />
+    <PackageReference Include="Markdig" Version="0.38.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

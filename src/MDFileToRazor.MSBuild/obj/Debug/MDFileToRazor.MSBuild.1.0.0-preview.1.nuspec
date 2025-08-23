@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>MDFileToRazor.MSBuild</id>
+    <version>1.0.0-preview.1</version>
+    <title>MDFileToRazor MSBuild Integration</title>
+    <authors>MDFileToRazor Team</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/your-org/mdfiletorazor</projectUrl>
+    <description>MSBuild tasks and targets for integrating markdown-to-Razor code generation into
+      your build process</description>
+    <tags>msbuild,blazor,markdown,razor,codegen,build-integration</tags>
+    <repository type="git" url="https://github.com/your-org/mdfiletorazor" />
+  </metadata>
+  <files>
+    <file src="H:\MDFIleTORazor\README.md" target="\README.md" />
+    <file src="H:\MDFIleTORazor\src\MDFileToRazor.MSBuild\build\MDFileToRazor.MSBuild.targets" target="build\MDFileToRazor.MSBuild.targets" />
+    <file src="H:\MDFIleTORazor\src\MDFileToRazor.MSBuild\buildTransitive\MDFileToRazor.MSBuild.targets" target="buildTransitive\MDFileToRazor.MSBuild.targets" />
+  </files>
+</package>

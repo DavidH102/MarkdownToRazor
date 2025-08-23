@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MDFileToRazor.CodeGeneration</name>
+    </assembly>
+    <members>
+        <member name="T:MDFIleTORazor.CodeGeneration.MarkdownFrontmatter">
+            <summary>
+            Represents frontmatter configuration for a markdown file
+            </summary>
+        </member>
+        <member name="T:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator">
+            <summary>
+            Code generator that converts markdown files to Razor pages
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.GenerateRazorPagesAsync(System.String,System.String)">
+            <summary>
+            Generates Razor pages from all markdown files in the specified source directory
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.GenerateRazorPageAsync(System.String,System.String,System.String)">
+            <summary>
+            Generates a single Razor page from a markdown file
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.ParseFrontmatter(System.String)">
+            <summary>
+            Parses YAML frontmatter from markdown content
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.GenerateRouteFromFilename(System.String)">
+            <summary>
+            Generates a route from filename (e.g., "getting-started" -> "/getting-started")
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.GenerateTitleFromFilename(System.String)">
+            <summary>
+            Generates a page title from filename (e.g., "getting-started" -> "Getting Started")
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.GenerateRazorFileName(System.String)">
+            <summary>
+            Generates the Razor filename (e.g., "about" -> "About.razor")
+            </summary>
+        </member>
+        <member name="M:MDFIleTORazor.CodeGeneration.MarkdownToRazorGenerator.GenerateRazorPageContent(System.String,System.String,System.String,MDFIleTORazor.CodeGeneration.MarkdownFrontmatter)">
+            <summary>
+            Generates the complete Razor page content
+            </summary>
+        </member>
+    </members>
+</doc>
