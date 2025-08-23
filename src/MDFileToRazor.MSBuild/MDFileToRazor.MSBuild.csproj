@@ -38,4 +38,15 @@
     <None Include="buildTransitive\**\*" Pack="true" PackagePath="buildTransitive\" />
   </ItemGroup>
 
+  <!-- Include the task assembly and dependencies in the package -->
+  <Target Name="GetTargetPath" />
+  <Target Name="IncludeTaskAssembly" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).dll" />
+      <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).pdb" />
+      <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.dll" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.dll" />
+      <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.xml" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.xml" />
+    </ItemGroup>
+  </Target>
+
 </Project>
