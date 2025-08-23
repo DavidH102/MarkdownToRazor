@@ -349,7 +349,7 @@ public class MarkdownToRazorGenerator
         sb.AppendLine($"@page \"{route}\"");
 
         // Using statements
-        sb.AppendLine("@using MDFIleTORazor.Components");
+        sb.AppendLine("@using MDFileToRazor.Components");
         sb.AppendLine();
 
         // Generated file comment
