@@ -1,214 +1,191 @@
-# MDFileToRazor - Markdown to Blazor Component Library
+# MDFileToRazor
 
-A comprehensive .NET 8 library that provides both runtime markdown rendering components and build-time code generation to convert Markdown files into Blazor Razor pages with automatic routing.
+[![.NET](https://img.shields.io/badge/.NET-8.0-blue)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![NuGet](https://img.shields.io/badge/NuGet-Available%20on%20GitHub%20Packages-blue)](https://github.com/DavidH102/MDFileToRazor/packages)
 
-## 🚀 Project Vision & NuGet Roadmap
+**Transform your Markdown files into beautiful Blazor pages with automatic routing and syntax highlighting.**
 
-This project is being structured for **NuGet package distribution** to provide the community with powerful markdown-to-Blazor tooling. The ultimate goal is to offer multiple NuGet packages:
+MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown content and Blazor applications. Whether you're building documentation sites, blogs, or content-driven applications, this library provides everything you need to seamlessly integrate Markdown into your Blazor projects.
 
-- **`MDFileToRazor.Components`** - Runtime markdown rendering components
-- **`MDFileToRazor.CodeGeneration`** - Build-time markdown-to-Razor page generation
-- **`MDFileToRazor.MSBuild`** - MSBuild targets and tasks for seamless integration
+## ✨ What Can You Do?
 
-### 📦 Planned NuGet Packages
+- 📝 **Runtime Rendering**: Display markdown content dynamically in your Blazor components
+- 🏗️ **Build-Time Generation**: Automatically convert markdown files to Razor pages during compilation
+- 🎨 **Beautiful Styling**: Integrated with Microsoft FluentUI design system
+- 💡 **Syntax Highlighting**: Code blocks with highlight.js integration and copy-to-clipboard functionality
+- 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter support
+- 📁 **Flexible Content**: Load from files, URLs, or provide inline markdown content
 
-| Package                        | Purpose                                          | Target Audience                                                   |
-| ------------------------------ | ------------------------------------------------ | ----------------------------------------------------------------- |
-| `MDFileToRazor.Components`     | Blazor components for runtime markdown rendering | Developers who want to display markdown content dynamically       |
-| `MDFileToRazor.CodeGeneration` | Build-time code generation tools                 | Developers building documentation sites, blogs, or static content |
-| `MDFileToRazor.MSBuild`        | MSBuild integration and targets                  | Projects wanting automatic markdown-to-page conversion            |
-| `MDFileToRazor.Templates`      | Project templates and scaffolding                | Quick-start templates for new projects                            |
+## 📦 Available Packages
 
-## ✅ Project Status Update
+| Package                          | Purpose                                           | Install                                                                                                      |
+| -------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **MDFileToRazor.Components**     | Runtime Blazor components for markdown rendering  | `dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json`     |
+| **MDFileToRazor.CodeGeneration** | Build-time markdown-to-Razor page generation      | `dotnet add package MDFileToRazor.CodeGeneration --source https://nuget.pkg.github.com/DavidH102/index.json` |
+| **MDFileToRazor.MSBuild**        | MSBuild integration for automatic page generation | `dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json`        |
 
-**🎉 NuGet Package Structure Successfully Implemented!**
+## 🚀 Quick Start
 
-The project restructuring is complete and all packages build successfully:
+### 1. Runtime Markdown Rendering
+
+Perfect for displaying dynamic markdown content in your Blazor applications:
 
 ```bash
-✅ MDFileToRazor.CodeGeneration.1.0.0-preview.1.nupkg - Build-time code generation
-✅ MDFileToRazor.Components.1.0.0-preview.1.nupkg - Runtime Blazor components
-✅ MDFileToRazor.MSBuild.1.0.0-preview.1.nupkg - MSBuild integration
+dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json
 ```
 
-**What's Working:**
+**Program.cs:**
 
-- ✅ Multi-project solution structure following .NET best practices
-- ✅ All projects build successfully in Debug and Release modes
-- ✅ NuGet packages created with proper metadata and dependencies
-- ✅ MSBuild integration for automatic code generation during build
-- ✅ Proper separation of concerns across runtime and build-time components
-- ✅ Package references and dependencies correctly resolved
+```csharp
+using MDFileToRazor.Components.Services;
 
-**Ready for:** Testing, documentation improvements, and public NuGet publication!
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 
-## 🏗️ Project Structure
+// Add MDFileToRazor services
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<StaticAssetService>();
 
-This solution follows .NET library best practices with clear separation of concerns:
-
-```text
-MDFileToRazor/
-├── src/                                    # Source code (for NuGet packages)
-│   ├── MDFileToRazor.Components/          # 📦 Runtime Blazor components
-│   │   ├── Components/                     # Blazor components
-│   │   │   ├── MarkdownSection.razor      # Main markdown rendering component
-│   │   │   ├── MarkdownSection.razor.cs   # Component logic
-│   │   │   ├── MarkdownSection.razor.css  # Component styles
-│   │   │   └── MarkdownSection.razor.js   # JavaScript interop
-│   │   ├── Extensions/                     # Markdig extensions
-│   │   │   ├── MarkdownSectionPreCodeExtension.cs
-│   │   │   ├── MarkdownSectionPreCodeRenderer.cs
-│   │   │   └── MarkdownSectionPreCodeRendererOptions.cs
-│   │   ├── Services/                       # Services and interfaces
-│   │   │   ├── IStaticAssetService.cs
-│   │   │   └── StaticAssetService.cs
-│   │   └── MDFileToRazor.Components.csproj
-│   │
-│   ├── MDFileToRazor.CodeGeneration/      # 📦 Build-time code generation
-│   │   ├── Generators/
-│   │   │   └── MarkdownToRazorGenerator.cs # Core generation logic
-│   │   ├── Models/                         # Data models
-│   │   ├── Templates/                      # Razor page templates
-│   │   └── MDFileToRazor.CodeGeneration.csproj
-│   │
-│   └── MDFileToRazor.MSBuild/             # 📦 MSBuild integration
-│       ├── Tasks/                          # MSBuild tasks
-│       ├── Targets/                        # MSBuild targets
-│       └── MDFileToRazor.MSBuild.csproj
-│
-├── samples/                                # Example applications
-│   ├── MDFileToRazor.Sample.BlazorServer/ # Demo Blazor Server app
-│   │   ├── Components/                     # Sample components
-│   │   ├── Pages/                          # Demo pages
-│   │   │   └── Generated/                  # Auto-generated pages
-│   │   ├── Shared/                         # Layouts
-│   │   ├── MDFilesToConvert/              # Source markdown files
-│   │   └── MDFileToRazor.Sample.BlazorServer.csproj
-│   │
-│   └── MDFileToRazor.Sample.WebAssembly/  # Demo Blazor WASM app
-│
-├── tests/                                  # Unit and integration tests
-│   ├── MDFileToRazor.Components.Tests/
-│   ├── MDFileToRazor.CodeGeneration.Tests/
-│   └── MDFileToRazor.MSBuild.Tests/
-│
-├── tools/                                  # Development tools
-│   └── CodeGeneration/                     # Standalone code generation tool
-│
-├── docs/                                   # Documentation
-│   ├── getting-started.md
-│   ├── api-reference.md
-│   └── examples/
-│
-└── build/                                  # Build scripts and configuration
-    ├── pack.ps1                           # NuGet packing script
-    ├── version.props                       # Version management
-    └── Directory.Build.props               # Global MSBuild properties
+var app = builder.Build();
+// ... rest of configuration
 ```
 
-### 🎯 Current Phase: Restructuring for NuGet
+**Your Blazor Page:**
 
-#### Phase 1 - Project Restructuring (Current)
+````razor
+@page "/docs"
+@using MDFileToRazor.Components
 
-- [ ] Create separate projects for each NuGet package
-- [ ] Move components to `src/MDFileToRazor.Components`
-- [ ] Move code generation to `src/MDFileToRazor.CodeGeneration`
-- [ ] Create MSBuild integration project
-- [ ] Set up proper solution structure
-
-#### Phase 2 - Package Preparation
-
-- [ ] Add proper package metadata and descriptions
-- [ ] Create comprehensive XML documentation
-- [ ] Set up versioning strategy
-- [ ] Create project templates
-
-#### Phase 3 - Testing & Documentation
-
-- [ ] Comprehensive unit test coverage
-- [ ] Integration tests for MSBuild tasks
-- [ ] API documentation with DocFX
-- [ ] Sample applications demonstrating usage
-
-#### Phase 4 - NuGet Publishing
-
-- [ ] Set up CI/CD pipeline for automated builds
-- [ ] Configure NuGet publishing workflow
-- [ ] Create prerelease packages for testing
-- [ ] Official NuGet package release
-
-## ✨ Features
-
-- **Markdown Processing**: Uses the Markdig library for robust markdown parsing
-- **Syntax Highlighting**: Integrated highlight.js for code block syntax highlighting
-- **Copy Functionality**: Click-to-copy buttons for all code blocks
-- **FluentUI Integration**: Styled with Microsoft FluentUI design system
-- **File Loading**: Load markdown content from files or provide inline content
-
-## Getting Started
-
-1. **Install Dependencies**: The project requires these NuGet packages:
-
-   - `Markdig` (version 0.38.0 or higher)
-   - `Microsoft.FluentUI.AspNetCore.Components` (version 4.12.1 or higher)
-
-2. **Run the Application**:
-
-   ```bash
-   dotnet run
-   ```
-
-3. **View the Demo**: Navigate to `/markdown-demo` to see the component in action
-
-## Usage
-
-### Basic Usage with Inline Content
-
-```razor
 <MarkdownSection Content="@markdownContent" />
 
 @code {
-    private string markdownContent = "# Hello World\nThis is **bold** text.";
+    private string markdownContent = @"
+# Welcome to My Documentation
+
+This is **bold text** and this is *italic text*.
+
+```csharp
+public class Example
+{
+    public string Name { get; set; } = ""Hello World"";
 }
+````
+
+";
+}
+
+````
+
+### 2. Build-Time Page Generation
+
+Automatically convert markdown files to routable Blazor pages:
+
+```bash
+dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json
+````
+
+**Create markdown files with YAML frontmatter:**
+
+`content/about.md:`
+
+```markdown
+---
+title: About Us
+route: /about
+layout: MainLayout
+---
+
+# About Our Company
+
+We build amazing software...
 ```
 
-### Loading from File
+**Add to your .csproj:**
 
-```razor
-<MarkdownSection FromAsset="myfile.md" />
+```xml
+<PropertyGroup>
+  <MarkdownSourceDirectory>$(MSBuildProjectDirectory)\content</MarkdownSourceDirectory>
+  <GeneratedPagesDirectory>$(MSBuildProjectDirectory)\Pages\Generated</GeneratedPagesDirectory>
+</PropertyGroup>
+
+<Target Name="GenerateMarkdownPages" BeforeTargets="Build">
+  <Exec Command="dotnet run --project path/to/MDFileToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;" />
+</Target>
 ```
 
-### Component Parameters
+**Result:** Automatic `/about` route with your markdown content as a Blazor page!
 
-- **Content**: Direct markdown content as a string
-- **FromAsset**: Path to a markdown file in wwwroot folder or a URL
+## ✨ Features
 
-## Architecture
+- **🎨 Runtime Rendering**: Display markdown content dynamically in your Blazor applications
+- **⚡ Build-Time Generation**: Convert markdown files to routable Blazor pages automatically
+- **🎯 YAML Frontmatter**: Control page routing, layout, title, and metadata
+- **🔥 Syntax Highlighting**: Beautiful code syntax highlighting with copy-to-clipboard
+- **📱 Responsive Design**: FluentUI integration for modern, mobile-friendly layouts
+- **🔧 MSBuild Integration**: Seamless build-time processing with zero configuration
+- **📦 Modular Packages**: Choose only the components you need
 
-The component consists of:
+## 💡 Use Cases
 
-- `MarkdownSection.razor`: Main component for rendering
-- `MarkdownSection.razor.cs`: Code-behind with markdown processing logic
-- `MarkdownSectionPreCodeExtension.cs`: Custom Markdig extension for enhanced code blocks
-- `MarkdownSectionPreCodeRenderer.cs`: Custom HTML renderer for code blocks
-- `StaticAssetService.cs`: Service for loading content from files/URLs
-- `MarkdownSection.razor.js`: JavaScript module for syntax highlighting
+- **📚 Documentation Sites**: Convert markdown docs to navigable Blazor pages
+- **📝 Blog Platforms**: Build content-driven sites with dynamic routing
+- **❓ Help Systems**: Embed rich help content directly in your applications
+- **🔧 Content Management**: Mix static markdown with dynamic Blazor components
+- **📖 Technical Writing**: Author in markdown, publish as interactive web pages
 
-## Dependencies
+## 🏗️ Architecture
 
-- **Markdig**: Markdown processing engine
-- **highlight.js**: Syntax highlighting (loaded via CDN)
-- **FluentUI**: Microsoft's design system for Blazor
+### Runtime Components
 
-## Credits
+- **MarkdownSection.razor**: Main component for dynamic markdown rendering
+- **StaticAssetService**: Service for loading content from files or URLs
+- **Markdig Extensions**: Custom extensions for enhanced code block rendering
 
-This implementation is based on the MarkdownSection component from Microsoft's FluentUI Blazor repository:
-[Microsoft FluentUI Blazor](https://github.com/microsoft/fluentui-blazor)
+### Build-Time Tools
 
-## Contributing
+- **MarkdownToRazorGenerator**: Core engine for converting markdown to Blazor pages
+- **MSBuild Tasks**: Automated integration with your build process
+- **YAML Parser**: Frontmatter processing for page metadata and routing
 
-We welcome contributions! Please see our contributing guidelines for more information on how to get involved in making this project ready for NuGet distribution.
+### Generated Output
 
-## License
+- **Routable Pages**: Automatic Blazor page creation with proper routing
+- **Layout Integration**: Seamless integration with your existing Blazor layouts
+- **Metadata Handling**: SEO-friendly titles, descriptions, and meta tags
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📖 Documentation
+
+For complete guides and examples, visit our documentation:
+
+- [**Getting Started**](docs/getting-started.md) - Step-by-step setup instructions
+- [**API Reference**](docs/api-reference.md) - Complete component documentation
+- [**Examples**](examples/) - Real-world usage patterns and recipes
+- [**Sample Applications**](src/MDFileToRazor.Sample.BlazorServer/) - Working demo projects
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get involved:
+
+1. **Fork the repository** and create a feature branch
+2. **Follow our coding standards** and ensure tests pass
+3. **Submit a pull request** with a clear description of changes
+4. **Join the discussion** in issues and help improve the library
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+Built with these amazing open-source projects:
+
+- [**Markdig**](https://github.com/xoofx/markdig) - Fast, powerful markdown processor for .NET
+- [**YamlDotNet**](https://github.com/aaubry/YamlDotNet) - .NET library for YAML parsing
+- [**FluentUI Blazor**](https://github.com/microsoft/fluentui-blazor) - Microsoft's Fluent UI components for Blazor
+- [**highlight.js**](https://highlightjs.org/) - Syntax highlighting for the web
+
+---
+
+⭐ **Found this helpful?** Give us a star and share with your fellow developers!
