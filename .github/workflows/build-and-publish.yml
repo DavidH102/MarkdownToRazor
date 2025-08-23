@@ -7,6 +7,10 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   DOTNET_VERSION: "8.0.x"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
