@@ -39,10 +39,14 @@
     <None Include="build\**\*" Pack="true" PackagePath="build\" />
     <None Include="buildTransitive\**\*" Pack="true" PackagePath="buildTransitive\" />
     <!-- Include task assemblies directly -->
-    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).dll" Visible="false" />
-    <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).pdb" Visible="false" />
-    <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.dll" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.dll" Visible="false" />
-    <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.xml" Pack="true" PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.xml" Visible="false" />
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true"
+      PackagePath="tasks\net8.0\$(AssemblyName).dll" Visible="false" />
+    <None Include="$(OutputPath)$(AssemblyName).pdb" Pack="true"
+      PackagePath="tasks\net8.0\$(AssemblyName).pdb" Visible="false" />
+    <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.dll" Pack="true"
+      PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.dll" Visible="false" />
+    <None Include="$(OutputPath)MDFileToRazor.CodeGeneration.xml" Pack="true"
+      PackagePath="tasks\net8.0\MDFileToRazor.CodeGeneration.xml" Visible="false" />
   </ItemGroup>
 
   <!-- Remove the custom target since we're including directly -->

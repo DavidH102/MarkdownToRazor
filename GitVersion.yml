@@ -10,7 +10,7 @@ build-metadata-padding: 4
 commits-since-version-source-padding: 4
 assembly-versioning-scheme: MajorMinorPatch
 assembly-file-versioning-scheme: MajorMinorPatchTag
-assembly-informational-format: '{InformationalVersion}'
+assembly-informational-format: "{InformationalVersion}"
 
 branches:
   main:
