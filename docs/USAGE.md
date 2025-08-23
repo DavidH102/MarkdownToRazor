@@ -7,7 +7,7 @@ This guide explains how to install and use the MDFileToRazor NuGet packages from
 MDFileToRazor provides three NuGet packages:
 
 - **`MDFileToRazor.Components`** - Blazor components for runtime markdown rendering
-- **`MDFileToRazor.CodeGeneration`** - Build-time code generation tools  
+- **`MDFileToRazor.CodeGeneration`** - Build-time code generation tools
 - **`MDFileToRazor.MSBuild`** - MSBuild integration for automatic code generation
 
 ## Prerequisites
@@ -102,7 +102,7 @@ For full functionality including build-time generation and runtime rendering:
 
 ```bash
 dotnet add package MDFileToRazor.Components --source github
-dotnet add package MDFileToRazor.CodeGeneration --source github  
+dotnet add package MDFileToRazor.CodeGeneration --source github
 dotnet add package MDFileToRazor.MSBuild --source github
 ```
 
@@ -158,7 +158,7 @@ app.MapFallbackToPage("/_Host"); // For Blazor Server
 app.Run();
 ```
 
-### 2. Update _Imports.razor
+### 2. Update \_Imports.razor
 
 Add the following to your `_Imports.razor`:
 
@@ -174,16 +174,22 @@ Add to your `_Host.cshtml` (Blazor Server) or `index.html` (Blazor WebAssembly):
 
 ```html
 <head>
-    <!-- FluentUI CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/themes/fluent.css" rel="stylesheet" />
-    
-    <!-- Highlight.js for syntax highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
-    <!-- Your app styles -->
-    <link href="css/app.css" rel="stylesheet" />
-    <link href="YourApp.styles.css" rel="stylesheet" />
+  <!-- FluentUI CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/themes/fluent.css"
+    rel="stylesheet"
+  />
+
+  <!-- Highlight.js for syntax highlighting -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Your app styles -->
+  <link href="css/app.css" rel="stylesheet" />
+  <link href="YourApp.styles.css" rel="stylesheet" />
 </head>
 ```
 
@@ -193,7 +199,7 @@ Add to your `_Host.cshtml` (Blazor Server) or `index.html` (Blazor WebAssembly):
 
 Use the `MarkdownSection` component to render markdown content:
 
-```razor
+````razor
 @page "/example"
 
 <h1>Markdown Examples</h1>
@@ -215,9 +221,11 @@ public class Example
 {
     public string Message { get; set; } = ""Hello, World!"";
 }
-```
+````
+
 ";
 }
+
 ```
 
 ### Build-Time Code Generation
@@ -227,6 +235,7 @@ public class Example
 Create the following structure in your project:
 
 ```
+
 ```
 YourProject/
 ├── MDFilesToConvert/
@@ -237,7 +246,8 @@ YourProject/
 │   └── Generated/ (auto-created)
 └── YourProject.csproj
 ```
-```
+
+````
 
 #### 2. Configure MSBuild
 
@@ -250,7 +260,7 @@ Update your `.csproj` file:
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    
+
     <!-- Configure paths for code generation -->
     <GeneratedPagesDirectory>$(MSBuildProjectDirectory)\Pages\Generated</GeneratedPagesDirectory>
     <MarkdownSourceDirectory>$(MSBuildProjectDirectory)\MDFilesToConvert</MarkdownSourceDirectory>
@@ -270,13 +280,14 @@ Update your `.csproj` file:
   </ItemGroup>
 
 </Project>
-```
+````
 
 #### 3. Create Markdown Files
 
 Create markdown files with optional YAML frontmatter:
 
 **MDFilesToConvert/about.md:**
+
 ```markdown
 ---
 title: About Us
@@ -293,6 +304,7 @@ This is the about page content...
 ```
 
 **MDFilesToConvert/getting-started.md:**
+
 ```markdown
 ---
 title: Getting Started Guide
@@ -342,11 +354,11 @@ The following YAML frontmatter properties are supported:
 # Custom route (overrides filename-based routing)
 route: /custom/path
 
-# Page title for HTML head and display  
+# Page title for HTML head and display
 title: My Page Title
 
 # Blazor layout component to use
-layout: MainLayout  
+layout: MainLayout
 
 # Whether to show the title in the page
 showTitle: true
@@ -379,22 +391,22 @@ Override the default FluentUI styles by adding custom CSS:
 ```css
 /* Custom markdown styling */
 .markdown-content h1 {
-    color: #2c3e50;
-    border-bottom: 2px solid #3498db;
+  color: #2c3e50;
+  border-bottom: 2px solid #3498db;
 }
 
 .markdown-content code {
-    background-color: #f8f9fa;
-    padding: 2px 4px;
-    border-radius: 3px;
+  background-color: #f8f9fa;
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 .markdown-content pre {
-    background-color: #282c34;
-    color: #abb2bf;
-    padding: 1rem;
-    border-radius: 4px;
-    overflow-x: auto;
+  background-color: #282c34;
+  color: #abb2bf;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
 }
 ```
 
@@ -404,9 +416,18 @@ Change the highlight.js theme by updating the CSS link:
 
 ```html
 <!-- Different highlight.js themes -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+/>
 ```
 
 ## Sample Project

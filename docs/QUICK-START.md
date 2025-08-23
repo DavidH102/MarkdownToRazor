@@ -92,12 +92,18 @@ Add to your `_Host.cshtml` or `index.html`:
 
 ```html
 <head>
-    <!-- FluentUI CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/themes/fluent.css" rel="stylesheet" />
-    
-    <!-- Highlight.js -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- FluentUI CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/themes/fluent.css"
+    rel="stylesheet"
+  />
+
+  <!-- Highlight.js -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 ```
 
@@ -107,7 +113,7 @@ Add to your `_Host.cshtml` or `index.html`:
 
 Create a page:
 
-```razor
+````razor
 @page "/example"
 
 <h1>My Page</h1>
@@ -122,10 +128,12 @@ This is **bold** text.
 
 ```csharp
 Console.WriteLine(""Hello, World!"");
-```
+````
+
 ";
 }
-```
+
+````
 
 ### Option B: Build-Time Generation
 
@@ -141,7 +149,7 @@ title: Hello World
 # Hello World
 
 This page was generated from markdown!
-```
+````
 
 3. Build your project:
 

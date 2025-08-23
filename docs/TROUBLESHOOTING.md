@@ -7,6 +7,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Unable to load the service index
 
 **Symptoms:**
+
 - Error message: "Unable to load the service index for source 'https://nuget.pkg.github.com/DavidMarsh-NOAA/index.json'"
 - Package restore fails
 
@@ -19,6 +20,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Package source 'github' was not found
 
 **Symptoms:**
+
 - Error during package installation
 - NuGet cannot find the configured source
 
@@ -32,6 +34,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Package 'MDFileToRazor.Components' is not found
 
 **Symptoms:**
+
 - Package installation fails
 - Error indicates package doesn't exist
 
@@ -46,6 +49,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Cannot find type 'MarkdownSection'
 
 **Symptoms:**
+
 - Compilation errors referencing MarkdownSection
 - IntelliSense doesn't recognize components
 
@@ -58,6 +62,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Generated pages not found
 
 **Symptoms:**
+
 - Navigating to generated routes returns 404
 - Generated pages don't appear in routing
 
@@ -72,6 +77,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Styles not applied correctly
 
 **Symptoms:**
+
 - Markdown content appears unstyled
 - FluentUI components don't render properly
 
@@ -84,6 +90,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 ### Syntax highlighting not working
 
 **Symptoms:**
+
 - Code blocks appear without syntax highlighting
 - JavaScript errors in browser console
 
@@ -105,7 +112,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IStaticAssetService, StaticAssetService>();
 ```
 
-### Incorrect _Imports.razor
+### Incorrect \_Imports.razor
 
 Ensure these using statements are present:
 
@@ -120,8 +127,14 @@ Ensure these using statements are present:
 Include in your layout file:
 
 ```html
-<link href="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/themes/fluent.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+<link
+  href="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/themes/fluent.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css"
+/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 ```
 
