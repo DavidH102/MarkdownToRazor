@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDFileToRazor.MSBuild", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDFileToRazor.Sample.BlazorServer", "src\MDFileToRazor.Sample.BlazorServer\MDFileToRazor.Sample.BlazorServer.csproj", "{525F839A-0B56-4908-B108-52D837817FB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDFileToRazor", "src\MDFileToRazor\MDFileToRazor.csproj", "{82F7E640-6ABC-4E92-966F-60353E80B3C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MDFileToRazor", "src\MDFileToRazor\MDFIleTORazor.csproj", "{82F7E640-6ABC-4E92-966F-60353E80B3C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
