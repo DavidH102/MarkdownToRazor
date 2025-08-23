@@ -33,6 +33,16 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
+# Test artifacts and temporary files
+test-packages*/
+package*.zip
+extracted/
+TempGenerator/
+TempTest/
+current_structure.txt
+test-generation.ps1
+test-home.md
+
 # MSBuild Binary and Structured Log
 *.binlog
 

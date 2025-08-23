@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Type="http://schemas.microsoft.com/packaging/2010/07/manifest" Target="/MDFileToRazor.MSBuild.nuspec" Id="R33DD9B6602495192" />
-  <Relationship Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="/package/services/metadata/core-properties/edc497adec0c4fb994f297b0b87528df.psmdcp" Id="R7755CAA60E2CBCA5" />
-</Relationships>
