@@ -19,6 +19,19 @@ public class MarkdownFrontmatter
 }
 
 /// <summary>
+/// Represents configuration data extracted from HTML comments
+/// </summary>
+public class HtmlCommentConfiguration
+{
+    public string? PageDirective { get; set; }
+    public string? Title { get; set; }
+    public string? Layout { get; set; }
+    public bool? ShowTitle { get; set; }
+    public string? Description { get; set; }
+    public List<string>? Tags { get; set; }
+}
+
+/// <summary>
 /// Code generator that converts markdown files to Razor pages
 /// </summary>
 public class MarkdownToRazorGenerator
@@ -72,17 +85,33 @@ public class MarkdownToRazorGenerator
         var relativePath = Path.GetRelativePath(sourceDirectory, markdownFilePath);
         var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(markdownFilePath);
 
-        // Parse frontmatter if exists
-        var (frontmatter, contentWithoutFrontmatter) = ParseFrontmatter(markdownContent);
+        // Check for HTML comment configuration first
+        var (htmlConfig, contentAfterHtmlComment) = ParseHtmlCommentConfiguration(markdownContent);
+        
+        // Parse frontmatter if exists (from the content after HTML comment processing)
+        var (frontmatter, contentWithoutFrontmatter) = ParseFrontmatter(contentAfterHtmlComment);
 
-        // Generate route from filename or use frontmatter route
-        var route = ProcessRoute(frontmatter?.Route ?? GenerateRouteFromFilename(fileNameWithoutExtension));
+        // Merge configurations - HTML comment takes precedence over frontmatter
+        var mergedConfig = MergeConfigurations(htmlConfig, frontmatter);
 
-        // Generate page title
-        var title = frontmatter?.Title ?? GenerateTitleFromFilename(fileNameWithoutExtension);
+        // Generate route from HTML comment @page directive, frontmatter route, or filename
+        string route;
+        if (!string.IsNullOrEmpty(htmlConfig?.PageDirective))
+        {
+            // Use the @page directive from HTML comment
+            route = htmlConfig.PageDirective;
+        }
+        else
+        {
+            // Fallback to frontmatter route or filename-based route
+            route = ProcessRoute(frontmatter?.Route ?? GenerateRouteFromFilename(fileNameWithoutExtension));
+        }
+
+        // Generate page title from merged configuration or filename
+        var title = mergedConfig.Title ?? GenerateTitleFromFilename(fileNameWithoutExtension);
 
         // Generate the Razor page content
-        var razorContent = GenerateRazorPageContent(route, title, relativePath, frontmatter);
+        var razorContent = GenerateRazorPageContent(route, title, relativePath, mergedConfig);
 
         // Generate output filename
         var outputFileName = GenerateRazorFileName(fileNameWithoutExtension);
@@ -120,6 +149,141 @@ public class MarkdownToRazorGenerator
             Console.WriteLine($"Error parsing frontmatter: {ex.Message}");
             return (null, markdownContent);
         }
+    }
+
+    /// <summary>
+    /// Parses HTML comment configuration from the first line of markdown content
+    /// </summary>
+    private (HtmlCommentConfiguration?, string) ParseHtmlCommentConfiguration(string markdownContent)
+    {
+        // Check if the first line is an HTML comment with configuration data
+        var lines = markdownContent.Split('\n');
+        if (lines.Length == 0)
+        {
+            return (null, markdownContent);
+        }
+
+        var firstLine = lines[0].Trim();
+        
+        // Pattern to match: <!-- This is configuration data -->
+        var configCommentPattern = @"^<!--\s*This is configuration data\s*-->$";
+        if (!Regex.IsMatch(firstLine, configCommentPattern, RegexOptions.IgnoreCase))
+        {
+            return (null, markdownContent);
+        }
+
+        Console.WriteLine("Found HTML comment configuration marker, parsing configuration...");
+
+        var config = new HtmlCommentConfiguration();
+        var contentStartIndex = 1; // Start after the configuration marker line
+
+        // Parse subsequent lines for configuration directives until we hit a non-comment line
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var line = lines[i].Trim();
+            
+            // Stop parsing if we hit a non-comment line or empty line
+            if (string.IsNullOrEmpty(line) || !line.StartsWith("<!--") || !line.EndsWith("-->"))
+            {
+                contentStartIndex = i;
+                break;
+            }
+
+            // Extract content between <!-- and -->
+            var commentContent = line.Substring(4, line.Length - 7).Trim();
+            
+            // Parse @page directive
+            if (commentContent.StartsWith("@page "))
+            {
+                var pageMatch = Regex.Match(commentContent, @"@page\s+""([^""]+)""");
+                if (pageMatch.Success)
+                {
+                    config.PageDirective = pageMatch.Groups[1].Value;
+                    Console.WriteLine($"Found @page directive: {config.PageDirective}");
+                }
+            }
+            // Parse other configuration properties
+            else if (commentContent.StartsWith("title:"))
+            {
+                config.Title = commentContent.Substring(6).Trim().Trim('"');
+            }
+            else if (commentContent.StartsWith("layout:"))
+            {
+                config.Layout = commentContent.Substring(7).Trim().Trim('"');
+            }
+            else if (commentContent.StartsWith("showTitle:"))
+            {
+                if (bool.TryParse(commentContent.Substring(10).Trim(), out bool showTitle))
+                {
+                    config.ShowTitle = showTitle;
+                }
+            }
+            else if (commentContent.StartsWith("description:"))
+            {
+                config.Description = commentContent.Substring(12).Trim().Trim('"');
+            }
+            else if (commentContent.StartsWith("tags:"))
+            {
+                var tagsContent = commentContent.Substring(5).Trim();
+                // Simple parsing for comma-separated tags
+                config.Tags = tagsContent.Split(',').Select(t => t.Trim().Trim('"')).ToList();
+            }
+        }
+
+        // Return remaining content after configuration comments
+        var remainingContent = string.Join('\n', lines.Skip(contentStartIndex));
+        return (config, remainingContent);
+    }
+
+    /// <summary>
+    /// Merges HTML comment configuration with YAML frontmatter configuration
+    /// HTML comment configuration takes precedence
+    /// </summary>
+    private MarkdownFrontmatter MergeConfigurations(HtmlCommentConfiguration? htmlConfig, MarkdownFrontmatter? frontmatter)
+    {
+        var merged = new MarkdownFrontmatter();
+
+        // Start with frontmatter values
+        if (frontmatter != null)
+        {
+            merged.Route = frontmatter.Route;
+            merged.Title = frontmatter.Title;
+            merged.Layout = frontmatter.Layout;
+            merged.ShowTitle = frontmatter.ShowTitle;
+            merged.Description = frontmatter.Description;
+            merged.Tags = frontmatter.Tags;
+        }
+
+        // Override with HTML comment configuration (takes precedence)
+        if (htmlConfig != null)
+        {
+            if (!string.IsNullOrEmpty(htmlConfig.PageDirective))
+            {
+                merged.Route = htmlConfig.PageDirective;
+            }
+            if (!string.IsNullOrEmpty(htmlConfig.Title))
+            {
+                merged.Title = htmlConfig.Title;
+            }
+            if (!string.IsNullOrEmpty(htmlConfig.Layout))
+            {
+                merged.Layout = htmlConfig.Layout;
+            }
+            if (htmlConfig.ShowTitle.HasValue)
+            {
+                merged.ShowTitle = htmlConfig.ShowTitle;
+            }
+            if (!string.IsNullOrEmpty(htmlConfig.Description))
+            {
+                merged.Description = htmlConfig.Description;
+            }
+            if (htmlConfig.Tags?.Any() == true)
+            {
+                merged.Tags = htmlConfig.Tags;
+            }
+        }
+
+        return merged;
     }
 
     /// <summary>

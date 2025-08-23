@@ -14,7 +14,7 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 - 🏗️ **Build-Time Generation**: Automatically convert markdown files to Razor pages during compilation
 - 🎨 **Beautiful Styling**: Integrated with Microsoft FluentUI design system
 - 💡 **Syntax Highlighting**: Code blocks with highlight.js integration and copy-to-clipboard functionality
-- 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter support
+- 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter or HTML comment configuration support
 - 📁 **Flexible Content**: Load from files, URLs, or provide inline markdown content
 
 ## 📦 Available Packages
@@ -102,6 +102,23 @@ layout: MainLayout
 We build amazing software...
 ```
 
+**Or use HTML comment configuration (new in v1.2.0):**
+
+`content/about.md:`
+
+```markdown
+<!-- This is configuration data -->
+<!-- @page "/about" -->
+<!-- title: About Us -->
+<!-- layout: MainLayout -->
+
+# About Our Company
+
+We build amazing software...
+```
+
+> **💡 Tip**: HTML comment configuration takes precedence over YAML frontmatter when both are present. This provides flexibility for different authoring preferences and tool compatibility.
+
 **Add to your .csproj:**
 
 ```xml
@@ -121,7 +138,7 @@ We build amazing software...
 
 - **🎨 Runtime Rendering**: Display markdown content dynamically in your Blazor applications
 - **⚡ Build-Time Generation**: Convert markdown files to routable Blazor pages automatically
-- **🎯 YAML Frontmatter**: Control page routing, layout, title, and metadata
+- **🎯 YAML Frontmatter & HTML Comments**: Control page routing, layout, title, and metadata using either YAML frontmatter or HTML comment configuration
 - **🔥 Syntax Highlighting**: Beautiful code syntax highlighting with copy-to-clipboard
 - **📱 Responsive Design**: FluentUI integration for modern, mobile-friendly layouts
 - **🔧 MSBuild Integration**: Seamless build-time processing with zero configuration
@@ -160,6 +177,7 @@ We build amazing software...
 For complete guides and examples, visit our documentation:
 
 - [**Getting Started**](docs/getting-started.md) - Step-by-step setup instructions
+- [**HTML Comment Configuration**](docs/HTML-COMMENT-CONFIGURATION.md) - Alternative to YAML frontmatter using HTML comments
 - [**API Reference**](docs/api-reference.md) - Complete component documentation
 - [**Examples**](examples/) - Real-world usage patterns and recipes
 - [**Sample Applications**](src/MDFileToRazor.Sample.BlazorServer/) - Working demo projects
