@@ -87,7 +87,7 @@ public class MarkdownToRazorGenerator
 
         // Check for HTML comment configuration first
         var (htmlConfig, contentAfterHtmlComment) = ParseHtmlCommentConfiguration(markdownContent);
-        
+
         // Parse frontmatter if exists (from the content after HTML comment processing)
         var (frontmatter, contentWithoutFrontmatter) = ParseFrontmatter(contentAfterHtmlComment);
 
@@ -164,7 +164,7 @@ public class MarkdownToRazorGenerator
         }
 
         var firstLine = lines[0].Trim();
-        
+
         // Pattern to match: <!-- This is configuration data -->
         var configCommentPattern = @"^<!--\s*This is configuration data\s*-->$";
         if (!Regex.IsMatch(firstLine, configCommentPattern, RegexOptions.IgnoreCase))
@@ -181,7 +181,7 @@ public class MarkdownToRazorGenerator
         for (int i = 1; i < lines.Length; i++)
         {
             var line = lines[i].Trim();
-            
+
             // Stop parsing if we hit a non-comment line or empty line
             if (string.IsNullOrEmpty(line) || !line.StartsWith("<!--") || !line.EndsWith("-->"))
             {
@@ -191,7 +191,7 @@ public class MarkdownToRazorGenerator
 
             // Extract content between <!-- and -->
             var commentContent = line.Substring(4, line.Length - 7).Trim();
-            
+
             // Parse @page directive
             if (commentContent.StartsWith("@page "))
             {

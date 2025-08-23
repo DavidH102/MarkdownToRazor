@@ -1,5 +1,6 @@
 using Microsoft.FluentUI.AspNetCore.Components;
 using MDFileToRazor.Components.Services;
+using MDFileToRazor.Components.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,14 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Add FluentUI services
-builder.Services.AddFluentUIComponents();
+// Add MDFileToRazor services with custom configuration
+builder.Services.AddMdFileToRazorServices(options =>
+{
+    options.SourceDirectory = "content"; // Custom source directory
+    options.OutputDirectory = "Pages/Generated"; // Custom output directory
+    options.BaseRoutePath = "/docs"; // Optional base route path
+    options.DefaultLayout = "MainLayout"; // Default layout for generated pages
+});
 
-// Add HttpClient for StaticAssetService
-builder.Services.AddHttpClient();
-
-// Register StaticAssetService
-builder.Services.AddScoped<IStaticAssetService, StaticAssetService>();
+// Alternative simple configurations:
+// builder.Services.AddMdFileToRazorServices(); // Use defaults
+// builder.Services.AddMdFileToRazorServices("content"); // Custom source only
+// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto"); // Custom source & output
 
 var app = builder.Build();
 

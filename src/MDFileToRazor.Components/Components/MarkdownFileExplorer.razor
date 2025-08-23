@@ -1,0 +1,99 @@
+@using MDFileToRazor.Components.Services
+@inject IMdFileDiscoveryService MdFileDiscovery
+@inject IStaticAssetService StaticAssets
+
+<div class="markdown-file-explorer">
+    <h3>Discovered Markdown Files</h3>
+
+    @if (markdownFiles == null)
+    {
+        <p>Loading...</p>
+    }
+    else if (!markdownFiles.Any())
+    {
+        <p>No markdown files found in: <code>@MdFileDiscovery.GetSourceDirectory()</code></p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var file in markdownFiles)
+            {
+                <li>
+                    <button @onclick="() => LoadFile(file)" class="file-link @(selectedFile == file ? "selected" : "")">
+                        @Path.GetRelativePath(MdFileDiscovery.GetSourceDirectory(), file)
+                    </button>
+                </li>
+            }
+        </ul>
+    }
+
+    @if (!string.IsNullOrEmpty(selectedFileContent))
+    {
+        <div class="file-preview">
+            <h4>Preview: @(selectedFile != null ? Path.GetFileName(selectedFile) : "")</h4>
+            <MarkdownSection Content="@selectedFileContent" />
+        </div>
+    }
+</div>
+
+@code
+{
+    private IEnumerable<string>? markdownFiles;
+    private string? selectedFile;
+    private string? selectedFileContent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        markdownFiles = await MdFileDiscovery.DiscoverMarkdownFilesAsync();
+    }
+
+    private async Task LoadFile(string filePath)
+    {
+        selectedFile = filePath;
+        var relativePath = Path.GetRelativePath(MdFileDiscovery.GetSourceDirectory(), filePath);
+        selectedFileContent = await StaticAssets.GetMarkdownAsync(relativePath);
+    }
+}
+
+<style>
+    .markdown-file-explorer {
+        border: 1px solid var(--neutral-stroke-rest);
+        border-radius: 6px;
+        padding: 16px;
+        margin: 16px 0;
+    }
+
+    .file-link {
+        background: none;
+        border: none;
+        color: var(--accent-foreground-rest);
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 4px 0;
+        font-family: inherit;
+    }
+
+    .file-link:hover {
+        color: var(--accent-foreground-hover);
+    }
+
+    .file-link.selected {
+        font-weight: bold;
+        color: var(--accent-fill-rest);
+    }
+
+    .file-preview {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--neutral-stroke-rest);
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    li {
+        margin: 4px 0;
+    }
+</style>

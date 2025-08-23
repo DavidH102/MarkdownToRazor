@@ -38,15 +38,25 @@ dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.co
 **Program.cs:**
 
 ```csharp
-using MDFileToRazor.Components.Services;
+using MDFileToRazor.Components.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Add MDFileToRazor services
-builder.Services.AddHttpClient();
-builder.Services.AddScoped<StaticAssetService>();
+// Add MDFileToRazor services with custom configuration
+builder.Services.AddMdFileToRazorServices(options =>
+{
+    options.SourceDirectory = "content"; // Custom source directory
+    options.OutputDirectory = "Pages/Generated"; // Custom output directory
+    options.BaseRoutePath = "/docs"; // Optional base route path
+    options.DefaultLayout = "MainLayout"; // Default layout for generated pages
+});
+
+// Alternative configurations:
+// builder.Services.AddMdFileToRazorServices(); // Use defaults
+// builder.Services.AddMdFileToRazorServices("content"); // Custom source only
+// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto"); // Custom source & output
 
 var app = builder.Build();
 // ... rest of configuration
@@ -57,8 +67,12 @@ var app = builder.Build();
 ````razor
 @page "/docs"
 @using MDFileToRazor.Components
+@inject IMdFileDiscoveryService MdFileDiscovery
 
 <MarkdownSection Content="@markdownContent" />
+
+<!-- Optional: Display discovered files -->
+<MarkdownFileExplorer />
 
 @code {
     private string markdownContent = @"
@@ -66,7 +80,7 @@ var app = builder.Build();
 
 This is **bold text** and this is *italic text*.
 
-```csharp
+```cs
 public class Example
 {
     public string Name { get; set; } = ""Hello World"";
@@ -133,6 +147,209 @@ We build amazing software...
 ```
 
 **Result:** Automatic `/about` route with your markdown content as a Blazor page!
+
+## 📁 How Markdown File Discovery Works
+
+MDFileToRazor follows convention-over-configuration principles to automatically discover and process your markdown files:
+
+### 🎯 **Convention-Based Discovery**
+
+**Default Behavior:**
+
+- **Source Directory**: `MDFilesToConvert/` (relative to your project root)
+- **Output Directory**: `Pages/Generated/` (relative to your project root)
+- **File Pattern**: All `*.md` files are discovered recursively
+
+**Directory Structure Example:**
+
+```text
+YourProject/
+├── MDFilesToConvert/           ← Source markdown files
+│   ├── about.md               ← Becomes /about route
+│   ├── docs/
+│   │   ├── getting-started.md ← Becomes /docs/getting-started route
+│   │   └── api-reference.md   ← Becomes /docs/api-reference route
+│   └── blog/
+│       └── 2024/
+│           └── news.md        ← Becomes /blog/2024/news route
+├── Pages/
+│   └── Generated/             ← Auto-generated Razor pages
+│       ├── About.razor        ← Generated from about.md
+│       ├── DocsGettingStarted.razor
+│       ├── DocsApiReference.razor
+│       └── Blog2024News.razor
+└── YourProject.csproj
+```
+
+### ⚙️ **Configuration Options**
+
+**1. Using Service Registration (Recommended):**
+
+```csharp
+// Program.cs
+using MDFileToRazor.Components.Extensions;
+
+builder.Services.AddMdFileToRazorServices(options =>
+{
+    options.SourceDirectory = "content";          // Where to find .md files
+    options.OutputDirectory = "Pages/Generated";  // Where to generate .razor files
+    options.FilePattern = "*.md";                 // File pattern to search for
+    options.SearchRecursively = true;             // Search subdirectories
+    options.BaseRoutePath = "/docs";               // Optional route prefix
+    options.DefaultLayout = "MainLayout";         // Default layout component
+    options.EnableHtmlCommentConfiguration = true; // Enable HTML comment config
+    options.EnableYamlFrontmatter = true;         // Enable YAML frontmatter
+});
+```
+
+**2. Using MSBuild Properties:**
+
+```xml
+<PropertyGroup>
+  <!-- Customize source directory -->
+  <MarkdownSourceDirectory>$(MSBuildProjectDirectory)\docs</MarkdownSourceDirectory>
+
+  <!-- Customize output directory -->
+  <GeneratedPagesDirectory>$(MSBuildProjectDirectory)\Pages\Auto</GeneratedPagesDirectory>
+</PropertyGroup>
+```
+
+**3. Simple Service Registration:**
+
+```csharp
+// Use defaults (MDFilesToConvert → Pages/Generated)
+builder.Services.AddMdFileToRazorServices();
+
+// Custom source directory only
+builder.Services.AddMdFileToRazorServices("content");
+
+// Custom source and output directories
+builder.Services.AddMdFileToRazorServices("content", "Pages/Auto");
+```
+
+### 🗂️ **Runtime File Discovery**
+
+When using service registration, you can discover and work with markdown files at runtime:
+
+```csharp
+@inject IMdFileDiscoveryService FileDiscovery
+
+@code {
+    private List<string> markdownFiles = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        markdownFiles = await FileDiscovery.DiscoverMarkdownFiles();
+    }
+}
+```
+
+#### Example: Dynamic Content Browser
+
+```razor
+<!-- Components/MarkdownBrowser.razor -->
+<FluentSelect Items="@markdownFiles" @bind-SelectedOption="@selectedFile">
+    <OptionTemplate>@context</OptionTemplate>
+</FluentSelect>
+
+@if (!string.IsNullOrEmpty(selectedFile))
+{
+    <MarkdownSection FilePath="@selectedFile" />
+}
+```
+
+**Available Services:**
+
+- `IMdFileDiscoveryService` - Discover markdown files based on configuration
+- `IStaticAssetService` - Load markdown content from configured directories
+- `MdFileToRazorOptions` - Access current configuration settings
+
+**2. Using MSBuild Package (Zero Configuration):**
+
+```bash
+dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json
+```
+
+> **✨ Zero Config**: The MSBuild package automatically uses conventions and runs during build!
+
+**3. Manual Tool Execution:**
+
+```bash
+dotnet run --project MDFileToRazor.CodeGeneration -- "source-dir" "output-dir"
+```
+
+### 🔄 **Processing Behavior**
+
+**What Gets Processed:**
+
+- ✅ All `.md` files in source directory (recursive)
+- ✅ Files with YAML frontmatter configuration
+- ✅ Files with HTML comment configuration (new!)
+- ✅ Plain markdown files (use filename for route)
+
+**What Gets Generated:**
+
+- 🎯 **Razor Pages**: One `.razor` file per markdown file
+- 🔗 **Automatic Routing**: Based on file path or `@page` directive
+- 🏷️ **Page Metadata**: Title, description, layout from configuration
+- 🎨 **Runtime Rendering**: Uses `MarkdownSection` component for content
+
+**Route Generation Examples:**
+
+```text
+Source File                    →  Generated Route
+about.md                      →  /about
+docs/getting-started.md       →  /docs/getting-started
+blog/2024/my-post.md         →  /blog/2024/my-post
+
+With @page directive:
+docs/quick-start.md           →  /quick-start (if @page "/quick-start")
+```
+
+### 🚀 **Best Practices**
+
+**1. Organize by Content Type:**
+
+```text
+MDFilesToConvert/
+├── docs/          ← Documentation pages
+├── blog/          ← Blog posts
+├── guides/        ← User guides
+└── legal/         ← Legal pages (privacy, terms)
+```
+
+**2. Use Meaningful File Names:**
+
+```text
+✅ getting-started.md     → /getting-started
+✅ api-reference.md       → /api-reference
+❌ page1.md              → /page1 (not descriptive)
+```
+
+**3. Include in Version Control:**
+
+```xml
+<!-- Include markdown files in your project -->
+<ItemGroup>
+  <Content Include="MDFilesToConvert\**\*.md">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+```
+
+**4. Configure Build Integration:**
+
+```xml
+<!-- Automatic generation on build -->
+<Target Name="GenerateMarkdownPages" BeforeTargets="Build">
+  <!-- Your generation command -->
+</Target>
+
+<!-- Clean generated files -->
+<Target Name="CleanGeneratedPages" BeforeTargets="Clean">
+  <RemoveDir Directories="$(GeneratedPagesDirectory)" />
+</Target>
+```
 
 ## ✨ Features
 

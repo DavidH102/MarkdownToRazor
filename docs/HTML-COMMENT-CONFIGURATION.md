@@ -112,6 +112,7 @@ Result:
 To migrate existing pages from YAML frontmatter to HTML comments:
 
 ### Before (YAML):
+
 ```markdown
 ---
 route: /example
@@ -123,10 +124,12 @@ tags: [example, demo]
 ---
 
 # Example Page
+
 Content here...
 ```
 
 ### After (HTML Comments):
+
 ```markdown
 <!-- This is configuration data -->
 <!-- @page "/example" -->
@@ -137,22 +140,26 @@ Content here...
 <!-- tags: example, demo -->
 
 # Example Page
+
 Content here...
 ```
 
 ## Examples
 
 ### Simple Page
+
 ```markdown
 <!-- This is configuration data -->
 <!-- @page "/about" -->
 <!-- title: About Us -->
 
 # About Us
+
 Welcome to our company...
 ```
 
 ### Complex Page with Parameters
+
 ```markdown
 <!-- This is configuration data -->
 <!-- @page "/products/{category}/{id:int}" -->
@@ -162,10 +169,12 @@ Welcome to our company...
 <!-- tags: products, catalog, shopping -->
 
 # Product Details
+
 [Content would be here...]
 ```
 
 ### Blog Post
+
 ```markdown
 <!-- This is configuration data -->
 <!-- @page "/blog/2024/new-features" -->
@@ -176,6 +185,7 @@ Welcome to our company...
 <!-- tags: blog, features, release -->
 
 # New Features in Version 2.0
+
 Today we're excited to announce...
 ```
 
@@ -191,16 +201,19 @@ Today we're excited to announce...
 ## Troubleshooting
 
 ### Configuration Not Being Parsed
+
 - Ensure `<!-- This is configuration data -->` is the very first line
 - Check that there's no whitespace or other content before the configuration marker
 - Verify that each configuration property is in its own HTML comment
 
 ### Route Not Working
+
 - Make sure the `@page` directive includes the forward slash: `<!-- @page "/route" -->`
 - Check for valid route syntax according to ASP.NET Core routing rules
 - Ensure route parameters use correct syntax: `{parameter}` or `{parameter:type}`
 
 ### Mixed Configuration Issues
+
 - HTML comment configuration overrides YAML frontmatter properties
 - Both configurations are merged, with HTML comments taking precedence
 - If you have both, ensure they don't conflict in unexpected ways
