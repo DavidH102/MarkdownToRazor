@@ -13,8 +13,8 @@
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 
         <!-- Version management -->
-        <AssemblyVersion>$(Version)</AssemblyVersion>
-        <FileVersion>$(Version)</FileVersion>
+        <AssemblyVersion>$(AssemblyVersion)</AssemblyVersion>
+        <FileVersion>$(FileVersion)</FileVersion>
         <PackageVersion>$(Version)</PackageVersion>
 
         <!-- Build configuration -->
