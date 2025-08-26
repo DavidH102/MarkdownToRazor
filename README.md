@@ -12,6 +12,7 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 
 - 📝 **Runtime Rendering**: Display markdown content dynamically in your Blazor components
 - 🏗️ **Build-Time Generation**: Automatically convert markdown files to Razor pages during compilation
+- 🧭 **Dynamic UI Generation**: Build navigation menus and content browsers with page discovery service
 - 🎨 **Beautiful Styling**: Integrated with Microsoft FluentUI design system
 - 💡 **Syntax Highlighting**: Code blocks with highlight.js integration and copy-to-clipboard functionality
 - 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter or HTML comment configuration support
@@ -262,7 +263,136 @@ When using service registration, you can discover and work with markdown files a
 
 - `IMdFileDiscoveryService` - Discover markdown files based on configuration
 - `IStaticAssetService` - Load markdown content from configured directories
+- `IGeneratedPageDiscoveryService` - Discover generated Razor pages with routes and metadata (new!)
 - `MdFileToRazorOptions` - Access current configuration settings
+
+### 🧭 **Dynamic UI Generation with Page Discovery**
+
+_New in v1.3.0!_ The `IGeneratedPageDiscoveryService` allows you to build dynamic navigation and UI components by discovering all generated Razor pages with their routes and metadata.
+
+**Perfect for:**
+
+- 📋 Dynamic navigation menus
+- 🔍 Site maps and content indexes
+- 📊 Content management dashboards
+- 🏷️ Tag-based content filtering
+
+#### Basic Usage
+
+```csharp
+@inject IGeneratedPageDiscoveryService PageDiscovery
+
+@code {
+    private List<GeneratedPageInfo> pages = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        pages = (await PageDiscovery.DiscoverGeneratedPagesAsync()).ToList();
+    }
+}
+```
+
+#### Dynamic Navigation Component
+
+```razor
+<!-- Components/DynamicNavigation.razor -->
+@inject IGeneratedPageDiscoveryService PageDiscovery
+
+<FluentNavMenu>
+    @foreach (var page in pages.Where(p => p.ShowTitle))
+    {
+        <FluentNavLink Href="@page.Route">
+            @page.Title
+        </FluentNavLink>
+    }
+</FluentNavMenu>
+
+@code {
+    private List<GeneratedPageInfo> pages = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        pages = (await PageDiscovery.DiscoverGeneratedPagesAsync()).ToList();
+    }
+}
+```
+
+#### Tag-Based Content Browser
+
+```razor
+<!-- Components/ContentBrowser.razor -->
+@inject IGeneratedPageDiscoveryService PageDiscovery
+
+<FluentSelect Items="@allTags" @bind-SelectedOption="@selectedTag">
+    <OptionTemplate>@context</OptionTemplate>
+</FluentSelect>
+
+@if (!string.IsNullOrEmpty(selectedTag))
+{
+    <div class="content-grid">
+        @foreach (var page in filteredPages)
+        {
+            <FluentCard>
+                <FluentAnchor Href="@page.Route">@page.Title</FluentAnchor>
+                <p>@page.Description</p>
+                <div class="tags">
+                    @foreach (var tag in page.Tags)
+                    {
+                        <FluentBadge>@tag</FluentBadge>
+                    }
+                </div>
+            </FluentCard>
+        }
+    </div>
+}
+
+@code {
+    private List<GeneratedPageInfo> allPages = new();
+    private List<string> allTags = new();
+    private string selectedTag = "";
+    private List<GeneratedPageInfo> filteredPages = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        allPages = (await PageDiscovery.DiscoverGeneratedPagesAsync()).ToList();
+        allTags = allPages.SelectMany(p => p.Tags).Distinct().OrderBy(t => t).ToList();
+    }
+
+    private void OnTagSelected()
+    {
+        filteredPages = allPages.Where(p => p.Tags.Contains(selectedTag)).ToList();
+    }
+}
+```
+
+#### GeneratedPageInfo Properties
+
+```csharp
+public class GeneratedPageInfo
+{
+    public string Route { get; set; }           // Page route (e.g., "/docs/getting-started")
+    public string Title { get; set; }           // Page title from frontmatter or filename
+    public string? Description { get; set; }    // Meta description
+    public string[] Tags { get; set; }          // Tags for categorization
+    public bool ShowTitle { get; set; }         // Whether to display title
+    public string? Layout { get; set; }         // Layout component name
+    public string FilePath { get; set; }        // Original markdown file path
+}
+```
+
+#### Advanced Filtering
+
+```csharp
+// Filter by tag
+var docPages = await PageDiscovery.DiscoverGeneratedPagesAsync("documentation");
+
+// Get all pages
+var allPages = await PageDiscovery.DiscoverGeneratedPagesAsync();
+
+// Filter programmatically
+var blogPosts = allPages.Where(p => p.Route.StartsWith("/blog/"));
+var recentPosts = allPages.Where(p => p.Tags.Contains("recent"));
+```
 
 **2. Using MSBuild Package (Zero Configuration):**
 

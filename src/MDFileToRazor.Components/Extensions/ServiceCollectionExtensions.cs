@@ -48,6 +48,7 @@ public static class ServiceCollectionExtensions
         // Register MDFileToRazor services
         services.TryAddScoped<IStaticAssetService, StaticAssetService>();
         services.TryAddScoped<IMdFileDiscoveryService, MdFileDiscoveryService>();
+        services.TryAddScoped<IGeneratedPageDiscoveryService, GeneratedPageDiscoveryService>();
 
         return services;
     }
