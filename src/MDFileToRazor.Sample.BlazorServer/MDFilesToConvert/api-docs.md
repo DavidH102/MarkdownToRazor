@@ -105,7 +105,7 @@ curl -X POST https://localhost:7064/api/pages/generate \
 ### C# SDK
 
 ```csharp
-using MDFIleTORazor.Client;
+using MarkdownToRazor.Client;
 
 var client = new MarkdownApiClient("https://localhost:7064");
 client.SetAuthToken("your-jwt-token");
@@ -123,7 +123,7 @@ Console.WriteLine(result.Html);
 ### JavaScript SDK
 
 ```javascript
-import { MarkdownClient } from "@mdfiletorazor/js-sdk";
+import { MarkdownClient } from "@markdowntorazor/js-sdk";
 
 const client = new MarkdownClient({
   baseUrl: "https://localhost:7064",

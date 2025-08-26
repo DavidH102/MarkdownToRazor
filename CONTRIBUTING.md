@@ -1,4 +1,4 @@
-# Contributing to MDFileToRazor
+# Contributing to MarkdownToRazor
 
 ## Development Setup
 
@@ -11,16 +11,16 @@
 
 ```bash
 git clone <repository-url>
-cd MDFileToRazor
+cd MarkdownToRazor
 dotnet restore
 dotnet build
 ```
 
 ### Project Structure
 
-- `src/MDFileToRazor.Components/` - Runtime Blazor components
-- `src/MDFileToRazor.CodeGeneration/` - Build-time code generation
-- `src/MDFileToRazor.MSBuild/` - MSBuild integration
+- `src/MarkdownToRazor.Components/` - Runtime Blazor components
+- `src/MarkdownToRazor.CodeGeneration/` - Build-time code generation
+- `src/MarkdownToRazor.MSBuild/` - MSBuild integration
 - `samples/` - Example applications
 - `tests/` - Unit and integration tests
 - `docs/` - Documentation
@@ -36,7 +36,7 @@ dotnet test
 Test the sample application:
 
 ```bash
-cd samples/MDFileToRazor.Sample.BlazorServer
+cd samples/MarkdownToRazor.Sample.BlazorServer
 dotnet run
 ```
 
@@ -53,9 +53,9 @@ dotnet run
 To create NuGet packages locally:
 
 ```bash
-dotnet pack src/MDFileToRazor.Components -c Release -o nupkg
-dotnet pack src/MDFileToRazor.CodeGeneration -c Release -o nupkg
-dotnet pack src/MDFileToRazor.MSBuild -c Release -o nupkg
+dotnet pack src/MarkdownToRazor.Components -c Release -o nupkg
+dotnet pack src/MarkdownToRazor.CodeGeneration -c Release -o nupkg
+dotnet pack src/MarkdownToRazor.MSBuild -c Release -o nupkg
 ```
 
 ### Pull Request Process

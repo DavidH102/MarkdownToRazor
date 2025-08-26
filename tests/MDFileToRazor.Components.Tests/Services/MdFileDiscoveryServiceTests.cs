@@ -4,7 +4,7 @@ using Moq;
 using MarkdownToRazor.Configuration;
 using MarkdownToRazor.Services;
 
-namespace MDFileToRazor.Components.Tests.Services;
+namespace MarkdownToRazor.Tests.Services;
 
 public class MdFileDiscoveryServiceTests : IDisposable
 {

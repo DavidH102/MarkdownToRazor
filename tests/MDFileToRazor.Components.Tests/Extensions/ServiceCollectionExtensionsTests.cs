@@ -6,7 +6,7 @@ using MarkdownToRazor.Configuration;
 using MarkdownToRazor.Extensions;
 using MarkdownToRazor.Services;
 
-namespace MDFileToRazor.Components.Tests.Extensions;
+namespace MarkdownToRazor.Tests.Extensions;
 
 public class ServiceCollectionExtensionsTests
 {

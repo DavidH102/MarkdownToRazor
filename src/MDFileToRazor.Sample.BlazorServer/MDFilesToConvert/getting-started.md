@@ -56,7 +56,7 @@ Generated pages follow this template structure:
 
 ```csharp
 @page "/your-route"
-@using MDFIleTORazor.Components
+@using MarkdownToRazor.Components
 
 <PageTitle>Your Title</PageTitle>
 

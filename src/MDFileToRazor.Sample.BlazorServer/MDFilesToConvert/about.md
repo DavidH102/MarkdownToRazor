@@ -17,7 +17,7 @@ Here's an example of how our MarkdownSection component works:
 
 ```csharp
 @page "/about"
-@using MDFIleTORazor.Components
+@using MarkdownToRazor.Components
 
 <MarkdownSection FromAsset="about.md" />
 ```

@@ -6,7 +6,7 @@ using MarkdownToRazor.Configuration;
 using MarkdownToRazor.Extensions;
 using MarkdownToRazor.Services;
 
-namespace MDFileToRazor.Components.Tests.Extensions;
+namespace MarkdownToRazor.Tests.Extensions;
 
 public class PathHandlingTests
 {
@@ -58,7 +58,7 @@ public class PathHandlingTests
         // Arrange
         var services = new ServiceCollection();
         var mockHostEnvironment = new Mock<IHostEnvironment>();
-        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns("H:\\MDFIleTORazor");
+        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns("H:\\MarkdownToRazor");
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test absolute path (note: the implementation uses Path.Combine which might not handle this correctly)
@@ -68,7 +68,7 @@ public class PathHandlingTests
         // Assert
         var mdFileService = serviceProvider.GetRequiredService<IMdFileDiscoveryService>();
         var sourceDir = mdFileService.GetSourceDirectory();
-        // This will actually combine paths incorrectly: H:\MDFIleTORazor\H:\SomeOtherLocation\MDFiles
+        // This will actually combine paths incorrectly: H:\MarkdownToRazor\H:\SomeOtherLocation\MDFiles
         Assert.Contains("H:\\SomeOtherLocation\\MDFiles", sourceDir);
     }
 

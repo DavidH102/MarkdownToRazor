@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Add MDFileToRazor services for runtime markdown rendering
+// Add MarkdownToRazor services for runtime markdown rendering
 builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content"; // Where your markdown files are located

@@ -2,7 +2,7 @@
 
 ## Overview
 
-As of version 1.0.X, both `OutputDirectory` and `DefaultLayout` properties in `MdFileToRazorOptions` have been simplified to better reflect the dual-purpose architecture of MDFileToRazor.
+As of version 1.0.X, both `OutputDirectory` and `DefaultLayout` properties in `MarkdownToRazorOptions` have been simplified to better reflect the dual-purpose architecture of MarkdownToRazor.
 
 ## Understanding the Two Architecture Patterns
 
@@ -45,7 +45,7 @@ The `DefaultLayout` property was completely unused and redundant because:
 
 ```csharp
 // This was confusing - OutputDirectory implied runtime generation
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content";
     options.OutputDirectory = "Pages/Generated"; // Misleading - services don't generate files
@@ -58,7 +58,7 @@ builder.Services.AddMdFileToRazorServices(options =>
 
 ```csharp
 // Build-time scenarios: Service registration for dynamic navigation
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content"; // Where markdown files are located
     options.BaseRoutePath = "/docs"; // Route prefix for generated pages
@@ -67,7 +67,7 @@ builder.Services.AddMdFileToRazorServices(options =>
 });
 
 // Runtime scenarios: Service registration for dynamic rendering
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content"; // Where markdown files are located
     // No OutputDirectory - files are rendered dynamically
@@ -84,7 +84,7 @@ builder.Services.AddMdFileToRazorServices(options =>
 ```csharp
 // 1. Generate files during build (MSBuild target or manual)
 // 2. Register services for dynamic navigation
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content";
     options.BaseRoutePath = "/docs";
@@ -104,7 +104,7 @@ builder.Services.AddMdFileToRazorServices(options =>
 ### ✅ Runtime Rendering Only (Advanced)
 
 **Dynamic markdown rendering without generated pages:**
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
 options.SourceDirectory = "content";
 options.OutputDirectory = "Pages/Generated"; // Required for build-time generation
@@ -152,7 +152,7 @@ options.BaseRoutePath = "/docs";
 
 ```csharp
 // Remove both OutputDirectory and DefaultLayout from your configuration
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "your-source-path";
     // options.OutputDirectory = "Pages/Generated"; // ← Remove this line
@@ -165,7 +165,7 @@ builder.Services.AddMdFileToRazorServices(options =>
 
 ```csharp
 // Keep OutputDirectory but remove DefaultLayout
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "your-source-path";
     options.OutputDirectory = "Pages/Generated"; // ← Keep this for build-time scenarios
@@ -176,10 +176,10 @@ builder.Services.AddMdFileToRazorServices(options =>
 
 ## Files Modified
 
-- `src/MDFileToRazor.Components/Configuration/MdFileToRazorOptions.cs` - Removed DefaultLayout property
-- `src/MDFileToRazor.Components/Services/IMdFileDiscoveryService.cs` - Made OutputDirectory nullable
-- `src/MDFileToRazor.Components/Services/MdFileDiscoveryService.cs` - Updated OutputDirectory handling
-- `src/MDFileToRazor.Sample.BlazorServer/Program.cs` - Removed DefaultLayout from configuration
+- `src/MarkdownToRazor.Components/Configuration/MarkdownToRazorOptions.cs` - Removed DefaultLayout property
+- `src/MarkdownToRazor.Components/Services/IMdFileDiscoveryService.cs` - Made OutputDirectory nullable
+- `src/MarkdownToRazor.Components/Services/MdFileDiscoveryService.cs` - Updated OutputDirectory handling
+- `src/MarkdownToRazor.Sample.BlazorServer/Program.cs` - Removed DefaultLayout from configuration
 - `docs/USAGE.md` - Updated examples to remove DefaultLayout
 - `README.md` - Updated configuration examples
 - `.github/copilot-instructions.md` - Updated architectural documentation

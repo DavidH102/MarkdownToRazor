@@ -35,7 +35,7 @@
 
         <!-- Run the code generator -->
         <Exec
-            Command="dotnet run --project ../MDFileToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;"
+            Command="dotnet run --project ../MarkdownToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;"
             ContinueOnError="false"
             WorkingDirectory="$(MSBuildProjectDirectory)" />
 

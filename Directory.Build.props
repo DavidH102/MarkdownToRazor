@@ -2,10 +2,10 @@
 
     <PropertyGroup>
         <!-- Common package metadata -->
-        <Product>MDFileToRazor</Product>
-        <Authors>MDFileToRazor Team</Authors>
-        <Company>MDFileToRazor</Company>
-        <Copyright>Copyright © 2025 MDFileToRazor Team</Copyright>
+        <Product>MarkdownToRazor</Product>
+        <Authors>MarkdownToRazor Team</Authors>
+        <Company>MarkdownToRazor</Company>
+        <Copyright>Copyright © 2025 MarkdownToRazor Team</Copyright>
         <PackageProjectUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</PackageProjectUrl>
         <RepositoryUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</RepositoryUrl>
         <RepositoryType>git</RepositoryType>

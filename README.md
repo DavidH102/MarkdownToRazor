@@ -27,14 +27,14 @@ MarkdownToRazor is a powerful .NET library that bridges the gap between Markdown
 
 **Package Consolidation**:
 
-- **Old**: 3 separate packages (`MDFileToRazor.Components`, `MDFileToRazor.CodeGeneration`, `MarkdownToRazor`)
+- **Old**: 3 separate packages (`MDFileToRazor.Components`, `MDFileToRazor.CodeGeneration`, `MDFileToRazor.MSBuild`)
 - **New**: Single `MarkdownToRazor` package with everything included!
 
 **Modernized Naming**:
 
 - **Package**: `MDFileToRazor` → `MarkdownToRazor`
 - **Namespaces**: `MDFileToRazor.*` → `MarkdownToRazor.*`
-- **Services**: `AddMarkdownToRazorServices()` → `AddMarkdownToRazorServices()`
+- **Services**: `AddMdFileToRazorServices()` → `AddMarkdownToRazorServices()`
 
 **Framework Support**:
 
@@ -156,7 +156,7 @@ dotnet add package MarkdownToRazor
 </PropertyGroup>
 
 <Target Name="GenerateMarkdownPages" BeforeTargets="Build">
-  <Exec Command="dotnet run --project path/to/MDFileToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;" />
+  <Exec Command="dotnet run --project path/to/MarkdownToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;" />
 </Target>
 ```
 
@@ -297,7 +297,7 @@ We build amazing software...
 </PropertyGroup>
 
 <Target Name="GenerateMarkdownPages" BeforeTargets="Build">
-  <Exec Command="dotnet run --project path/to/MDFileToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;" />
+  <Exec Command="dotnet run --project path/to/MarkdownToRazor.CodeGeneration -- &quot;$(MarkdownSourceDirectory)&quot; &quot;$(GeneratedPagesDirectory)&quot;" />
 </Target>
 ```
 
@@ -364,7 +364,7 @@ builder.Services.AddMarkdownToRazorServices(options =>
 
 ## 📁 How Markdown File Discovery Works
 
-MDFileToRazor follows convention-over-configuration principles to automatically discover and process your markdown files:
+MarkdownToRazor follows convention-over-configuration principles to automatically discover and process your markdown files:
 
 ### 📂 **Flexible Source Directory Configuration**
 
@@ -703,7 +703,7 @@ dotnet add package MarkdownToRazor --source https://nuget.pkg.github.com/DavidH1
 **3. Manual Tool Execution:**
 
 ```bash
-dotnet run --project MDFileToRazor.CodeGeneration -- "source-dir" "output-dir"
+dotnet run --project MarkdownToRazor.CodeGeneration -- "source-dir" "output-dir"
 ```
 
 ### 🔄 **Processing Behavior**
@@ -825,7 +825,7 @@ For complete guides and examples, visit our documentation:
 - [**HTML Comment Configuration**](docs/HTML-COMMENT-CONFIGURATION.md) - Alternative to YAML frontmatter using HTML comments
 - [**API Reference**](docs/api-reference.md) - Complete component documentation
 - [**Examples**](examples/) - Real-world usage patterns and recipes
-- [**Sample Applications**](src/MDFileToRazor.Sample.BlazorServer/) - Working demo projects
+- [**Sample Applications**](src/MarkdownToRazor.Sample.BlazorServer/) - Working demo projects
 
 ## 🤝 Contributing
 

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "MDFileToRazor.Sample.BlazorServer": {
+    "MarkdownToRazor.Sample.BlazorServer": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
