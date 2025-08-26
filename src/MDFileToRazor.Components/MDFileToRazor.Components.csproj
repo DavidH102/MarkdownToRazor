@@ -7,10 +7,12 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageId>MDFileToRazor.Components</PackageId>
     <Title>MDFileToRazor Components</Title>
-    <Description>Blazor components for runtime markdown rendering with syntax highlighting, FluentUI styling, and programmatic page discovery service (NEW in v1.1.0)</Description>
+    <Description>Blazor components for runtime markdown rendering with syntax highlighting, FluentUI
+      styling, and programmatic page discovery service (NEW in v1.1.0)</Description>
     <Authors>MDFileToRazor Team</Authors>
     <Company>MDFileToRazor</Company>
-    <PackageTags>blazor,markdown,razor,components,fluentui,syntax-highlighting,page-discovery,navigation</PackageTags>
+    <PackageTags>
+      blazor,markdown,razor,components,fluentui,syntax-highlighting,page-discovery,navigation</PackageTags>
     <PackageProjectUrl>https://github.com/DavidH102/MDFileToRazor</PackageProjectUrl>
     <RepositoryUrl>https://github.com/DavidH102/MDFileToRazor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

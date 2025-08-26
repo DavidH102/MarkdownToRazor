@@ -46,7 +46,7 @@ foreach (var page in pages)
 Perfect for building:
 
 - 📋 **Dynamic sitemaps** from your content
-- 🧭 **Automatic navigation menus** that update as you add pages  
+- 🧭 **Automatic navigation menus** that update as you add pages
 - 🏷️ **Tag-based content filtering** and organization
 - 📊 **Content management dashboards** with page metadata
 
