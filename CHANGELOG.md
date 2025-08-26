@@ -48,7 +48,7 @@ To upgrade from v1.x to v2.0:
    <!-- Old -->
    <PackageReference Include="MDFileToRazor.Components" Version="1.x.x" />
    <PackageReference Include="MDFileToRazor.MSBuild" Version="1.x.x" />
-   
+
    <!-- New -->
    <PackageReference Include="MarkdownToRazor" Version="2.0.0" />
    ```
@@ -59,7 +59,7 @@ To upgrade from v1.x to v2.0:
    // Old
    using MDFileToRazor.Components;
    using MDFileToRazor.Services;
-   
+
    // New
    using MarkdownToRazor.Components;
    using MarkdownToRazor.Services;
@@ -70,7 +70,7 @@ To upgrade from v1.x to v2.0:
    ```csharp
    // Old
    builder.Services.AddMdFileToRazorServices(options => { ... });
-   
+
    // New
    builder.Services.AddMarkdownToRazorServices(options => { ... });
    ```
@@ -80,7 +80,7 @@ To upgrade from v1.x to v2.0:
    ```csharp
    // Old
    services.Configure<MdFileToRazorOptions>(options => { ... });
-   
+
    // New
    services.Configure<MarkdownToRazorOptions>(options => { ... });
    ```
