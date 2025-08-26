@@ -1,18 +1,18 @@
-# Using MDFileToRazor NuGet Packages
+# Using MarkdownToRazor NuGet Packages
 
-This guide explains how to install and use the MDFileToRazor NuGet packages from GitHub Packages in your Blazor projects.
+This guide explains how to install and use the MarkdownToRazor NuGet packages from GitHub Packages in your Blazor projects.
 
 ## Overview
 
-MDFileToRazor provides three NuGet packages:
+MarkdownToRazor provides three NuGet packages:
 
-- **`MDFileToRazor.Components`** - Blazor components for runtime markdown rendering
-- **`MDFileToRazor.CodeGeneration`** - Build-time code generation tools
-- **`MDFileToRazor.MSBuild`** - MSBuild integration for automatic code generation
+- **`MarkdownToRazor.Components`** - Blazor components for runtime markdown rendering
+- **`MarkdownToRazor.CodeGeneration`** - Build-time code generation tools
+- **`MarkdownToRazor.MSBuild`** - MSBuild integration for automatic code generation
 
 ## Two Usage Patterns
 
-MDFileToRazor supports two distinct usage patterns:
+MarkdownToRazor supports two distinct usage patterns:
 
 ### 1. Runtime Markdown Rendering (Recommended for most scenarios)
 
@@ -99,7 +99,7 @@ dotnet nuget add source "https://nuget.pkg.github.com/DavidMarsh-NOAA/index.json
 If you only need to render markdown content at runtime:
 
 ```bash
-dotnet add package MDFileToRazor.Components --source github
+dotnet add package MarkdownToRazor.Components --source github
 ```
 
 ### For Build-Time Code Generation
@@ -108,10 +108,10 @@ If you want to convert markdown files to Razor pages during build:
 
 ```bash
 # Add the main components package
-dotnet add package MDFileToRazor.Components --source github
+dotnet add package MarkdownToRazor.Components --source github
 
 # Add the MSBuild integration
-dotnet add package MDFileToRazor.MSBuild --source github
+dotnet add package MarkdownToRazor.MSBuild --source github
 ```
 
 ### Complete Installation (All Features)
@@ -119,9 +119,9 @@ dotnet add package MDFileToRazor.MSBuild --source github
 For full functionality including build-time generation and runtime rendering:
 
 ```bash
-dotnet add package MDFileToRazor.Components --source github
-dotnet add package MDFileToRazor.CodeGeneration --source github
-dotnet add package MDFileToRazor.MSBuild --source github
+dotnet add package MarkdownToRazor.Components --source github
+dotnet add package MarkdownToRazor.CodeGeneration --source github
+dotnet add package MarkdownToRazor.MSBuild --source github
 ```
 
 ## Package Versions
@@ -136,7 +136,7 @@ The packages use semantic versioning with the following patterns:
 To install a specific version:
 
 ```bash
-dotnet add package MDFileToRazor.Components --version 1.0.0-alpha.1 --source github
+dotnet add package MarkdownToRazor.Components --version 1.0.0-alpha.1 --source github
 ```
 
 ## Configuration
@@ -146,7 +146,7 @@ dotnet add package MDFileToRazor.Components --version 1.0.0-alpha.1 --source git
 Add the following to your `Program.cs`:
 
 ```csharp
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor.Components.Services;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -161,9 +161,9 @@ builder.Services.AddFluentUIComponents();
 // Add HttpClient for StaticAssetService
 builder.Services.AddHttpClient();
 
-// Register MDFileToRazor services for RUNTIME markdown rendering
+// Register MarkdownToRazor services for RUNTIME markdown rendering
 // Note: OutputDirectory is NOT needed for runtime-only scenarios
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "MDFilesToConvert"; // Where your .md files are located
     options.BaseRoutePath = "/docs";               // Optional base route path
@@ -172,21 +172,21 @@ builder.Services.AddMdFileToRazorServices(options =>
 });
 
 // Alternative configurations for runtime scenarios:
-// builder.Services.AddMdFileToRazorServices(); // Use defaults (source: "MDFilesToConvert")
+// builder.Services.AddMarkdownToRazorServices(); // Use defaults (source: "MDFilesToConvert")
 
 // Relative paths from project root:
-// builder.Services.AddMdFileToRazorServices("content");
-// builder.Services.AddMdFileToRazorServices("docs/markdown");
-// builder.Services.AddMdFileToRazorServices("../../../SharedDocs"); // Multiple folders up
+// builder.Services.AddMarkdownToRazorServices("content");
+// builder.Services.AddMarkdownToRazorServices("docs/markdown");
+// builder.Services.AddMarkdownToRazorServices("../../../SharedDocs"); // Multiple folders up
 
 // Project root directory:
-// builder.Services.AddMdFileToRazorServices(".");
+// builder.Services.AddMarkdownToRazorServices(".");
 
 // Absolute paths (useful for shared content):
-// builder.Services.AddMdFileToRazorServices(@"C:\SharedDocumentation\ProjectDocs");
+// builder.Services.AddMarkdownToRazorServices(@"C:\SharedDocumentation\ProjectDocs");
 
 // ONLY for build-time code generation (not typical runtime scenarios):
-// builder.Services.AddMdFileToRazorServices(options =>
+// builder.Services.AddMarkdownToRazorServices(options =>
 // {
 //     options.SourceDirectory = "content";
 //     options.OutputDirectory = "Pages/Generated"; // Required for build-time generation
@@ -209,8 +209,8 @@ app.Run();
 Add the following to your `_Imports.razor`:
 
 ```razor
-@using MDFileToRazor.Components
-@using MDFileToRazor.Components.Services
+@using MarkdownToRazor.Components
+@using MarkdownToRazor.Components.Services
 @using Microsoft.FluentUI.AspNetCore.Components
 ```
 
@@ -371,8 +371,8 @@ Update your `.csproj` file:
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MDFileToRazor.Components" Version="1.0.0" />
-    <PackageReference Include="MDFileToRazor.MSBuild" Version="1.0.0" />
+    <PackageReference Include="MarkdownToRazor.Components" Version="1.0.0" />
+    <PackageReference Include="MarkdownToRazor.MSBuild" Version="1.0.0" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.1" />
   </ItemGroup>
 
@@ -537,10 +537,10 @@ Change the highlight.js theme by updating the CSS link:
 ## Sample Project
 
 For a complete working example, see the sample project in the repository:
-[https://github.com/DavidMarsh-NOAA/MDFileToRazor/tree/main/samples](https://github.com/DavidMarsh-NOAA/MDFileToRazor/tree/main/samples)
+[https://github.com/DavidMarsh-NOAA/MarkdownToRazor/tree/main/samples](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/tree/main/samples)
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/DavidMarsh-NOAA/MDFileToRazor/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/DavidMarsh-NOAA/MDFileToRazor/discussions)
-- **Documentation**: [Project Wiki](https://github.com/DavidMarsh-NOAA/MDFileToRazor/wiki)
+- **Issues**: [GitHub Issues](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/discussions)
+- **Documentation**: [Project Wiki](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/wiki)

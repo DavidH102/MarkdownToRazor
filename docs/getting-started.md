@@ -1,4 +1,4 @@
-# Getting Started with MDFileToRazor
+# Getting Started with MarkdownToRazor
 
 ## Quick Start
 
@@ -7,13 +7,13 @@
 For runtime markdown rendering:
 
 ```bash
-dotnet add package MDFileToRazor.Components
+dotnet add package MarkdownToRazor.Components
 ```
 
 For build-time code generation:
 
 ```bash
-dotnet add package MDFileToRazor.MSBuild
+dotnet add package MarkdownToRazor.MSBuild
 ```
 
 ### 2. Configure Your Project
@@ -21,8 +21,8 @@ dotnet add package MDFileToRazor.MSBuild
 Add to your `_Imports.razor`:
 
 ```razor
-@using MDFileToRazor.Components
-@using MDFileToRazor.Components.Services
+@using MarkdownToRazor.Components
+@using MarkdownToRazor.Components.Services
 ```
 
 Register services in `Program.cs`:

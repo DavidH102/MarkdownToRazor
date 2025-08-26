@@ -1,6 +1,6 @@
 # HTML Comment Configuration
 
-Starting with version 1.2.0, MDFileToRazor supports configuration through HTML comments as an alternative to YAML frontmatter. This provides more flexibility for markdown authoring and can be useful when you want to avoid YAML syntax or maintain compatibility with other markdown processors.
+Starting with version 1.2.0, MarkdownToRazor supports configuration through HTML comments as an alternative to YAML frontmatter. This provides more flexibility for markdown authoring and can be useful when you want to avoid YAML syntax or maintain compatibility with other markdown processors.
 
 ## Syntax
 

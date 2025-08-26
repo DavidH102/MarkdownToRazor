@@ -1,13 +1,13 @@
-# MDFileToRazor
+# MarkdownToRazor
 
-[![.NET](https://img.shields.io/badge/.NET-8.0-blue)](https://dotnet.microsoft.com/download/dotnet/8.0)
+[![.NET](https://img.shields.io/badge/.NET-8.0%20%7C%209.0-blue)](https://dotnet.microsoft.com/download/dotnet)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![NuGet](https://img.shields.io/nuget/v/MDFileToRazor.Components?label=NuGet)](https://www.nuget.org/packages/MDFileToRazor.Components)
+[![NuGet](https://img.shields.io/nuget/v/MarkdownToRazor?label=NuGet)](https://www.nuget.org/packages/MarkdownToRazor)
 [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Available-blue)](https://github.com/DavidH102/MDFileToRazor/packages)
 
 **Transform your Markdown files into beautiful Blazor pages with automatic routing and syntax highlighting.**
 
-MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown content and Blazor applications. Whether you're building documentation sites, blogs, or content-driven applications, this library provides everything you need to seamlessly integrate Markdown into your Blazor projects.
+MarkdownToRazor is a powerful .NET library that bridges the gap between Markdown content and Blazor applications. Whether you're building documentation sites, blogs, or content-driven applications, this library provides everything you need to seamlessly integrate Markdown into your Blazor projects.
 
 ## ✨ What Can You Do?
 
@@ -19,11 +19,40 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 - 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter or HTML comment configuration support
 - 📁 **Flexible Content**: Load from files, URLs, or provide inline markdown content
 
-## 🆕 What's New in v1.2.0
+## 🆕 What's New in v2.0.0 - MAJOR RELEASE
 
-✨ **Enhanced Path Handling & File Discovery** - Now supports absolute paths, relative paths with `../..` patterns, and robust cross-platform path resolution!
+🎯 **Single Unified Package** - We've consolidated everything into one powerful package!
 
-### 🛠️ **IMdFileDiscoveryService Enhancement**
+### 🔥 **BREAKING CHANGES - Migration Required**
+
+**Package Consolidation**:
+
+- **Old**: 3 separate packages (`MDFileToRazor.Components`, `MDFileToRazor.CodeGeneration`, `MarkdownToRazor`)
+- **New**: Single `MarkdownToRazor` package with everything included!
+
+**Modernized Naming**:
+
+- **Package**: `MDFileToRazor` → `MarkdownToRazor`
+- **Namespaces**: `MDFileToRazor.*` → `MarkdownToRazor.*`
+- **Services**: `AddMarkdownToRazorServices()` → `AddMarkdownToRazorServices()`
+
+**Framework Support**:
+
+- ✅ Added .NET 9.0 support
+- ✅ Maintained .NET 8.0 support
+- ❌ Removed .NET Standard 2.1 (incompatible with Blazor)
+
+### � **Quick Migration**
+
+```csharp
+// Before v2.0
+builder.Services.AddMarkdownToRazorServices("../content");
+
+// After v2.0
+builder.Services.AddMarkdownToRazorServices("../content");
+```
+
+### 🛠️ **Enhanced Path Handling & File Discovery**
 
 ```csharp
 // Get file-to-route mapping for dynamic navigation
@@ -38,16 +67,16 @@ foreach (var (fileName, route) in fileRoutes)
 
 ```csharp
 // Relative paths from project root
-builder.Services.AddMdFileToRazorServices("content/docs");
+builder.Services.AddMarkdownToRazorServices("content/docs");
 
 // Multiple folders up (perfect for shared content)
-builder.Services.AddMdFileToRazorServices("../../../SharedDocumentation");
+builder.Services.AddMarkdownToRazorServices("../../../SharedDocumentation");
 
 // Absolute paths (cross-project content sharing)
-builder.Services.AddMdFileToRazorServices(@"C:\SharedContent\ProjectDocs");
+builder.Services.AddMarkdownToRazorServices(@"C:\SharedContent\ProjectDocs");
 
 // Project root directory
-builder.Services.AddMdFileToRazorServices(".");
+builder.Services.AddMarkdownToRazorServices(".");
 ```
 
 ### 🧪 **Comprehensive Test Coverage**
@@ -87,13 +116,21 @@ Perfect for building:
 - 🏷️ **Tag-based content filtering** and organization
 - 📊 **Content management dashboards** with page metadata
 
-## 📦 Available Packages
+## 📦 Installation
 
-| Package                          | Purpose                                          | NuGet.org                                         | GitHub Packages                                                                                              |
-| -------------------------------- | ------------------------------------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| **MDFileToRazor.Components**     | Runtime Blazor components for markdown rendering | `dotnet add package MDFileToRazor.Components`     | `dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json`     |
-| **MDFileToRazor.CodeGeneration** | Build-time markdown-to-Razor page generation     | `dotnet add package MDFileToRazor.CodeGeneration` | `dotnet add package MDFileToRazor.CodeGeneration --source https://nuget.pkg.github.com/DavidH102/index.json` |
-| **MDFileToRazor.MSBuild**        | MSBuild integration for automated processing     | `dotnet add package MDFileToRazor.MSBuild`        | `dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json`        |
+**Single package with everything included!**
+
+### NuGet.org (Stable Releases)
+
+```bash
+dotnet add package MarkdownToRazor
+```
+
+### GitHub Packages (Pre-release & Latest)
+
+```bash
+dotnet add package MarkdownToRazor --source https://nuget.pkg.github.com/DavidH102/index.json
+```
 
 ## 🚀 Quick Start
 
@@ -102,11 +139,8 @@ Perfect for building:
 **This is the primary use case** - automatically convert markdown files to routable Blazor pages during build:
 
 ```bash
-# Core library for build-time generation
-dotnet add package MDFileToRazor.Components
-
-# Optional: MSBuild integration for automatic builds
-dotnet add package MDFileToRazor.MSBuild
+# Single package with all features included
+dotnet add package MarkdownToRazor
 ```
 
 **Two approaches for build-time generation:**
@@ -139,14 +173,14 @@ dotnet run -- "../content" "../Pages/Generated"
 Even for build-time scenarios, you often want service registration to build dynamic navigation menus from discovered routes:
 
 ```csharp
-using MDFileToRazor.Components.Extensions;
+using MarkdownToRazor.Components.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 // Register services to enable dynamic UI generation from discovered routes
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content"; // Where your markdown files are located
     options.BaseRoutePath = "/docs"; // Optional route prefix for generated pages
@@ -187,7 +221,7 @@ For displaying dynamic markdown content without generating pages:
 
 ````razor
 @page "/docs"
-@using MDFileToRazor.Components
+@using MarkdownToRazor.Components
 @inject IMdFileDiscoveryService MdFileDiscovery
 
 <MarkdownSection Content="@markdownContent" />
@@ -218,7 +252,7 @@ public class Example
 Automatically convert markdown files to routable Blazor pages:
 
 ```bash
-dotnet add package MDFileToRazor.MSBuild
+dotnet add package MarkdownToRazor
 ````
 
 **Create markdown files with YAML frontmatter:**
@@ -286,7 +320,7 @@ We build amazing software...
 
 ```csharp
 // Service registration enables dynamic navigation, NOT file generation
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content"; // Where markdown files are
     options.BaseRoutePath = "/docs";     // Route prefix for generated pages
@@ -334,21 +368,21 @@ MDFileToRazor follows convention-over-configuration principles to automatically 
 
 ### 📂 **Flexible Source Directory Configuration**
 
-The `AddMdFileToRazorServices` method supports various path configurations:
+The `AddMarkdownToRazorServices` method supports various path configurations:
 
 ```csharp
 // Relative paths from project root
-services.AddMdFileToRazorServices("docs/content");
-services.AddMdFileToRazorServices("../../../SharedDocumentation");
+services.AddMarkdownToRazorServices("docs/content");
+services.AddMarkdownToRazorServices("../../../SharedDocumentation");
 
 // Project root directory
-services.AddMdFileToRazorServices(".");
+services.AddMarkdownToRazorServices(".");
 
 // Absolute paths (useful for shared content across projects)
-services.AddMdFileToRazorServices(@"C:\SharedDocs\ProjectDocs");
+services.AddMarkdownToRazorServices(@"C:\SharedDocs\ProjectDocs");
 
 // Advanced configuration with recursive search
-services.AddMdFileToRazorServices(options => {
+services.AddMarkdownToRazorServices(options => {
     options.SourceDirectory = "content/posts";
     options.SearchRecursively = true; // Finds files in all subdirectories
     options.FilePattern = "*.md";
@@ -390,7 +424,7 @@ YourProject/
 
 ```csharp
 // Program.cs - Service registration for dynamic navigation only
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content";          // Where to find .md files
     options.BaseRoutePath = "/docs";               // Optional route prefix
@@ -404,7 +438,7 @@ builder.Services.AddMdFileToRazorServices(options =>
 
 ```csharp
 // Program.cs - Service registration for file loading and rendering
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content";          // Where to find .md files
     options.FilePattern = "*.md";                 // File pattern to search for
@@ -431,10 +465,10 @@ builder.Services.AddMdFileToRazorServices(options =>
 
 ```csharp
 // Use defaults for navigation discovery
-builder.Services.AddMdFileToRazorServices();
+builder.Services.AddMarkdownToRazorServices();
 
 // Custom source directory only
-builder.Services.AddMdFileToRazorServices("content");
+builder.Services.AddMarkdownToRazorServices("content");
 ```
 
 ### 🧭 **Dynamic Navigation Discovery**
@@ -520,7 +554,7 @@ var markdownFiles = await FileDiscovery.DiscoverMarkdownFilesAsync();
 - `IMdFileDiscoveryService` - Discover markdown files based on configuration
 - `IStaticAssetService` - Load markdown content from configured directories
 - `IGeneratedPageDiscoveryService` - Discover generated Razor pages with routes and metadata (new!)
-- `MdFileToRazorOptions` - Access current configuration settings
+- `MarkdownToRazorOptions` - Access current configuration settings
 
 ### 🧭 **Dynamic UI Generation with Page Discovery**
 
@@ -661,7 +695,7 @@ var recentPosts = allPages.Where(p => p.Tags.Contains("recent"));
 **2. Using MSBuild Package (Zero Configuration):**
 
 ```bash
-dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json
+dotnet add package MarkdownToRazor --source https://nuget.pkg.github.com/DavidH102/index.json
 ```
 
 > **✨ Zero Config**: The MSBuild package automatically uses conventions and runs during build!

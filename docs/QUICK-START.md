@@ -1,12 +1,12 @@
 # Quick Start Guide
 
-Get up and running with MDFileToRazor in 5 minutes.
+Get up and running with MarkdownToRazor in 5 minutes.
 
 ## Prerequisites
 
 - .NET 8.0 or later
 - A Blazor Server or WebAssembly project
-- GitHub account with access to DavidMarsh-NOAA/MDFileToRazor repository
+- GitHub account with access to DavidMarsh-NOAA/MarkdownToRazor repository
 
 ## Step 1: Authentication
 
@@ -43,11 +43,11 @@ Replace `YOUR_GITHUB_USERNAME` and `YOUR_GITHUB_TOKEN` with your values.
 
 ```bash
 # For runtime markdown rendering only
-dotnet add package MDFileToRazor.Components --source github
+dotnet add package MarkdownToRazor.Components --source github
 
 # For build-time code generation (recommended)
-dotnet add package MDFileToRazor.Components --source github
-dotnet add package MDFileToRazor.MSBuild --source github
+dotnet add package MarkdownToRazor.Components --source github
+dotnet add package MarkdownToRazor.MSBuild --source github
 ```
 
 ## Step 4: Configure Services
@@ -55,7 +55,7 @@ dotnet add package MDFileToRazor.MSBuild --source github
 Update your `Program.cs`:
 
 ```csharp
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor.Components.Services;
 using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,8 +81,8 @@ app.Run();
 Update `_Imports.razor`:
 
 ```razor
-@using MDFileToRazor.Components
-@using MDFileToRazor.Components.Services
+@using MarkdownToRazor.Components
+@using MarkdownToRazor.Components.Services
 @using Microsoft.FluentUI.AspNetCore.Components
 ```
 
@@ -180,4 +180,4 @@ Visit your routes to see the markdown content rendered with FluentUI styling and
 
 - [Usage Guide](USAGE.md) - Complete documentation
 - [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
-- [GitHub Issues](https://github.com/DavidMarsh-NOAA/MDFileToRazor/issues) - Report bugs or request features
+- [GitHub Issues](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/issues) - Report bugs or request features

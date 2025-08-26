@@ -1,6 +1,6 @@
-# MDFileToRazor Documentation
+# MarkdownToRazor Documentation
 
-This directory contains comprehensive documentation for using the MDFileToRazor NuGet packages.
+This directory contains comprehensive documentation for using the MarkdownToRazor NuGet packages.
 
 ## Documentation Files
 
@@ -10,7 +10,7 @@ This directory contains comprehensive documentation for using the MDFileToRazor 
 
 ## Getting Started
 
-New to MDFileToRazor? Start with the [Quick Start Guide](QUICK-START.md) to get your first project running quickly.
+New to MarkdownToRazor? Start with the [Quick Start Guide](QUICK-START.md) to get your first project running quickly.
 
 For comprehensive documentation including advanced configuration options, see the [Usage Guide](USAGE.md).
 
@@ -18,11 +18,11 @@ If you encounter any issues, check the [Troubleshooting Guide](TROUBLESHOOTING.m
 
 ## Package Information
 
-MDFileToRazor provides three NuGet packages distributed via GitHub Packages:
+MarkdownToRazor provides three NuGet packages distributed via GitHub Packages:
 
-- **MDFileToRazor.Components** - Blazor components for runtime markdown rendering
-- **MDFileToRazor.CodeGeneration** - Build-time code generation tools
-- **MDFileToRazor.MSBuild** - MSBuild integration for automatic code generation
+- **MarkdownToRazor.Components** - Blazor components for runtime markdown rendering
+- **MarkdownToRazor.CodeGeneration** - Build-time code generation tools
+- **MarkdownToRazor.MSBuild** - MSBuild integration for automatic code generation
 
 ## Features
 
@@ -41,8 +41,8 @@ MDFileToRazor provides three NuGet packages distributed via GitHub Packages:
 
 ## Quick Installation
 
-1. Configure GitHub Packages authentication
-2. Install packages: `dotnet add package MDFileToRazor.Components --source github`
+1. Configure GitHub Packages authentication (if using pre-release versions)
+2. Install package: `dotnet add package MarkdownToRazor`
 3. Configure services and imports
 4. Start creating markdown content
 
@@ -50,6 +50,6 @@ See the [Quick Start Guide](QUICK-START.md) for detailed steps.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/DavidMarsh-NOAA/MDFileToRazor/issues)
-- **Questions**: [GitHub Discussions](https://github.com/DavidMarsh-NOAA/MDFileToRazor/discussions)
-- **Source Code**: [GitHub Repository](https://github.com/DavidMarsh-NOAA/MDFileToRazor)
+- **Issues**: [GitHub Issues](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/issues)
+- **Questions**: [GitHub Discussions](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/discussions)
+- **Source Code**: [GitHub Repository](https://github.com/DavidMarsh-NOAA/MarkdownToRazor)

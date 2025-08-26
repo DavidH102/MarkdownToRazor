@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide provides solutions to common issues when using MDFileToRazor packages.
+This guide provides solutions to common issues when using MarkdownToRazor packages.
 
 ## Authentication Issues
 
@@ -31,7 +31,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 
 ## Package Not Found
 
-### Package 'MDFileToRazor.Components' is not found
+### Package 'MarkdownToRazor.Components' is not found
 
 **Symptoms:**
 
@@ -55,7 +55,7 @@ This guide provides solutions to common issues when using MDFileToRazor packages
 
 **Solutions:**
 
-- Verify `MDFileToRazor.Components` is installed
+- Verify `MarkdownToRazor.Components` is installed
 - Check that using statements are added to `_Imports.razor`
 - Ensure services are registered in `Program.cs`
 
@@ -117,8 +117,8 @@ builder.Services.AddScoped<IStaticAssetService, StaticAssetService>();
 Ensure these using statements are present:
 
 ```razor
-@using MDFileToRazor.Components
-@using MDFileToRazor.Components.Services
+@using MarkdownToRazor.Components
+@using MarkdownToRazor.Components.Services
 @using Microsoft.FluentUI.AspNetCore.Components
 ```
 
@@ -142,7 +142,7 @@ Include in your layout file:
 
 If you continue to experience issues:
 
-1. Check the [GitHub Issues](https://github.com/DavidMarsh-NOAA/MDFileToRazor/issues) for similar problems
+1. Check the [GitHub Issues](https://github.com/DavidMarsh-NOAA/MarkdownToRazor/issues) for similar problems
 2. Review the complete [Usage Guide](USAGE.md)
 3. Create a new issue with:
    - Your project configuration

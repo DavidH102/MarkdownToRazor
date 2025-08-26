@@ -1,6 +1,6 @@
 # CI/CD Pipeline Setup
 
-This document explains the complete CI/CD pipeline setup for MDFileToRazor using GitHub Actions and GitHub Packages.
+This document explains the complete CI/CD pipeline setup for MarkdownToRazor using GitHub Actions and GitHub Packages.
 
 ## Overview
 
@@ -79,10 +79,10 @@ Configures package sources for both consuming and publishing:
 ### 1. Create GitHub Repository
 
 ```bash
-# Create repository on GitHub: DavidMarsh-NOAA/MDFileToRazor
+# Create repository on GitHub: DavidMarsh-NOAA/MarkdownToRazor
 # Then clone locally or add remote to existing repo
 
-git remote add origin https://github.com/DavidMarsh-NOAA/MDFileToRazor.git
+git remote add origin https://github.com/DavidMarsh-NOAA/MarkdownToRazor.git
 git branch -M main
 git push -u origin main
 ```
@@ -272,7 +272,7 @@ Test packages locally before publishing:
 dotnet nuget add source "./nupkg" --name "local"
 
 # Install from local source
-dotnet add package MDFileToRazor.Components --source "local"
+dotnet add package MarkdownToRazor.Components --source "local"
 ```
 
 ## Best Practices
