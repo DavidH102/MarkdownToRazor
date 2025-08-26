@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <RootNamespace>MarkdownToRazor.Sample.BlazorServer</RootNamespace>
         <GeneratedPagesDirectory>$(MSBuildProjectDirectory)\Pages\Generated</GeneratedPagesDirectory>
         <MarkdownSourceDirectory>$(MSBuildProjectDirectory)\MDFilesToConvert</MarkdownSourceDirectory>
     </PropertyGroup>

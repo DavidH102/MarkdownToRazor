@@ -12,7 +12,8 @@ permissions:
   packages: write
 
 env:
-  DOTNET_VERSION: "8.0.x"
+  DOTNET_VERSION_8: "8.0.x"
+  DOTNET_VERSION_9: "9.0.x"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
   DOTNET_CLI_TELEMETRY_OPTOUT: "true"
 
@@ -29,7 +30,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: |
+            ${{ env.DOTNET_VERSION_8 }}
+            ${{ env.DOTNET_VERSION_9 }}
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,9 +65,7 @@ jobs:
 
       - name: Pack NuGet packages
         run: |
-          dotnet pack src/MDFileToRazor.Components/MDFileToRazor.Components.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
-          dotnet pack src/MDFileToRazor.CodeGeneration/MDFileToRazor.CodeGeneration.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
-          dotnet pack src/MDFileToRazor.MSBuild/MDFileToRazor.MSBuild.csproj --configuration Release --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }} /p:NoPackageAnalysis=true
+          dotnet pack src/MarkdownToRazor/MarkdownToRazor.csproj --configuration Release --no-build --output ./packages /p:PackageVersion=${{ steps.gitversion.outputs.nuGetVersionV2 }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -93,7 +94,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          dotnet-version: |
+            ${{ env.DOTNET_VERSION_8 }}
+            ${{ env.DOTNET_VERSION_9 }}
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -130,27 +133,21 @@ jobs:
 
             ## NuGet Packages
 
-            The following packages have been published to **NuGet.org** and GitHub Packages:
+            The following package has been published to **NuGet.org** and GitHub Packages:
 
             ### 📦 **Install from NuGet.org:**
             ```bash
-            dotnet add package MDFileToRazor.Components
-            dotnet add package MDFileToRazor.CodeGeneration
-            dotnet add package MDFileToRazor.MSBuild
+            dotnet add package MarkdownToRazor
             ```
 
             ### 🐙 **Install from GitHub Packages:**
             ```bash
-            dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json
-            dotnet add package MDFileToRazor.CodeGeneration --source https://nuget.pkg.github.com/DavidH102/index.json
-            dotnet add package MDFileToRazor.MSBuild --source https://nuget.pkg.github.com/DavidH102/index.json
+            dotnet add package MarkdownToRazor --source https://nuget.pkg.github.com/DavidH102/index.json
             ```
 
-            ## Package Descriptions
+            ## Package Description
 
-            - **`MDFileToRazor.Components`** - Blazor components for runtime markdown rendering with FluentUI styling
-            - **`MDFileToRazor.CodeGeneration`** - Build-time code generation tools for converting markdown to Razor pages
-            - **`MDFileToRazor.MSBuild`** - MSBuild integration tasks for automated markdown processing
+            - **`MarkdownToRazor`** - Complete solution for converting Markdown files to Blazor Razor pages with runtime components, build-time code generation, and MSBuild integration
 
             ## Installation & Usage
 
