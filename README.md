@@ -2,7 +2,8 @@
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![NuGet](https://img.shields.io/badge/NuGet-Available%20on%20GitHub%20Packages-blue)](https://github.com/DavidH102/MDFileToRazor/packages)
+[![NuGet](https://img.shields.io/nuget/v/MDFileToRazor.Components?label=NuGet)](https://www.nuget.org/packages/MDFileToRazor.Components)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Available-blue)](https://github.com/DavidH102/MDFileToRazor/packages)
 
 **Transform your Markdown files into beautiful Blazor pages with automatic routing and syntax highlighting.**
 
@@ -17,6 +18,37 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 - 💡 **Syntax Highlighting**: Code blocks with highlight.js integration and copy-to-clipboard functionality
 - 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter or HTML comment configuration support
 - 📁 **Flexible Content**: Load from files, URLs, or provide inline markdown content
+
+## 🆕 What's New in v1.1.0
+
+✨ **IGeneratedPageDiscoveryService** - Programmatically discover and work with your generated Razor pages!
+
+```csharp
+// Inject the service into your components
+@inject IGeneratedPageDiscoveryService PageDiscovery
+
+// Get all pages with metadata
+var pages = await PageDiscovery.GetAllPagesAsync();
+
+// Filter by tags
+var blogPosts = await PageDiscovery.GetPagesByTagAsync("blog");
+
+// Find pages by route pattern
+var apiDocs = await PageDiscovery.GetPagesByRoutePatternAsync("/api/*");
+
+// Build dynamic navigation menus
+foreach (var page in pages)
+{
+    Console.WriteLine($"Route: {page.Route}, Title: {page.Title}");
+}
+```
+
+Perfect for building:
+
+- 📋 **Dynamic sitemaps** from your content
+- 🧭 **Automatic navigation menus** that update as you add pages  
+- 🏷️ **Tag-based content filtering** and organization
+- 📊 **Content management dashboards** with page metadata
 
 ## 📦 Available Packages
 
@@ -33,7 +65,7 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 Perfect for displaying dynamic markdown content in your Blazor applications:
 
 ```bash
-dotnet add package MDFileToRazor.Components --source https://nuget.pkg.github.com/DavidH102/index.json
+dotnet add package MDFileToRazor.Components
 ```
 
 **Program.cs:**

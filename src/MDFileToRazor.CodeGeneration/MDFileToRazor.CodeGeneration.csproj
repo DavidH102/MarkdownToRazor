@@ -13,8 +13,8 @@
     <Authors>MDFileToRazor Team</Authors>
     <Company>MDFileToRazor</Company>
     <PackageTags>blazor,markdown,razor,codegen,build-time,yaml,frontmatter</PackageTags>
-    <PackageProjectUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/DavidMarsh-NOAA/MDFileToRazor</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/DavidH102/MDFileToRazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DavidH102/MDFileToRazor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
