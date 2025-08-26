@@ -18,9 +18,9 @@ public class MdFileDiscoveryServiceTests : IDisposable
         _mockHostEnvironment = new Mock<IHostEnvironment>();
         _testContentRoot = Path.GetTempPath();
         _testSourceDir = Path.Combine(_testContentRoot, "TestMarkdownFiles");
-        
+
         _mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(_testContentRoot);
-        
+
         _options = new MdFileToRazorOptions
         {
             SourceDirectory = "TestMarkdownFiles",
@@ -103,7 +103,7 @@ public class MdFileDiscoveryServiceTests : IDisposable
         // Check that async and sync methods return the same results
         var syncResult = service.DiscoverMarkdownFilesWithRoutes();
         Assert.Equal(syncResult.Count, result.Count);
-        
+
         foreach (var kvp in syncResult)
         {
             Assert.Contains(kvp.Key, result.Keys);
@@ -137,7 +137,7 @@ public class MdFileDiscoveryServiceTests : IDisposable
         // Arrange
         var specialFile = Path.Combine(_testSourceDir, "Special File & More.md");
         File.WriteAllText(specialFile, "# Special Content");
-        
+
         var service = CreateService();
 
         // Act
@@ -156,7 +156,7 @@ public class MdFileDiscoveryServiceTests : IDisposable
         File.WriteAllText(Path.Combine(_testSourceDir, "under_score_heavy.md"), "# Underscore Heavy");
         File.WriteAllText(Path.Combine(_testSourceDir, "Mixed-Case_And   Spaces.md"), "# Mixed Case");
         File.WriteAllText(Path.Combine(_testSourceDir, "HOME.md"), "# Home Uppercase");
-        
+
         var service = CreateService();
 
         // Act
@@ -165,13 +165,13 @@ public class MdFileDiscoveryServiceTests : IDisposable
         // Assert
         Assert.Contains("Multiple   Spaces.md", result.Keys);
         Assert.Equal("/multiple-spaces", result["Multiple   Spaces.md"]);
-        
+
         Assert.Contains("under_score_heavy.md", result.Keys);
         Assert.Equal("/under-score-heavy", result["under_score_heavy.md"]);
-        
+
         Assert.Contains("Mixed-Case_And   Spaces.md", result.Keys);
         Assert.Equal("/mixed-case-and-spaces", result["Mixed-Case_And   Spaces.md"]);
-        
+
         // Test with different uppercase filename
         Assert.Contains("HOME.md", result.Keys);
         Assert.Equal("/home", result["HOME.md"]);

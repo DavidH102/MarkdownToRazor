@@ -126,33 +126,33 @@ public class MdFileDiscoveryService : IMdFileDiscoveryService
     {
         // Remove the .md extension
         var nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
-        
+
         // Handle special cases
         if (nameWithoutExtension.Equals("index", StringComparison.OrdinalIgnoreCase))
         {
             return "/";
         }
-        
+
         // Convert to lowercase and replace spaces/underscores with hyphens for URL-friendly routes
         var route = nameWithoutExtension.ToLowerInvariant()
             .Replace(' ', '-')
             .Replace('_', '-');
-        
+
         // Clean up multiple consecutive hyphens by replacing them with single hyphens
         while (route.Contains("--"))
         {
             route = route.Replace("--", "-");
         }
-        
+
         // Remove leading/trailing hyphens
         route = route.Trim('-');
-        
+
         // Ensure route starts with /
         if (!route.StartsWith('/'))
         {
             route = "/" + route;
         }
-        
+
         return route;
     }
 

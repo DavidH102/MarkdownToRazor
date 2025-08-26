@@ -152,10 +152,22 @@ builder.Services.AddMdFileToRazorServices(options =>
     options.DefaultLayout = "MainLayout";          // Default layout for generated pages
 });
 
-// Alternative: Use defaults or provide custom directories
+// Alternative configurations for different path scenarios:
 // builder.Services.AddMdFileToRazorServices(); // Use all defaults
-// builder.Services.AddMdFileToRazorServices("content"); // Custom source only
-// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto"); // Custom source & output
+
+// Relative paths from project root:
+// builder.Services.AddMdFileToRazorServices("content");
+// builder.Services.AddMdFileToRazorServices("docs/markdown");
+// builder.Services.AddMdFileToRazorServices("../../../SharedDocs"); // Multiple folders up
+
+// Project root directory:
+// builder.Services.AddMdFileToRazorServices(".");
+
+// Absolute paths (useful for shared content):
+// builder.Services.AddMdFileToRazorServices(@"C:\SharedDocumentation\ProjectDocs");
+
+// Custom source & output directories:
+// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto");
 
 var app = builder.Build();
 
@@ -237,7 +249,7 @@ public class Example
 ";
 }
 
-```
+`````
 
 ### File Discovery and Route Mapping
 
@@ -274,12 +286,12 @@ The `IMdFileDiscoveryService` provides several methods to discover markdown file
     {
         // Get all markdown files
         markdownFiles = await MdFileDiscovery.DiscoverMarkdownFilesAsync();
-        
+
         // Get files with their generated routes
         fileRouteMap = await MdFileDiscovery.DiscoverMarkdownFilesWithRoutesAsync();
     }
 }
-```
+`````
 
 Available methods:
 
@@ -289,6 +301,7 @@ Available methods:
 - `DiscoverMarkdownFilesWithRoutesAsync()` - Async version with route mapping
 
 The route mapping follows these conventions:
+
 - `index.md` → `/` (root route)
 - `getting-started.md` → `/getting-started`
 - `user_guide.md` → `/user-guide` (underscores become hyphens)
@@ -303,17 +316,19 @@ Create the following structure in your project:
 ```
 
 ```
+
 YourProject/
 ├── MDFilesToConvert/
-│   ├── about.md
-│   ├── getting-started.md
-│   └── features.md
+│ ├── about.md
+│ ├── getting-started.md
+│ └── features.md
 ├── Pages/
-│   └── Generated/ (auto-created)
+│ └── Generated/ (auto-created)
 └── YourProject.csproj
+
 ```
 
-````
+```
 
 #### 2. Configure MSBuild
 
@@ -346,7 +361,7 @@ Update your `.csproj` file:
   </ItemGroup>
 
 </Project>
-````
+```
 
 #### 3. Create Markdown Files
 

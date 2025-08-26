@@ -185,6 +185,29 @@ We build amazing software...
 
 MDFileToRazor follows convention-over-configuration principles to automatically discover and process your markdown files:
 
+### 📂 **Flexible Source Directory Configuration**
+
+The `AddMdFileToRazorServices` method supports various path configurations:
+
+```csharp
+// Relative paths from project root
+services.AddMdFileToRazorServices("docs/content");
+services.AddMdFileToRazorServices("../../../SharedDocumentation");
+
+// Project root directory
+services.AddMdFileToRazorServices(".");
+
+// Absolute paths (useful for shared content across projects)
+services.AddMdFileToRazorServices(@"C:\SharedDocs\ProjectDocs");
+
+// Advanced configuration with recursive search
+services.AddMdFileToRazorServices(options => {
+    options.SourceDirectory = "content/posts";
+    options.SearchRecursively = true; // Finds files in all subdirectories
+    options.FilePattern = "*.md";
+});
+```
+
 ### 🎯 **Convention-Based Discovery**
 
 **Default Behavior:**
@@ -275,7 +298,7 @@ When using service registration, you can discover and work with markdown files a
     {
         // Get all markdown file paths
         markdownFiles = (await FileDiscovery.DiscoverMarkdownFilesAsync()).ToList();
-        
+
         // Get files with their generated routes (NEW!)
         fileRouteMap = await FileDiscovery.DiscoverMarkdownFilesWithRoutesAsync();
     }
@@ -291,7 +314,7 @@ When using service registration, you can discover and work with markdown files a
 @foreach (var (filename, route) in fileRouteMap)
 {
     <div class="content-item">
-        <strong>@filename</strong> → 
+        <strong>@filename</strong> →
         <code>@route</code>
         <a href="@route" target="_blank">Visit Page</a>
     </div>
@@ -308,8 +331,9 @@ When using service registration, you can discover and work with markdown files a
 ```
 
 **Route Generation Examples:**
+
 - `index.md` → `/` (root route)
-- `getting-started.md` → `/getting-started` 
+- `getting-started.md` → `/getting-started`
 - `user_guide.md` → `/user-guide` (underscores become hyphens)
 - `API Reference.md` → `/api-reference` (spaces normalized)
 

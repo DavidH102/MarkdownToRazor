@@ -97,4 +97,44 @@ public class ServiceCollectionExtensionsTests
         Assert.Same(service1a, service1b); // Same instance within scope
         Assert.NotSame(service1a, service2); // Different instances across scopes
     }
+
+    [Fact]
+    public void AddMdFileToRazorServices_WithAbsolutePath_HandlesCorrectly()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        var mockHostEnvironment = new Mock<IHostEnvironment>();
+        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(@"C:\ProjectRoot");
+        services.AddSingleton(mockHostEnvironment.Object);
+
+        // Act - Test absolute path
+        services.AddMdFileToRazorServices(@"D:\OtherLocation\MDFiles");
+        var serviceProvider = services.BuildServiceProvider();
+
+        // Assert
+        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var sourceDir = options.GetAbsoluteSourcePath(@"C:\ProjectRoot");
+        Assert.Equal(@"D:\OtherLocation\MDFiles", sourceDir);
+    }
+
+    [Fact]
+    public void AddMdFileToRazorServices_WithRelativePath_HandlesCorrectly()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+        var mockHostEnvironment = new Mock<IHostEnvironment>();
+        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(@"C:\ProjectRoot");
+        services.AddSingleton(mockHostEnvironment.Object);
+
+        // Act - Test relative path including ".." for going up directories
+        services.AddMdFileToRazorServices(@"..\..\..\SharedDocs");
+        var serviceProvider = services.BuildServiceProvider();
+
+        // Assert
+        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var sourceDir = options.GetAbsoluteSourcePath(@"C:\ProjectRoot");
+        // Path.GetFullPath will resolve the .. properly
+        Assert.EndsWith("SharedDocs", sourceDir);
+        Assert.True(Path.IsPathRooted(sourceDir));
+    }
 }

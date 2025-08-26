@@ -60,7 +60,14 @@ public class MdFileToRazorOptions
     /// <returns>The absolute path to the source directory</returns>
     public string GetAbsoluteSourcePath(string contentRootPath)
     {
-        return Path.Combine(contentRootPath, SourceDirectory);
+        // Handle absolute paths - if SourceDirectory is already absolute, use it as-is
+        if (Path.IsPathRooted(SourceDirectory))
+        {
+            return Path.GetFullPath(SourceDirectory);
+        }
+
+        // Handle relative paths - combine with content root
+        return Path.GetFullPath(Path.Combine(contentRootPath, SourceDirectory));
     }
 
     /// <summary>
@@ -70,7 +77,14 @@ public class MdFileToRazorOptions
     /// <returns>The absolute path to the output directory</returns>
     public string GetAbsoluteOutputPath(string contentRootPath)
     {
-        return Path.Combine(contentRootPath, OutputDirectory);
+        // Handle absolute paths - if OutputDirectory is already absolute, use it as-is
+        if (Path.IsPathRooted(OutputDirectory))
+        {
+            return Path.GetFullPath(OutputDirectory);
+        }
+
+        // Handle relative paths - combine with content root
+        return Path.GetFullPath(Path.Combine(contentRootPath, OutputDirectory));
     }
 
     /// <summary>
