@@ -104,17 +104,19 @@ public class ServiceCollectionExtensionsTests
         // Arrange
         var services = new ServiceCollection();
         var mockHostEnvironment = new Mock<IHostEnvironment>();
-        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(@"C:\ProjectRoot");
+        var mockContentRoot = Path.Combine(Path.GetTempPath(), "ProjectRoot");
+        var absolutePath = Path.Combine(Path.GetTempPath(), "OtherLocation", "MDFiles");
+        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(mockContentRoot);
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test absolute path
-        services.AddMdFileToRazorServices(@"D:\OtherLocation\MDFiles");
+        services.AddMdFileToRazorServices(absolutePath);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
         var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
-        var sourceDir = options.GetAbsoluteSourcePath(@"C:\ProjectRoot");
-        Assert.Equal(@"D:\OtherLocation\MDFiles", sourceDir);
+        var sourceDir = options.GetAbsoluteSourcePath(mockContentRoot);
+        Assert.Equal(absolutePath, sourceDir);
     }
 
     [Fact]

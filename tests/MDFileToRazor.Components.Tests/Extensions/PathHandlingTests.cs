@@ -16,7 +16,8 @@ public class PathHandlingTests
         // Arrange
         var services = new ServiceCollection();
         var mockHostEnvironment = new Mock<IHostEnvironment>();
-        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns("H:\\MDFIleTORazor");
+        var mockContentRoot = Path.Combine(Path.GetTempPath(), "TestProject");
+        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(mockContentRoot);
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test relative path
@@ -26,7 +27,8 @@ public class PathHandlingTests
         // Assert
         var mdFileService = serviceProvider.GetRequiredService<IMdFileDiscoveryService>();
         var sourceDir = mdFileService.GetSourceDirectory();
-        Assert.Equal("H:\\MDFIleTORazor\\TestScenarios\\TwoFoldersUp\\MDFiles", sourceDir);
+        var expectedPath = Path.Combine(mockContentRoot, "TestScenarios", "TwoFoldersUp", "MDFiles");
+        Assert.Equal(expectedPath, sourceDir);
     }
 
     [Fact]
@@ -35,7 +37,8 @@ public class PathHandlingTests
         // Arrange
         var services = new ServiceCollection();
         var mockHostEnvironment = new Mock<IHostEnvironment>();
-        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns("H:\\MDFIleTORazor");
+        var mockContentRoot = Path.Combine(Path.GetTempPath(), "TestProject");
+        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(mockContentRoot);
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test root directory (empty string or ".")
@@ -46,7 +49,7 @@ public class PathHandlingTests
         var mdFileService = serviceProvider.GetRequiredService<IMdFileDiscoveryService>();
         var sourceDir = mdFileService.GetSourceDirectory();
         // Path.GetFullPath(".") resolves to the current directory without the trailing dot
-        Assert.Equal("H:\\MDFIleTORazor", sourceDir);
+        Assert.Equal(mockContentRoot, sourceDir);
     }
 
     [Fact]
@@ -72,26 +75,45 @@ public class PathHandlingTests
     [Fact]
     public void MdFileDiscoveryService_DiscoverFiles_WithTestPath_FindsFiles()
     {
-        // Arrange
-        var services = new ServiceCollection();
-        var mockHostEnvironment = new Mock<IHostEnvironment>();
-        mockHostEnvironment.Setup(x => x.ContentRootPath).Returns("H:\\MDFIleTORazor");
-        services.AddSingleton(mockHostEnvironment.Object);
+        // Arrange - Create a temporary directory structure for testing
+        var tempDir = Path.Combine(Path.GetTempPath(), "MdFileTests", Guid.NewGuid().ToString());
+        var testDir = Path.Combine(tempDir, "TestScenarios", "TwoFoldersUp", "MDFiles");
+        Directory.CreateDirectory(testDir);
+        
+        // Create a test markdown file
+        var testFile = Path.Combine(testDir, "test.md");
+        File.WriteAllText(testFile, "# Test\nThis is a test markdown file.");
 
-        services.AddMdFileToRazorServices(options =>
+        try
         {
-            options.SourceDirectory = "TestScenarios/TwoFoldersUp/MDFiles";
-            options.SearchRecursively = true;
-        });
+            var services = new ServiceCollection();
+            var mockHostEnvironment = new Mock<IHostEnvironment>();
+            mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(tempDir);
+            services.AddSingleton(mockHostEnvironment.Object);
 
-        var serviceProvider = services.BuildServiceProvider();
-        var mdFileService = serviceProvider.GetRequiredService<IMdFileDiscoveryService>();
+            services.AddMdFileToRazorServices(options =>
+            {
+                options.SourceDirectory = "TestScenarios/TwoFoldersUp/MDFiles";
+                options.SearchRecursively = true;
+            });
 
-        // Act
-        var files = mdFileService.DiscoverMarkdownFiles();
+            var serviceProvider = services.BuildServiceProvider();
+            var mdFileService = serviceProvider.GetRequiredService<IMdFileDiscoveryService>();
 
-        // Assert
-        Assert.NotEmpty(files);
-        Assert.Contains(files, f => f.Contains("test.md"));
+            // Act
+            var files = mdFileService.DiscoverMarkdownFiles();
+
+            // Assert
+            Assert.NotEmpty(files);
+            Assert.Contains(files, f => f.Contains("test.md"));
+        }
+        finally
+        {
+            // Cleanup
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
     }
 }
