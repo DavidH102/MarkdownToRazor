@@ -8,13 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-// Add MDFileToRazor services with custom configuration
+// Add MDFileToRazor services for runtime markdown rendering
 builder.Services.AddMdFileToRazorServices(options =>
 {
-    options.SourceDirectory = "content"; // Custom source directory
-    options.OutputDirectory = "Pages/Generated"; // Custom output directory
+    options.SourceDirectory = "content"; // Where your markdown files are located
     options.BaseRoutePath = "/docs"; // Optional base route path
-    options.DefaultLayout = "MainLayout"; // Default layout for generated pages
+    // OutputDirectory is not needed for runtime-only scenarios
+    // DefaultLayout is not needed - component will use app's default layout
 });
 
 // Alternative simple configurations:

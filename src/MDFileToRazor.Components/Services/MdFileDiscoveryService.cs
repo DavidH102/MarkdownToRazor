@@ -42,8 +42,8 @@ public interface IMdFileDiscoveryService
     /// <summary>
     /// Gets the absolute path to the output directory.
     /// </summary>
-    /// <returns>The absolute output directory path</returns>
-    string GetOutputDirectory();
+    /// <returns>The absolute output directory path, or null if not configured (runtime-only scenarios)</returns>
+    string? GetOutputDirectory();
 }
 
 /// <summary>
@@ -163,7 +163,7 @@ public class MdFileDiscoveryService : IMdFileDiscoveryService
     }
 
     /// <inheritdoc />
-    public string GetOutputDirectory()
+    public string? GetOutputDirectory()
     {
         return _options.GetAbsoluteOutputPath(_hostEnvironment.ContentRootPath);
     }

@@ -10,6 +10,24 @@ MDFileToRazor provides three NuGet packages:
 - **`MDFileToRazor.CodeGeneration`** - Build-time code generation tools
 - **`MDFileToRazor.MSBuild`** - MSBuild integration for automatic code generation
 
+## Two Usage Patterns
+
+MDFileToRazor supports two distinct usage patterns:
+
+### 1. Runtime Markdown Rendering (Recommended for most scenarios)
+
+- Markdown files are rendered dynamically at runtime using the `MarkdownSection` component
+- Routes are discovered automatically from markdown files
+- **No OutputDirectory needed** - no files are generated
+- Uses `IMdFileDiscoveryService` for route discovery
+
+### 2. Build-Time Code Generation
+
+- Converts markdown files to actual `.razor` files during build
+- Generated pages become part of your compiled application
+- **Requires both SourceDirectory AND OutputDirectory**
+- Used via CodeGeneration project or MSBuild targets
+
 ## Prerequisites
 
 - .NET 8.0 or later
@@ -143,17 +161,18 @@ builder.Services.AddFluentUIComponents();
 // Add HttpClient for StaticAssetService
 builder.Services.AddHttpClient();
 
-// Register MDFileToRazor services with all available services
+// Register MDFileToRazor services for RUNTIME markdown rendering
+// Note: OutputDirectory is NOT needed for runtime-only scenarios
 builder.Services.AddMdFileToRazorServices(options =>
 {
-    options.SourceDirectory = "MDFilesToConvert"; // Default source directory
-    options.OutputDirectory = "Pages/Generated";   // Default output directory
+    options.SourceDirectory = "MDFilesToConvert"; // Where your .md files are located
     options.BaseRoutePath = "/docs";               // Optional base route path
-    options.DefaultLayout = "MainLayout";          // Default layout for generated pages
+    // No OutputDirectory needed - files are rendered dynamically at runtime
+    // No DefaultLayout needed - component uses app's default layout automatically
 });
 
-// Alternative configurations for different path scenarios:
-// builder.Services.AddMdFileToRazorServices(); // Use all defaults
+// Alternative configurations for runtime scenarios:
+// builder.Services.AddMdFileToRazorServices(); // Use defaults (source: "MDFilesToConvert")
 
 // Relative paths from project root:
 // builder.Services.AddMdFileToRazorServices("content");
@@ -166,8 +185,12 @@ builder.Services.AddMdFileToRazorServices(options =>
 // Absolute paths (useful for shared content):
 // builder.Services.AddMdFileToRazorServices(@"C:\SharedDocumentation\ProjectDocs");
 
-// Custom source & output directories:
-// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto");
+// ONLY for build-time code generation (not typical runtime scenarios):
+// builder.Services.AddMdFileToRazorServices(options =>
+// {
+//     options.SourceDirectory = "content";
+//     options.OutputDirectory = "Pages/Generated"; // Required for build-time generation
+// });
 
 var app = builder.Build();
 

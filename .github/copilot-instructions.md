@@ -26,16 +26,32 @@ This project is a .NET 8 Blazor Server application that implements build-time co
 
 ## Architecture Patterns
 
-The project follows a dual-purpose architecture:
+The project follows a dual-purpose architecture with two distinct use cases:
 
-1. **Build-Time Code Generation**: Converts markdown files to Razor pages during build
-2. **Runtime Markdown Rendering**: MarkdownSection component for dynamic content display
+### 1. **Build-Time Code Generation**
+
+- Converts markdown files to actual `.razor` files during build
+- Generated pages become part of your compiled application
+- **Requires both `SourceDirectory` AND `OutputDirectory` configuration**
+- Files are physically generated and compiled into the application
+- Used via CodeGeneration project or MSBuild targets
+
+### 2. **Runtime Markdown Rendering**
+
+- Uses `MarkdownSection` component to render markdown files dynamically at runtime
+- No files are generated - markdown is rendered on-demand
+- **Only requires `SourceDirectory` configuration - OutputDirectory is NOT needed**
+- Files are loaded and rendered when pages are accessed
+- Used via `IMdFileDiscoveryService` for route discovery and `MarkdownSection` for rendering
+
+**Important**: For runtime-only scenarios (dynamic route generation and rendering), do NOT set `OutputDirectory` as it's unnecessary and confusing.
 
 Key components:
 
-- `MarkdownToRazorGenerator` - Core code generation engine with YAML frontmatter support
+- `MarkdownToRazorGenerator` - Core code generation engine with YAML frontmatter support (build-time only)
 - `MarkdownSection` - Runtime component for rendering markdown content with syntax highlighting
-- `StaticAssetService` - Service for loading markdown files from filesystem or URLs
+- `StaticAssetService` - Service for loading markdown files from filesystem or URLs (runtime)
+- `IMdFileDiscoveryService` - Service for discovering markdown files and generating routes (runtime)
 
 ## Coding Standards
 
@@ -112,6 +128,54 @@ dotnet build -t:CleanGeneratedPages
 - Access generated pages at their configured routes
 - Test markdown rendering with `/MarkdownDemo` page
 - Verify syntax highlighting and copy functionality work correctly
+
+## Deployment Configuration
+
+**Including Markdown Files in Project**:
+
+When deploying applications that use MDFileToRazor with external markdown files (such as documentation in a `docs/` folder), you must include these files in your project file to ensure they are copied to the output directory during deployment.
+
+Add the following ItemGroup to your `.csproj` file:
+
+```xml
+<!-- Include markdown files from solution root docs folder for MDFileToRazor -->
+<ItemGroup>
+  <Content Include="..\docs\**\*.md">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Link>docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+  </Content>
+</ItemGroup>
+```
+
+**Key Configuration Points**:
+
+- `Include="..\docs\**\*.md"` - Includes all markdown files from the docs folder recursively
+- `CopyToOutputDirectory>PreserveNewest` - Ensures files are copied to output and updated only when changed
+- `Link>docs\%(RecursiveDir)%(Filename)%(Extension)` - Maintains the folder structure in the output directory
+- Adjust the path (`"..\docs\**\*.md"`) based on your project structure and markdown file location
+
+**Alternative Configurations**:
+
+```xml
+<!-- For markdown files in wwwroot -->
+<ItemGroup>
+  <Content Include="wwwroot\docs\**\*.md">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
+
+<!-- For multiple markdown source directories -->
+<ItemGroup>
+  <Content Include="..\documentation\**\*.md">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Link>content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+  </Content>
+  <Content Include="..\guides\**\*.md">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Link>guides\%(RecursiveDir)%(Filename)%(Extension)</Link>
+  </Content>
+</ItemGroup>
+```
 
 ## Error Handling Requirements
 

@@ -13,9 +13,10 @@ public class MdFileToRazorOptions
 
     /// <summary>
     /// The output directory where generated Razor pages will be created (relative to project root).
-    /// Default: "Pages/Generated"
+    /// Only required for build-time code generation scenarios.
+    /// Default: null (not needed for runtime-only scenarios)
     /// </summary>
-    public string OutputDirectory { get; set; } = "Pages/Generated";
+    public string? OutputDirectory { get; set; }
 
     /// <summary>
     /// The file pattern to search for markdown files.
@@ -28,12 +29,6 @@ public class MdFileToRazorOptions
     /// Default: true
     /// </summary>
     public bool SearchRecursively { get; set; } = true;
-
-    /// <summary>
-    /// The default layout to use for generated pages when not specified in frontmatter.
-    /// Default: null (uses Blazor default)
-    /// </summary>
-    public string? DefaultLayout { get; set; }
 
     /// <summary>
     /// Whether to enable HTML comment configuration parsing.
@@ -74,9 +69,15 @@ public class MdFileToRazorOptions
     /// Gets the absolute output directory path relative to the content root.
     /// </summary>
     /// <param name="contentRootPath">The application's content root path</param>
-    /// <returns>The absolute path to the output directory</returns>
-    public string GetAbsoluteOutputPath(string contentRootPath)
+    /// <returns>The absolute path to the output directory, or null if OutputDirectory is not set</returns>
+    public string? GetAbsoluteOutputPath(string contentRootPath)
     {
+        // Return null if OutputDirectory is not set (runtime-only scenarios)
+        if (string.IsNullOrWhiteSpace(OutputDirectory))
+        {
+            return null;
+        }
+
         // Handle absolute paths - if OutputDirectory is already absolute, use it as-is
         if (Path.IsPathRooted(OutputDirectory))
         {
@@ -95,8 +96,8 @@ public class MdFileToRazorOptions
         if (string.IsNullOrWhiteSpace(SourceDirectory))
             throw new ArgumentException("SourceDirectory cannot be null or empty.", nameof(SourceDirectory));
 
-        if (string.IsNullOrWhiteSpace(OutputDirectory))
-            throw new ArgumentException("OutputDirectory cannot be null or empty.", nameof(OutputDirectory));
+        // OutputDirectory is optional for runtime-only scenarios
+        // No validation needed since it can be null
 
         if (string.IsNullOrWhiteSpace(FilePattern))
             throw new ArgumentException("FilePattern cannot be null or empty.", nameof(FilePattern));
