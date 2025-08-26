@@ -143,8 +143,19 @@ builder.Services.AddFluentUIComponents();
 // Add HttpClient for StaticAssetService
 builder.Services.AddHttpClient();
 
-// Register MDFileToRazor services
-builder.Services.AddScoped<IStaticAssetService, StaticAssetService>();
+// Register MDFileToRazor services with all available services
+builder.Services.AddMdFileToRazorServices(options =>
+{
+    options.SourceDirectory = "MDFilesToConvert"; // Default source directory
+    options.OutputDirectory = "Pages/Generated";   // Default output directory
+    options.BaseRoutePath = "/docs";               // Optional base route path
+    options.DefaultLayout = "MainLayout";          // Default layout for generated pages
+});
+
+// Alternative: Use defaults or provide custom directories
+// builder.Services.AddMdFileToRazorServices(); // Use all defaults
+// builder.Services.AddMdFileToRazorServices("content"); // Custom source only
+// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto"); // Custom source & output
 
 var app = builder.Build();
 
@@ -227,6 +238,61 @@ public class Example
 }
 
 ```
+
+### File Discovery and Route Mapping
+
+The `IMdFileDiscoveryService` provides several methods to discover markdown files and understand their generated routes:
+
+````razor
+@page "/file-explorer"
+@inject IMdFileDiscoveryService MdFileDiscovery
+
+<h1>Markdown File Explorer</h1>
+
+<!-- Basic file discovery -->
+<h2>Available Files</h2>
+@foreach (var file in markdownFiles)
+{
+    <p>@file</p>
+}
+
+<!-- File to route mapping -->
+<h2>File Route Mapping</h2>
+@foreach (var (filename, route) in fileRouteMap)
+{
+    <div class="file-route-item">
+        <strong>@filename</strong> → <code>@route</code>
+        <a href="@route" target="_blank">Visit Page</a>
+    </div>
+}
+
+@code {
+    private IEnumerable<string> markdownFiles = Enumerable.Empty<string>();
+    private Dictionary<string, string> fileRouteMap = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Get all markdown files
+        markdownFiles = await MdFileDiscovery.DiscoverMarkdownFilesAsync();
+        
+        // Get files with their generated routes
+        fileRouteMap = await MdFileDiscovery.DiscoverMarkdownFilesWithRoutesAsync();
+    }
+}
+```
+
+Available methods:
+
+- `DiscoverMarkdownFiles()` - Returns file paths
+- `DiscoverMarkdownFilesAsync()` - Async version of file discovery
+- `DiscoverMarkdownFilesWithRoutes()` - Returns Dictionary<filename, route>
+- `DiscoverMarkdownFilesWithRoutesAsync()` - Async version with route mapping
+
+The route mapping follows these conventions:
+- `index.md` → `/` (root route)
+- `getting-started.md` → `/getting-started`
+- `user_guide.md` → `/user-guide` (underscores become hyphens)
+- `My Document.md` → `/my-document` (spaces and special chars normalized)
 
 ### Build-Time Code Generation
 

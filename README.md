@@ -269,18 +269,34 @@ When using service registration, you can discover and work with markdown files a
 
 @code {
     private List<string> markdownFiles = new();
+    private Dictionary<string, string> fileRouteMap = new();
 
     protected override async Task OnInitializedAsync()
     {
-        markdownFiles = await FileDiscovery.DiscoverMarkdownFiles();
+        // Get all markdown file paths
+        markdownFiles = (await FileDiscovery.DiscoverMarkdownFilesAsync()).ToList();
+        
+        // Get files with their generated routes (NEW!)
+        fileRouteMap = await FileDiscovery.DiscoverMarkdownFilesWithRoutesAsync();
     }
 }
 ```
 
-#### Example: Dynamic Content Browser
+#### Example: Dynamic Content Browser with Route Mapping
 
 ```razor
 <!-- Components/MarkdownBrowser.razor -->
+<h3>Available Content</h3>
+
+@foreach (var (filename, route) in fileRouteMap)
+{
+    <div class="content-item">
+        <strong>@filename</strong> → 
+        <code>@route</code>
+        <a href="@route" target="_blank">Visit Page</a>
+    </div>
+}
+
 <FluentSelect Items="@markdownFiles" @bind-SelectedOption="@selectedFile">
     <OptionTemplate>@context</OptionTemplate>
 </FluentSelect>
@@ -290,6 +306,12 @@ When using service registration, you can discover and work with markdown files a
     <MarkdownSection FilePath="@selectedFile" />
 }
 ```
+
+**Route Generation Examples:**
+- `index.md` → `/` (root route)
+- `getting-started.md` → `/getting-started` 
+- `user_guide.md` → `/user-guide` (underscores become hyphens)
+- `API Reference.md` → `/api-reference` (spaces normalized)
 
 **Available Services:**
 

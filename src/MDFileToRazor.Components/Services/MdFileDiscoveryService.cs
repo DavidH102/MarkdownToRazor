@@ -22,6 +22,18 @@ public interface IMdFileDiscoveryService
     Task<IEnumerable<string>> DiscoverMarkdownFilesAsync();
 
     /// <summary>
+    /// Discovers all markdown files and returns a dictionary mapping filenames to their generated routes.
+    /// </summary>
+    /// <returns>A dictionary where keys are markdown filenames (with .md extension) and values are the generated routes</returns>
+    Dictionary<string, string> DiscoverMarkdownFilesWithRoutes();
+
+    /// <summary>
+    /// Discovers all markdown files and returns a dictionary mapping filenames to their generated routes asynchronously.
+    /// </summary>
+    /// <returns>A dictionary where keys are markdown filenames (with .md extension) and values are the generated routes</returns>
+    Task<Dictionary<string, string>> DiscoverMarkdownFilesWithRoutesAsync();
+
+    /// <summary>
     /// Gets the absolute path to the source directory.
     /// </summary>
     /// <returns>The absolute source directory path</returns>
@@ -81,6 +93,67 @@ public class MdFileDiscoveryService : IMdFileDiscoveryService
     public async Task<IEnumerable<string>> DiscoverMarkdownFilesAsync()
     {
         return await Task.Run(() => DiscoverMarkdownFiles());
+    }
+
+    /// <inheritdoc />
+    public Dictionary<string, string> DiscoverMarkdownFilesWithRoutes()
+    {
+        var markdownFiles = DiscoverMarkdownFiles();
+        var result = new Dictionary<string, string>();
+
+        foreach (var filePath in markdownFiles)
+        {
+            var fileName = Path.GetFileName(filePath);
+            var route = GenerateRouteFromFileName(fileName);
+            result[fileName] = route;
+        }
+
+        return result;
+    }
+
+    /// <inheritdoc />
+    public async Task<Dictionary<string, string>> DiscoverMarkdownFilesWithRoutesAsync()
+    {
+        return await Task.Run(() => DiscoverMarkdownFilesWithRoutes());
+    }
+
+    /// <summary>
+    /// Generates a route from a markdown filename following the same logic as the code generation.
+    /// </summary>
+    /// <param name="fileName">The markdown filename (with .md extension)</param>
+    /// <returns>The generated route</returns>
+    private string GenerateRouteFromFileName(string fileName)
+    {
+        // Remove the .md extension
+        var nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+        
+        // Handle special cases
+        if (nameWithoutExtension.Equals("index", StringComparison.OrdinalIgnoreCase))
+        {
+            return "/";
+        }
+        
+        // Convert to lowercase and replace spaces/underscores with hyphens for URL-friendly routes
+        var route = nameWithoutExtension.ToLowerInvariant()
+            .Replace(' ', '-')
+            .Replace('_', '-');
+        
+        // Clean up multiple consecutive hyphens by replacing them with single hyphens
+        while (route.Contains("--"))
+        {
+            route = route.Replace("--", "-");
+        }
+        
+        // Remove leading/trailing hyphens
+        route = route.Trim('-');
+        
+        // Ensure route starts with /
+        if (!route.StartsWith('/'))
+        {
+            route = "/" + route;
+        }
+        
+        return route;
     }
 
     /// <inheritdoc />
