@@ -11,11 +11,9 @@ branches:
     increment: Patch
   develop:
     mode: ContinuousDeployment
-    label: "alpha"
     increment: Minor
   feature:
     mode: ContinuousDeployment
-    label: "alpha"
     increment: Minor
 
 ignore:
