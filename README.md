@@ -19,6 +19,43 @@ MDFileToRazor is a powerful .NET 8 library that bridges the gap between Markdown
 - 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter or HTML comment configuration support
 - 📁 **Flexible Content**: Load from files, URLs, or provide inline markdown content
 
+## 🆕 What's New in v1.2.0
+
+✨ **Enhanced Path Handling & File Discovery** - Now supports absolute paths, relative paths with `../..` patterns, and robust cross-platform path resolution!
+
+### 🛠️ **IMdFileDiscoveryService Enhancement**
+
+```csharp
+// Get file-to-route mapping for dynamic navigation
+var fileRoutes = await MdFileService.DiscoverMarkdownFilesWithRoutesAsync();
+foreach (var (fileName, route) in fileRoutes)
+{
+    Console.WriteLine($"File: {fileName} → Route: {route}");
+}
+```
+
+### 📁 **Flexible Source Directory Configuration**
+
+```csharp
+// Relative paths from project root
+builder.Services.AddMdFileToRazorServices("content/docs");
+
+// Multiple folders up (perfect for shared content)
+builder.Services.AddMdFileToRazorServices("../../../SharedDocumentation");
+
+// Absolute paths (cross-project content sharing)
+builder.Services.AddMdFileToRazorServices(@"C:\SharedContent\ProjectDocs");
+
+// Project root directory
+builder.Services.AddMdFileToRazorServices(".");
+```
+
+### 🧪 **Comprehensive Test Coverage**
+
+- **22 passing tests** covering all scenarios
+- **Cross-platform path handling** with proper normalization
+- **Edge case coverage** for various directory structures
+
 ## 🆕 What's New in v1.1.0
 
 ✨ **IGeneratedPageDiscoveryService** - Programmatically discover and work with your generated Razor pages!
