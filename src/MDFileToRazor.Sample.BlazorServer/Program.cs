@@ -1,6 +1,6 @@
 using Microsoft.FluentUI.AspNetCore.Components;
-using MDFileToRazor.Components.Services;
-using MDFileToRazor.Components.Extensions;
+using MarkdownToRazor.Services;
+using MarkdownToRazor.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 // Add MDFileToRazor services for runtime markdown rendering
-builder.Services.AddMdFileToRazorServices(options =>
+builder.Services.AddMarkdownToRazorServices(options =>
 {
     options.SourceDirectory = "content"; // Where your markdown files are located
     options.BaseRoutePath = "/docs"; // Optional base route path
@@ -18,9 +18,9 @@ builder.Services.AddMdFileToRazorServices(options =>
 });
 
 // Alternative simple configurations:
-// builder.Services.AddMdFileToRazorServices(); // Use defaults
-// builder.Services.AddMdFileToRazorServices("content"); // Custom source only
-// builder.Services.AddMdFileToRazorServices("content", "Pages/Auto"); // Custom source & output
+// builder.Services.AddMarkdownToRazorServices(); // Use defaults
+// builder.Services.AddMarkdownToRazorServices("content"); // Custom source only
+// builder.Services.AddMarkdownToRazorServices("content", "Pages/Auto"); // Custom source & output
 
 var app = builder.Build();
 

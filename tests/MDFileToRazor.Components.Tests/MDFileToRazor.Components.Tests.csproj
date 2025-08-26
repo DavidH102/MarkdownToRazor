@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MDFileToRazor.Components\MDFileToRazor.Components.csproj" />
+    <ProjectReference Include="..\..\src\MarkdownToRazor\MarkdownToRazor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

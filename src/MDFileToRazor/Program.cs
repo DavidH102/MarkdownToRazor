@@ -1,5 +1,5 @@
-using MDFileToRazor.Components;
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor;
+using MarkdownToRazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

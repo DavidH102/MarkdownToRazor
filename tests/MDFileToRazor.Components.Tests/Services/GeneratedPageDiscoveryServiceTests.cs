@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using Moq;
-using MDFileToRazor.Components.Configuration;
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor.Configuration;
+using MarkdownToRazor.Services;
 
 namespace MDFileToRazor.Components.Tests.Services;
 
@@ -13,7 +13,7 @@ public class GeneratedPageDiscoveryServiceTests : IDisposable
     private readonly string _tempOutputDirectory;
     private readonly Mock<IHostEnvironment> _mockHostEnvironment;
     private readonly Mock<IMdFileDiscoveryService> _mockMdFileDiscoveryService;
-    private readonly IOptions<MdFileToRazorOptions> _options;
+    private readonly IOptions<MarkdownToRazorOptions> _options;
 
     public GeneratedPageDiscoveryServiceTests()
     {
@@ -29,7 +29,7 @@ public class GeneratedPageDiscoveryServiceTests : IDisposable
 
         _mockMdFileDiscoveryService = new Mock<IMdFileDiscoveryService>();
 
-        var options = new MdFileToRazorOptions
+        var options = new MarkdownToRazorOptions
         {
             SourceDirectory = _tempSourceDirectory,
             OutputDirectory = _tempOutputDirectory

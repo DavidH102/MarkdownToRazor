@@ -2,16 +2,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Moq;
-using MDFileToRazor.Components.Configuration;
-using MDFileToRazor.Components.Extensions;
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor.Configuration;
+using MarkdownToRazor.Extensions;
+using MarkdownToRazor.Services;
 
 namespace MDFileToRazor.Components.Tests.Extensions;
 
 public class PathHandlingTests
 {
     [Fact]
-    public void AddMdFileToRazorServices_WithRelativePath_ResolvesCorrectly()
+    public void AddMarkdownToRazorServices_WithRelativePath_ResolvesCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -21,7 +21,7 @@ public class PathHandlingTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test relative path
-        services.AddMdFileToRazorServices("TestScenarios/TwoFoldersUp/MDFiles");
+        services.AddMarkdownToRazorServices("TestScenarios/TwoFoldersUp/MDFiles");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -32,7 +32,7 @@ public class PathHandlingTests
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_WithRootDirectory_ResolvesCorrectly()
+    public void AddMarkdownToRazorServices_WithRootDirectory_ResolvesCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -42,7 +42,7 @@ public class PathHandlingTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test root directory (empty string or ".")
-        services.AddMdFileToRazorServices(".");
+        services.AddMarkdownToRazorServices(".");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -53,7 +53,7 @@ public class PathHandlingTests
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_WithAbsolutePath_ResolvesCorrectly()
+    public void AddMarkdownToRazorServices_WithAbsolutePath_ResolvesCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -62,7 +62,7 @@ public class PathHandlingTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test absolute path (note: the implementation uses Path.Combine which might not handle this correctly)
-        services.AddMdFileToRazorServices("H:\\SomeOtherLocation\\MDFiles");
+        services.AddMarkdownToRazorServices("H:\\SomeOtherLocation\\MDFiles");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -79,7 +79,7 @@ public class PathHandlingTests
         var tempDir = Path.Combine(Path.GetTempPath(), "MdFileTests", Guid.NewGuid().ToString());
         var testDir = Path.Combine(tempDir, "TestScenarios", "TwoFoldersUp", "MDFiles");
         Directory.CreateDirectory(testDir);
-        
+
         // Create a test markdown file
         var testFile = Path.Combine(testDir, "test.md");
         File.WriteAllText(testFile, "# Test\nThis is a test markdown file.");
@@ -91,7 +91,7 @@ public class PathHandlingTests
             mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(tempDir);
             services.AddSingleton(mockHostEnvironment.Object);
 
-            services.AddMdFileToRazorServices(options =>
+            services.AddMarkdownToRazorServices(options =>
             {
                 options.SourceDirectory = "TestScenarios/TwoFoldersUp/MDFiles";
                 options.SearchRecursively = true;

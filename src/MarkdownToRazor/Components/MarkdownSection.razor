@@ -1,0 +1,8 @@
+@namespace MarkdownToRazor.Components
+@using Markdig
+@using Microsoft.AspNetCore.Components
+@inherits FluentComponentBase
+
+<div>
+    @((MarkupString)HtmlContent)
+</div>

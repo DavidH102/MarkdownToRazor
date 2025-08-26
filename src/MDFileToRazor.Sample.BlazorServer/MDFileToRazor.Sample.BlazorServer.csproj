@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MDFileToRazor.Components\MDFileToRazor.Components.csproj" />
+        <ProjectReference Include="..\MarkdownToRazor\MarkdownToRazor.csproj" />
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.1" />
     </ItemGroup>
 

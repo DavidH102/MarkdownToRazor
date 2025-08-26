@@ -1,15 +1,15 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Moq;
-using MDFileToRazor.Components.Configuration;
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor.Configuration;
+using MarkdownToRazor.Services;
 
 namespace MDFileToRazor.Components.Tests.Services;
 
 public class MdFileDiscoveryServiceTests : IDisposable
 {
     private readonly Mock<IHostEnvironment> _mockHostEnvironment;
-    private readonly MdFileToRazorOptions _options;
+    private readonly MarkdownToRazorOptions _options;
     private readonly string _testContentRoot;
     private readonly string _testSourceDir;
 
@@ -21,7 +21,7 @@ public class MdFileDiscoveryServiceTests : IDisposable
 
         _mockHostEnvironment.Setup(x => x.ContentRootPath).Returns(_testContentRoot);
 
-        _options = new MdFileToRazorOptions
+        _options = new MarkdownToRazorOptions
         {
             SourceDirectory = "TestMarkdownFiles",
             OutputDirectory = "Pages/Generated",
@@ -53,7 +53,7 @@ public class MdFileDiscoveryServiceTests : IDisposable
 
     private MdFileDiscoveryService CreateService()
     {
-        var optionsWrapper = new OptionsWrapper<MdFileToRazorOptions>(_options);
+        var optionsWrapper = new OptionsWrapper<MarkdownToRazorOptions>(_options);
         return new MdFileDiscoveryService(optionsWrapper, _mockHostEnvironment.Object);
     }
 
@@ -115,13 +115,13 @@ public class MdFileDiscoveryServiceTests : IDisposable
     public void DiscoverMarkdownFilesWithRoutes_EmptyDirectory_ReturnsEmptyDictionary()
     {
         // Arrange
-        var emptyOptions = new MdFileToRazorOptions
+        var emptyOptions = new MarkdownToRazorOptions
         {
             SourceDirectory = "NonExistentDirectory",
             OutputDirectory = "Pages/Generated",
             FilePattern = "*.md"
         };
-        var optionsWrapper = new OptionsWrapper<MdFileToRazorOptions>(emptyOptions);
+        var optionsWrapper = new OptionsWrapper<MarkdownToRazorOptions>(emptyOptions);
         var service = new MdFileDiscoveryService(optionsWrapper, _mockHostEnvironment.Object);
 
         // Act

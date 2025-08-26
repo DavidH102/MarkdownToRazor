@@ -2,16 +2,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Moq;
-using MDFileToRazor.Components.Configuration;
-using MDFileToRazor.Components.Extensions;
-using MDFileToRazor.Components.Services;
+using MarkdownToRazor.Configuration;
+using MarkdownToRazor.Extensions;
+using MarkdownToRazor.Services;
 
 namespace MDFileToRazor.Components.Tests.Extensions;
 
 public class ServiceCollectionExtensionsTests
 {
     [Fact]
-    public void AddMdFileToRazorServices_RegistersAllRequiredServices()
+    public void AddMarkdownToRazorServices_RegistersAllRequiredServices()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -21,7 +21,7 @@ public class ServiceCollectionExtensionsTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act
-        services.AddMdFileToRazorServices(options =>
+        services.AddMarkdownToRazorServices(options =>
         {
             options.SourceDirectory = "source";
             options.OutputDirectory = "output";
@@ -33,15 +33,15 @@ public class ServiceCollectionExtensionsTests
         Assert.NotNull(serviceProvider.GetService<IStaticAssetService>());
         Assert.NotNull(serviceProvider.GetService<IMdFileDiscoveryService>());
         Assert.NotNull(serviceProvider.GetService<IGeneratedPageDiscoveryService>());
-        Assert.NotNull(serviceProvider.GetService<IOptions<MdFileToRazorOptions>>());
+        Assert.NotNull(serviceProvider.GetService<IOptions<MarkdownToRazorOptions>>());
 
-        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var options = serviceProvider.GetRequiredService<IOptions<MarkdownToRazorOptions>>().Value;
         Assert.Equal("source", options.SourceDirectory);
         Assert.Equal("output", options.OutputDirectory);
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_WithSourceDirectory_ConfiguresCorrectly()
+    public void AddMarkdownToRazorServices_WithSourceDirectory_ConfiguresCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -49,16 +49,16 @@ public class ServiceCollectionExtensionsTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act
-        services.AddMdFileToRazorServices("test-source");
+        services.AddMarkdownToRazorServices("test-source");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
-        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var options = serviceProvider.GetRequiredService<IOptions<MarkdownToRazorOptions>>().Value;
         Assert.Equal("test-source", options.SourceDirectory);
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_WithSourceAndOutputDirectory_ConfiguresCorrectly()
+    public void AddMarkdownToRazorServices_WithSourceAndOutputDirectory_ConfiguresCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -66,23 +66,23 @@ public class ServiceCollectionExtensionsTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act
-        services.AddMdFileToRazorServices("test-source", "test-output");
+        services.AddMarkdownToRazorServices("test-source", "test-output");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
-        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var options = serviceProvider.GetRequiredService<IOptions<MarkdownToRazorOptions>>().Value;
         Assert.Equal("test-source", options.SourceDirectory);
         Assert.Equal("test-output", options.OutputDirectory);
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_RegistersServicesAsScoped()
+    public void AddMarkdownToRazorServices_RegistersServicesAsScoped()
     {
         // Arrange
         var services = new ServiceCollection();
         var mockHostEnvironment = new Mock<IHostEnvironment>();
         services.AddSingleton(mockHostEnvironment.Object);
-        services.AddMdFileToRazorServices();
+        services.AddMarkdownToRazorServices();
 
         // Act
         var serviceProvider = services.BuildServiceProvider();
@@ -99,7 +99,7 @@ public class ServiceCollectionExtensionsTests
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_WithAbsolutePath_HandlesCorrectly()
+    public void AddMarkdownToRazorServices_WithAbsolutePath_HandlesCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -110,17 +110,17 @@ public class ServiceCollectionExtensionsTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test absolute path
-        services.AddMdFileToRazorServices(absolutePath);
+        services.AddMarkdownToRazorServices(absolutePath);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
-        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var options = serviceProvider.GetRequiredService<IOptions<MarkdownToRazorOptions>>().Value;
         var sourceDir = options.GetAbsoluteSourcePath(mockContentRoot);
         Assert.Equal(absolutePath, sourceDir);
     }
 
     [Fact]
-    public void AddMdFileToRazorServices_WithRelativePath_HandlesCorrectly()
+    public void AddMarkdownToRazorServices_WithRelativePath_HandlesCorrectly()
     {
         // Arrange
         var services = new ServiceCollection();
@@ -129,11 +129,11 @@ public class ServiceCollectionExtensionsTests
         services.AddSingleton(mockHostEnvironment.Object);
 
         // Act - Test relative path including ".." for going up directories
-        services.AddMdFileToRazorServices(@"..\..\..\SharedDocs");
+        services.AddMarkdownToRazorServices(@"..\..\..\SharedDocs");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
-        var options = serviceProvider.GetRequiredService<IOptions<MdFileToRazorOptions>>().Value;
+        var options = serviceProvider.GetRequiredService<IOptions<MarkdownToRazorOptions>>().Value;
         var sourceDir = options.GetAbsoluteSourcePath(@"C:\ProjectRoot");
         // Path.GetFullPath will resolve the .. properly
         Assert.EndsWith("SharedDocs", sourceDir);

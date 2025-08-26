@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <PackageId>MarkdownToRazor</PackageId>
+        <Title>MarkdownToRazor - Complete Markdown to Blazor Solution</Title>
+        <Description>Complete solution for converting Markdown files to Blazor Razor pages with
+            runtime rendering, build-time code generation, MSBuild integration, FluentUI styling,
+            syntax highlighting, and YAML frontmatter support. Includes both runtime components and
+            build-time tools in a single package.</Description>
+        <Authors>MarkdownToRazor Team</Authors>
+        <Company>MarkdownToRazor</Company>
+        <PackageTags>
+            blazor,markdown,razor,components,codegen,msbuild,fluentui,syntax-highlighting,yaml,frontmatter,build-time,runtime</PackageTags>
+        <PackageProjectUrl>https://github.com/DavidH102/MarkdownToRazor</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/DavidH102/MarkdownToRazor</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeBuildOutput>true</IncludeBuildOutput>
+        <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+        <NoPackageAnalysis>true</NoPackageAnalysis>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <!-- Package Dependencies for all target frameworks -->
+    <ItemGroup>
+        <PackageReference Include="Markdig" Version="0.38.0" />
+        <PackageReference Include="YamlDotNet" Version="15.1.4" />
+    </ItemGroup>
+
+    <!-- .NET 8+ dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.18"
+            Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7"
+            Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"
+            Version="8.0.2" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"
+            Version="9.0.7" Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2"
+            Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7"
+            Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1"
+            Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7"
+            Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0"
+            PrivateAssets="all" />
+    </ItemGroup>
+
+    <!-- Package Content -->
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <None Include="MSBuild\build\**\*" Pack="true" PackagePath="build\" />
+        <None Include="MSBuild\buildTransitive\**\*" Pack="true" PackagePath="buildTransitive\" />
+    </ItemGroup>
+
+    <!-- Include task assemblies for MSBuild integration -->
+    <ItemGroup>
+        <None Include="$(OutputPath)net8.0\$(AssemblyName).dll" Pack="true"
+            PackagePath="tasks\net8.0\$(AssemblyName).dll" Visible="false"
+            Condition="Exists('$(OutputPath)net8.0\$(AssemblyName).dll')" />
+        <None Include="$(OutputPath)net8.0\$(AssemblyName).pdb" Pack="true"
+            PackagePath="tasks\net8.0\$(AssemblyName).pdb" Visible="false"
+            Condition="Exists('$(OutputPath)net8.0\$(AssemblyName).pdb')" />
+        <None Include="$(OutputPath)net9.0\$(AssemblyName).dll" Pack="true"
+            PackagePath="tasks\net9.0\$(AssemblyName).dll" Visible="false"
+            Condition="Exists('$(OutputPath)net9.0\$(AssemblyName).dll')" />
+        <None Include="$(OutputPath)net9.0\$(AssemblyName).pdb" Pack="true"
+            PackagePath="tasks\net9.0\$(AssemblyName).pdb" Visible="false"
+            Condition="Exists('$(OutputPath)net9.0\$(AssemblyName).pdb')" />
+    </ItemGroup>
+
+    <!-- Platform Support -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'net9.0'">
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+</Project>
