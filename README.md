@@ -19,6 +19,26 @@ MarkdownToRazor is a powerful .NET library that bridges the gap between Markdown
 - 🔗 **Automatic Routing**: Generate routable pages from your markdown files with YAML frontmatter or HTML comment configuration support
 - 📁 **Flexible Content**: Load from files, URLs, or provide inline markdown content
 
+## 🆕 What's New in v2.0.1 - QUALITY RELEASE
+
+🔧 **Enhanced Package Quality** - Professional-grade NuGet package with debugging support!
+
+### ✨ **Package Quality Improvements**
+
+**Source Link & Debugging**:
+
+- ✅ **Source Link Integration** - "Go to Definition" now works with original source code
+- ✅ **Embedded Debug Symbols** - Enhanced debugging experience for package consumers
+- ✅ **Symbol Packages (.snupkg)** - Automatic symbol package generation for NuGet.org
+- ✅ **Deterministic Builds** - Reproducible packages across different build environments
+
+**Build & CI Enhancements**:
+
+- ✅ **Continuous Integration Build Flags** - Optimized for CI/CD environments
+- ✅ **Enhanced Package Validation** - Meets industry best practices
+- ✅ **Cross-Platform Path Handling** - Improved reliability across Windows/Linux/macOS
+- ✅ **Comprehensive Test Coverage** - 22+ passing tests covering all scenarios
+
 ## 🆕 What's New in v2.0.0 - MAJOR RELEASE
 
 🎯 **Single Unified Package** - We've consolidated everything into one powerful package!
@@ -42,13 +62,13 @@ MarkdownToRazor is a powerful .NET library that bridges the gap between Markdown
 - ✅ Maintained .NET 8.0 support
 - ❌ Removed .NET Standard 2.1 (incompatible with Blazor)
 
-### � **Quick Migration**
+### 🔄 **Quick Migration**
 
 ```csharp
 // Before v2.0
 builder.Services.AddMarkdownToRazorServices("../content");
 
-// After v2.0
+// After v2.0+ (including v2.0.1)
 builder.Services.AddMarkdownToRazorServices("../content");
 ```
 
@@ -125,6 +145,8 @@ Perfect for building:
 ```bash
 dotnet add package MarkdownToRazor
 ```
+
+[![NuGet Version](https://img.shields.io/nuget/v/MarkdownToRazor?label=Latest%20Stable)](https://www.nuget.org/packages/MarkdownToRazor/) [![NuGet Downloads](https://img.shields.io/nuget/dt/MarkdownToRazor)](https://www.nuget.org/packages/MarkdownToRazor/)
 
 ### GitHub Packages (Pre-release & Latest)
 
