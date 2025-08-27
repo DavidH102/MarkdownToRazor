@@ -34,7 +34,7 @@ MarkdownToRazor is a powerful .NET library that bridges the gap between Markdown
 
 - **Package**: `MDFileToRazor` → `MarkdownToRazor`
 - **Namespaces**: `MDFileToRazor.*` → `MarkdownToRazor.*`
-- **Services**: `AddMdFileToRazorServices()` → `AddMarkdownToRazorServices()`
+- **Services**: `AddMarkdownToRazorServices()` → `AddMarkdownToRazorServices()`
 
 **Framework Support**:
 

@@ -1,0 +1,183 @@
+publish	Set up job	﻿2025-08-27T05:22:28.8213687Z Current runner version: '2.328.0'
+publish	Set up job	2025-08-27T05:22:28.8248087Z ##[group]Runner Image Provisioner
+publish	Set up job	2025-08-27T05:22:28.8249607Z Hosted Compute Agent
+publish	Set up job	2025-08-27T05:22:28.8250572Z Version: 20250825.382
+publish	Set up job	2025-08-27T05:22:28.8251533Z Commit: 7109f2abf901479dac39397456e363ac0cca0730
+publish	Set up job	2025-08-27T05:22:28.8252763Z Build Date: 2025-08-25T22:55:50Z
+publish	Set up job	2025-08-27T05:22:28.8253825Z ##[endgroup]
+publish	Set up job	2025-08-27T05:22:28.8254718Z ##[group]Operating System
+publish	Set up job	2025-08-27T05:22:28.8255788Z Ubuntu
+publish	Set up job	2025-08-27T05:22:28.8256506Z 24.04.2
+publish	Set up job	2025-08-27T05:22:28.8257211Z LTS
+publish	Set up job	2025-08-27T05:22:28.8258032Z ##[endgroup]
+publish	Set up job	2025-08-27T05:22:28.8258771Z ##[group]Runner Image
+publish	Set up job	2025-08-27T05:22:28.8259917Z Image: ubuntu-24.04
+publish	Set up job	2025-08-27T05:22:28.8260929Z Version: 20250818.1.0
+publish	Set up job	2025-08-27T05:22:28.8262648Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250818.1/images/ubuntu/Ubuntu2404-Readme.md
+publish	Set up job	2025-08-27T05:22:28.8265188Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250818.1
+publish	Set up job	2025-08-27T05:22:28.8267328Z ##[endgroup]
+publish	Set up job	2025-08-27T05:22:28.8269505Z ##[group]GITHUB_TOKEN Permissions
+publish	Set up job	2025-08-27T05:22:28.8272430Z Contents: read
+publish	Set up job	2025-08-27T05:22:28.8273446Z Metadata: read
+publish	Set up job	2025-08-27T05:22:28.8274240Z Packages: write
+publish	Set up job	2025-08-27T05:22:28.8275095Z ##[endgroup]
+publish	Set up job	2025-08-27T05:22:28.8278045Z Secret source: Actions
+publish	Set up job	2025-08-27T05:22:28.8279357Z Prepare workflow directory
+publish	Set up job	2025-08-27T05:22:28.8818974Z Prepare all required actions
+publish	Set up job	2025-08-27T05:22:28.8874115Z Getting action download info
+publish	Set up job	2025-08-27T05:22:29.1846951Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+publish	Set up job	2025-08-27T05:22:29.5201821Z Download action repository 'actions/setup-dotnet@v4' (SHA:67a3573c9a986a3f9c594539f4ab511d57bb3ce9)
+publish	Set up job	2025-08-27T05:22:29.8169737Z Download action repository 'actions/create-release@v1' (SHA:0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e)
+publish	Set up job	2025-08-27T05:22:30.0511341Z Complete job name: publish
+publish	Download build artifacts	﻿2025-08-27T05:22:30.1194798Z ##[group]Run actions/download-artifact@v4
+publish	Download build artifacts	2025-08-27T05:22:30.1195950Z with:
+publish	Download build artifacts	2025-08-27T05:22:30.1196488Z   name: nuget-packages
+publish	Download build artifacts	2025-08-27T05:22:30.1197040Z   path: ./packages
+publish	Download build artifacts	2025-08-27T05:22:30.1197558Z   merge-multiple: false
+publish	Download build artifacts	2025-08-27T05:22:30.1198154Z   repository: DavidH102/MDFileToRazor
+publish	Download build artifacts	2025-08-27T05:22:30.1199019Z   run-id: 17258070205
+publish	Download build artifacts	2025-08-27T05:22:30.1199740Z env:
+publish	Download build artifacts	2025-08-27T05:22:30.1200171Z   DOTNET_VERSION_8: 8.0.x
+publish	Download build artifacts	2025-08-27T05:22:30.1200757Z   DOTNET_VERSION_9: 9.0.x
+publish	Download build artifacts	2025-08-27T05:22:30.1201392Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+publish	Download build artifacts	2025-08-27T05:22:30.1202178Z   DOTNET_CLI_TELEMETRY_OPTOUT: true
+publish	Download build artifacts	2025-08-27T05:22:30.1202857Z ##[endgroup]
+publish	Download build artifacts	2025-08-27T05:22:30.3269553Z Downloading single artifact
+publish	Download build artifacts	2025-08-27T05:22:30.4247373Z Preparing to download the following artifacts:
+publish	Download build artifacts	2025-08-27T05:22:30.4250140Z - nuget-packages (ID: 3860317722, Size: 151169, Expected Digest: sha256:1c56cacd33ecd7d03d4ee598bc14bef1202fd01cf340bc68d16390bde709def6)
+publish	Download build artifacts	2025-08-27T05:22:30.5084497Z Redirecting to blob download url: https://productionresultssa18.blob.core.windows.net/actions-results/a52ced17-4176-4feb-aaeb-58cc7a5184d1/workflow-job-run-a452534a-d8c5-56c6-82bc-631c0e362e0d/artifacts/d93da6e17062c1172c020ce25902f61ed013c9fa285306d918531d338359a842.zip
+publish	Download build artifacts	2025-08-27T05:22:30.5090301Z Starting download of artifact to: /home/runner/work/MDFileToRazor/MDFileToRazor/packages
+publish	Download build artifacts	2025-08-27T05:22:30.5336891Z (node:1979) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+publish	Download build artifacts	2025-08-27T05:22:30.5341113Z (Use `node --trace-deprecation ...` to show where the warning was created)
+publish	Download build artifacts	2025-08-27T05:22:30.5438097Z SHA256 digest of downloaded artifact is 1c56cacd33ecd7d03d4ee598bc14bef1202fd01cf340bc68d16390bde709def6
+publish	Download build artifacts	2025-08-27T05:22:30.5440646Z Artifact download completed successfully.
+publish	Download build artifacts	2025-08-27T05:22:30.5441967Z Total of 1 artifact(s) downloaded
+publish	Download build artifacts	2025-08-27T05:22:30.5445096Z Download artifact has finished successfully
+publish	Setup .NET	﻿2025-08-27T05:22:30.5710666Z ##[group]Run actions/setup-dotnet@v4
+publish	Setup .NET	2025-08-27T05:22:30.5712183Z with:
+publish	Setup .NET	2025-08-27T05:22:30.5713049Z   dotnet-version: 8.0.x
+publish	Setup .NET	9.0.x
+publish	Setup .NET	
+publish	Setup .NET	2025-08-27T05:22:30.5714468Z   source-url: https://nuget.pkg.github.com/DavidH102/index.json
+publish	Setup .NET	2025-08-27T05:22:30.5715976Z   cache: false
+publish	Setup .NET	2025-08-27T05:22:30.5716846Z env:
+publish	Setup .NET	2025-08-27T05:22:30.5717672Z   DOTNET_VERSION_8: 8.0.x
+publish	Setup .NET	2025-08-27T05:22:30.5718702Z   DOTNET_VERSION_9: 9.0.x
+publish	Setup .NET	2025-08-27T05:22:30.5719991Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+publish	Setup .NET	2025-08-27T05:22:30.5721243Z   DOTNET_CLI_TELEMETRY_OPTOUT: true
+publish	Setup .NET	2025-08-27T05:22:30.5722898Z   NUGET_AUTH_TOKEN: ***
+publish	Setup .NET	2025-08-27T05:22:30.5723857Z ##[endgroup]
+publish	Setup .NET	2025-08-27T05:22:30.7459444Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+publish	Setup .NET	2025-08-27T05:22:31.1339956Z dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.19/dotnet-runtime-8.0.19-linux-x64.tar.gz
+publish	Setup .NET	2025-08-27T05:22:31.3807354Z dotnet-install: Remote file https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.19/dotnet-runtime-8.0.19-linux-x64.tar.gz size is 31273338 bytes.
+publish	Setup .NET	2025-08-27T05:22:31.3812974Z dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.19/dotnet-runtime-8.0.19-linux-x64.tar.gz
+publish	Setup .NET	2025-08-27T05:22:32.0102262Z dotnet-install: Downloaded file size is 31273338 bytes.
+publish	Setup .NET	2025-08-27T05:22:32.0103974Z dotnet-install: The remote and local file sizes are equal.
+publish	Setup .NET	2025-08-27T05:22:32.0386325Z dotnet-install: Installed version is 8.0.19
+publish	Setup .NET	2025-08-27T05:22:32.0445059Z dotnet-install: Adding to current process PATH: `/usr/share/dotnet`. Note: This change will be visible only when sourcing script.
+publish	Setup .NET	2025-08-27T05:22:32.0446547Z dotnet-install: Note that the script does not resolve dependencies during installation.
+publish	Setup .NET	2025-08-27T05:22:32.0448312Z dotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+publish	Setup .NET	2025-08-27T05:22:32.0449851Z dotnet-install: Installation finished successfully.
+publish	Setup .NET	2025-08-27T05:22:32.0475565Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --channel 8.0
+publish	Setup .NET	2025-08-27T05:22:32.3125837Z dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.413/dotnet-sdk-8.0.413-linux-x64.tar.gz
+publish	Setup .NET	2025-08-27T05:22:33.3380954Z dotnet-install: Remote file https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.413/dotnet-sdk-8.0.413-linux-x64.tar.gz size is 216148286 bytes.
+publish	Setup .NET	2025-08-27T05:22:33.3383499Z dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.413/dotnet-sdk-8.0.413-linux-x64.tar.gz
+publish	Setup .NET	2025-08-27T05:22:37.7791061Z dotnet-install: Downloaded file size is 216148286 bytes.
+publish	Setup .NET	2025-08-27T05:22:37.7792119Z dotnet-install: The remote and local file sizes are equal.
+publish	Setup .NET	2025-08-27T05:22:38.0377093Z dotnet-install: Installed version is 8.0.413
+publish	Setup .NET	2025-08-27T05:22:38.0439738Z dotnet-install: Adding to current process PATH: `/usr/share/dotnet`. Note: This change will be visible only when sourcing script.
+publish	Setup .NET	2025-08-27T05:22:38.0441288Z dotnet-install: Note that the script does not resolve dependencies during installation.
+publish	Setup .NET	2025-08-27T05:22:38.0442611Z dotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+publish	Setup .NET	2025-08-27T05:22:38.0443437Z dotnet-install: Installation finished successfully.
+publish	Setup .NET	2025-08-27T05:22:38.0498134Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --runtime dotnet --channel LTS
+publish	Setup .NET	2025-08-27T05:22:38.3180701Z dotnet-install: .NET Core Runtime with version '8.0.19' is already installed.
+publish	Setup .NET	2025-08-27T05:22:38.3190896Z [command]/home/runner/work/_actions/actions/setup-dotnet/v4/externals/install-dotnet.sh --skip-non-versioned-files --channel 9.0
+publish	Setup .NET	2025-08-27T05:22:38.5772683Z dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.304/dotnet-sdk-9.0.304-linux-x64.tar.gz
+publish	Setup .NET	2025-08-27T05:22:39.6966854Z dotnet-install: Remote file https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.304/dotnet-sdk-9.0.304-linux-x64.tar.gz size is 217812954 bytes.
+publish	Setup .NET	2025-08-27T05:22:39.6970925Z dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.304/dotnet-sdk-9.0.304-linux-x64.tar.gz
+publish	Setup .NET	2025-08-27T05:22:44.2003425Z dotnet-install: Downloaded file size is 217812954 bytes.
+publish	Setup .NET	2025-08-27T05:22:44.2004382Z dotnet-install: The remote and local file sizes are equal.
+publish	Setup .NET	2025-08-27T05:22:44.4597009Z dotnet-install: Installed version is 9.0.304
+publish	Setup .NET	2025-08-27T05:22:44.4653087Z dotnet-install: Adding to current process PATH: `/usr/share/dotnet`. Note: This change will be visible only when sourcing script.
+publish	Setup .NET	2025-08-27T05:22:44.4654525Z dotnet-install: Note that the script does not resolve dependencies during installation.
+publish	Setup .NET	2025-08-27T05:22:44.4656038Z dotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+publish	Setup .NET	2025-08-27T05:22:44.4657590Z dotnet-install: Installation finished successfully.
+publish	Setup .NET	2025-08-27T05:22:44.4682234Z dotnet-auth: Finding any source references in /home/runner/work/MDFileToRazor/MDFileToRazor/nuget.config, writing a new temporary configuration file with credentials to /home/runner/work/MDFileToRazor/nuget.config
+publish	Publish to GitHub Packages	﻿2025-08-27T05:22:44.4862772Z ##[group]Run for pkg in ./packages/*.nupkg; do
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4863357Z [36;1mfor pkg in ./packages/*.nupkg; do[0m
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4863803Z [36;1m  echo "Publishing $pkg to GitHub Packages"[0m
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4864763Z [36;1m  dotnet nuget push "$pkg" --source https://nuget.pkg.github.com/DavidH102/index.json --api-key *** --skip-duplicate[0m
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4865425Z [36;1mdone[0m
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4945320Z shell: /usr/bin/bash -e {0}
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4945917Z env:
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4946228Z   DOTNET_VERSION_8: 8.0.x
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4946497Z   DOTNET_VERSION_9: 9.0.x
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4946914Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4947297Z   DOTNET_CLI_TELEMETRY_OPTOUT: true
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4947688Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.4948037Z ##[endgroup]
+publish	Publish to GitHub Packages	2025-08-27T05:22:44.5035516Z Publishing ./packages/MarkdownToRazor.2.0.0.nupkg to GitHub Packages
+publish	Publish to GitHub Packages	2025-08-27T05:22:45.2254656Z Pushing MarkdownToRazor.2.0.0.nupkg to 'https://nuget.pkg.github.com/DavidH102'...
+publish	Publish to GitHub Packages	2025-08-27T05:22:45.2273304Z   PUT https://nuget.pkg.github.com/DavidH102/
+publish	Publish to GitHub Packages	2025-08-27T05:22:45.4469269Z   OK https://nuget.pkg.github.com/DavidH102/ 219ms
+publish	Publish to GitHub Packages	2025-08-27T05:22:45.4484798Z Your package was pushed.
+publish	Publish to NuGet.org	﻿2025-08-27T05:22:45.4660195Z ##[group]Run for pkg in ./packages/*.nupkg; do
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4660795Z [36;1mfor pkg in ./packages/*.nupkg; do[0m
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4661156Z [36;1m  echo "Publishing $pkg to NuGet.org"[0m
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4662145Z [36;1m  dotnet nuget push "$pkg" --source https://api.nuget.org/v3/index.json --api-key *** --skip-duplicate[0m
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4662709Z [36;1mdone[0m
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4703230Z shell: /usr/bin/bash -e {0}
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4703538Z env:
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4703813Z   DOTNET_VERSION_8: 8.0.x
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4704183Z   DOTNET_VERSION_9: 9.0.x
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4704552Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4704884Z   DOTNET_CLI_TELEMETRY_OPTOUT: true
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4705281Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4705602Z ##[endgroup]
+publish	Publish to NuGet.org	2025-08-27T05:22:45.4834907Z Publishing ./packages/MarkdownToRazor.2.0.0.nupkg to NuGet.org
+publish	Publish to NuGet.org	2025-08-27T05:22:45.8845124Z Pushing MarkdownToRazor.2.0.0.nupkg to 'https://www.nuget.org/api/v2/package'...
+publish	Publish to NuGet.org	2025-08-27T05:22:45.8866751Z   PUT https://www.nuget.org/api/v2/package/
+publish	Publish to NuGet.org	2025-08-27T05:22:46.9220020Z   Created https://www.nuget.org/api/v2/package/ 1035ms
+publish	Publish to NuGet.org	2025-08-27T05:22:46.9233633Z Your package was pushed.
+publish	Create GitHub Release (for tags)	﻿2025-08-27T05:22:46.9443293Z ##[group]Run actions/create-release@v1
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9443768Z with:
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9444062Z   tag_name: v2.0.0
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9444389Z   release_name: Release v2.0.0
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9444775Z   draft: false
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9445100Z   prerelease: false
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9448772Z   body: ## Changes in this Release
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	See the [CHANGELOG.md](CHANGELOG.md) for details.
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	## NuGet Packages
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	The following package has been published to **NuGet.org** and GitHub Packages:
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	### 📦 **Install from NuGet.org:**
+publish	Create GitHub Release (for tags)	```bash
+publish	Create GitHub Release (for tags)	dotnet add package MarkdownToRazor
+publish	Create GitHub Release (for tags)	```
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	### 🐙 **Install from GitHub Packages:**
+publish	Create GitHub Release (for tags)	```bash
+publish	Create GitHub Release (for tags)	dotnet add package MarkdownToRazor --source https://nuget.pkg.github.com/DavidH102/index.json
+publish	Create GitHub Release (for tags)	```
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	## Package Description
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	- **`MarkdownToRazor`** - Complete solution for converting Markdown files to Blazor Razor pages with runtime components, build-time code generation, and MSBuild integration
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	## Installation & Usage
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	See [README.md](README.md) for complete installation and usage instructions.
+publish	Create GitHub Release (for tags)	
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9452639Z env:
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9452909Z   DOTNET_VERSION_8: 8.0.x
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9453239Z   DOTNET_VERSION_9: 9.0.x
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9453592Z   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9454029Z   DOTNET_CLI_TELEMETRY_OPTOUT: true
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9454425Z   DOTNET_ROOT: /usr/share/dotnet
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9455046Z   GITHUB_TOKEN: ***
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:46.9455346Z ##[endgroup]
+publish	Create GitHub Release (for tags)	2025-08-27T05:22:47.1676930Z ##[error]Resource not accessible by integration
+publish	Complete job	﻿2025-08-27T05:22:47.1761806Z Cleaning up orphan processes
