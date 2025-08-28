@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RunAOTCompilation>false</RunAOTCompilation>
+        <!-- WASM-specific optimizations -->
+        <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+        <BlazorWebAssemblyPreserveTimezoneData>false</BlazorWebAssemblyPreserveTimezoneData>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <!-- Trim unused code for smaller bundle size -->
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>partial</TrimMode>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer"
+            Version="8.0.8" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MarkdownToRazor\MarkdownToRazor.csproj" />
+    </ItemGroup>
+
+    <!-- Force copy content files to output -->
+    <Target Name="CopyContentFiles" AfterTargets="Publish">
+        <ItemGroup>
+            <ContentFiles Include="wwwroot\content\**\*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(ContentFiles)"
+            DestinationFiles="@(ContentFiles->'$(PublishDir)wwwroot\content\%(RecursiveDir)%(Filename)%(Extension)')" />
+    </Target>
+
+</Project>

@@ -45,9 +45,47 @@ public static class ServiceCollectionExtensions
         // Add FluentUI components (required for styling)
         services.AddFluentUIComponents();
 
-        // Register MarkdownToRazor services
-        services.TryAddScoped<IStaticAssetService, StaticAssetService>();
-        services.TryAddScoped<IMdFileDiscoveryService, MdFileDiscoveryService>();
+        // Register StaticAssetService with factory to handle WASM vs Server scenarios
+        services.TryAddScoped<IStaticAssetService>(serviceProvider =>
+        {
+            var options = serviceProvider.GetService<IOptions<MarkdownToRazorOptions>>();
+            var hostEnvironment = serviceProvider.GetService<Microsoft.Extensions.Hosting.IHostEnvironment>();
+            var httpClient = serviceProvider.GetRequiredService<HttpClient>();
+
+            if (hostEnvironment == null)
+            {
+                // No IHostEnvironment available - we're in WASM
+                return options != null
+                    ? new WasmStaticAssetService(httpClient, options)
+                    : new WasmStaticAssetService(httpClient);
+            }
+            else
+            {
+                // Standard server-side environment
+                return options != null
+                    ? new StaticAssetService(httpClient, hostEnvironment, options)
+                    : new StaticAssetService(httpClient, hostEnvironment);
+            }
+        });
+
+        // Register discovery service with factory to handle WASM vs Server scenarios
+        services.TryAddScoped<IMdFileDiscoveryService>(serviceProvider =>
+        {
+            var options = serviceProvider.GetRequiredService<IOptions<MarkdownToRazorOptions>>();
+            var hostEnvironment = serviceProvider.GetService<Microsoft.Extensions.Hosting.IHostEnvironment>();
+
+            if (hostEnvironment == null)
+            {
+                // No IHostEnvironment available - we're in WASM
+                var httpClient = serviceProvider.GetRequiredService<HttpClient>();
+                return new WasmFileDiscoveryService(options, httpClient);
+            }
+            else
+            {
+                // Standard server-side environment
+                return new MdFileDiscoveryService(options, hostEnvironment);
+            }
+        });
         services.TryAddScoped<IGeneratedPageDiscoveryService, GeneratedPageDiscoveryService>();
 
         return services;

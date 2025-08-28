@@ -1,0 +1,221 @@
+@page "/progressive-loading"
+@using MarkdownToRazor.Components
+@using MarkdownToRazor.Services
+@inject IStaticAssetService StaticAssetService
+
+<div class="container-fluid p-4">
+    <h1>WASM Performance Demo</h1>
+    <p class="lead">This page demonstrates the WASM-optimized MarkdownToRazor library with caching and parallel loading.
+    </p>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h6>🚀 WASM Performance Features:</h6>
+                <ul class="mb-0">
+                    <li><strong>Content Caching:</strong> In-memory cache prevents repeated HTTP requests</li>
+                    <li><strong>Parallel Discovery:</strong> Concurrent file verification for faster initialization</li>
+                    <li><strong>Build Optimizations:</strong> Trimming and globalization settings reduce bundle size
+                    </li>
+                    <li><strong>Console Logging:</strong> Open browser dev tools to see cache hits and performance
+                        metrics</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Performance Documentation</h5>
+                </div>
+                <div class="card-body">
+                    @if (isLoadingPerf)
+                    {
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading performance docs...</p>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(perfContent))
+                    {
+                        <MarkdownSection Content="@perfContent" />
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Failed to load performance documentation.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Features Overview</h5>
+                </div>
+                <div class="card-body">
+                    @if (isLoadingFeatures)
+                    {
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading features...</p>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(featuresContent))
+                    {
+                        <MarkdownSection Content="@featuresContent" />
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Failed to load features documentation.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Complete Documentation</h5>
+                    <button class="btn btn-outline-primary btn-sm" @onclick="ReloadContent">
+                        🔄 Test Cache Performance
+                    </button>
+                </div>
+                <div class="card-body">
+                    @if (isLoadingDocs)
+                    {
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading documentation...</p>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(docsContent))
+                    {
+                        <MarkdownSection Content="@docsContent" />
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Failed to load documentation.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private string perfContent = string.Empty;
+    private string featuresContent = string.Empty;
+    private string docsContent = string.Empty;
+
+    private bool isLoadingPerf = true;
+    private bool isLoadingFeatures = true;
+    private bool isLoadingDocs = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAllContent();
+    }
+
+    private async Task LoadAllContent()
+    {
+        Console.WriteLine("🚀 Starting parallel content loading...");
+        var startTime = DateTime.Now;
+
+        // Load all content in parallel to demonstrate performance
+        var tasks = new[]
+        {
+LoadPerformanceContent(),
+LoadFeaturesContent(),
+LoadDocumentationContent()
+};
+
+        await Task.WhenAll(tasks);
+
+        var duration = DateTime.Now - startTime;
+        Console.WriteLine($"✅ All content loaded in {duration.TotalMilliseconds}ms");
+    }
+
+    private async Task LoadPerformanceContent()
+    {
+        try
+        {
+            Console.WriteLine("📊 Loading performance documentation...");
+            isLoadingPerf = true;
+            StateHasChanged();
+
+            perfContent = await StaticAssetService.GetAsync("content/wasm-performance.md");
+            Console.WriteLine("✅ Performance docs loaded from cache or HTTP");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error loading performance docs: {ex.Message}");
+        }
+        finally
+        {
+            isLoadingPerf = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadFeaturesContent()
+    {
+        try
+        {
+            Console.WriteLine("🔧 Loading features documentation...");
+            isLoadingFeatures = true;
+            StateHasChanged();
+
+            featuresContent = await StaticAssetService.GetAsync("content/features.md");
+            Console.WriteLine("✅ Features docs loaded from cache or HTTP");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error loading features docs: {ex.Message}");
+        }
+        finally
+        {
+            isLoadingFeatures = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadDocumentationContent()
+    {
+        try
+        {
+            Console.WriteLine("📚 Loading complete documentation...");
+            isLoadingDocs = true;
+            StateHasChanged();
+
+            docsContent = await StaticAssetService.GetAsync("content/documentation.md");
+            Console.WriteLine("✅ Complete docs loaded from cache or HTTP");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error loading documentation: {ex.Message}");
+        }
+        finally
+        {
+            isLoadingDocs = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task ReloadContent()
+    {
+        Console.WriteLine("🔄 Reloading content to test cache performance...");
+        await LoadAllContent();
+    }
+}

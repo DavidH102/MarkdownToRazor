@@ -6,7 +6,7 @@ using Markdig;
 using Microsoft.AspNetCore.Components;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Microsoft.Extensions.Hosting;
+using MarkdownToRazor.Services;
 
 namespace MarkdownToRazor.Components;
 
@@ -14,48 +14,33 @@ public partial class MarkdownSection : FluentComponentBase
 {
     private IJSObjectReference _jsModule = default!;
     private bool _markdownChanged = false;
-    private string? _content;
-    private string? _fromAsset;
+    private string? _previousContent;
+    private string? _previousFromAsset;
+    private string? _previousFilePath;
 
     [Inject]
     protected IJSRuntime JSRuntime { get; set; } = default!;
 
     [Inject]
-    private IHostEnvironment HostEnvironment { get; set; } = default!;
+    private IStaticAssetService StaticAssetService { get; set; } = default!;
 
     /// <summary>
     /// Gets or sets the Markdown content
     /// </summary>
     [Parameter]
-    public string? Content
-    {
-        get => _content;
-        set
-        {
-            if (_content is not null && !_content.Equals(value))
-            {
-                _markdownChanged = true;
-            }
-            _content = value;
-        }
-    }
+    public string? Content { get; set; }
 
     /// <summary>
     /// Gets or sets asset to read the Markdown from
     /// </summary>
     [Parameter]
-    public string? FromAsset
-    {
-        get => _fromAsset;
-        set
-        {
-            if (_fromAsset is not null && !_fromAsset.Equals(value))
-            {
-                _markdownChanged = true;
-            }
-            _fromAsset = value;
-        }
-    }
+    public string? FromAsset { get; set; }
+
+    /// <summary>
+    /// Gets or sets the file path to read the Markdown from (alias for FromAsset)
+    /// </summary>
+    [Parameter]
+    public string? FilePath { get; set; }
 
     [Parameter]
     public EventCallback OnContentConverted { get; set; }
@@ -64,9 +49,23 @@ public partial class MarkdownSection : FluentComponentBase
 
     protected override void OnInitialized()
     {
-        if (Content is null && string.IsNullOrEmpty(FromAsset))
+        if (Content is null && string.IsNullOrEmpty(FromAsset) && string.IsNullOrEmpty(FilePath))
         {
-            throw new ArgumentException("You need to provide either Content or FromAsset parameter");
+            throw new ArgumentException("You need to provide either Content, FromAsset, or FilePath parameter");
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        // Check if any content-related parameters have changed
+        if ((_previousContent != Content) ||
+            (_previousFromAsset != FromAsset) ||
+            (_previousFilePath != FilePath))
+        {
+            _markdownChanged = true;
+            _previousContent = Content;
+            _previousFromAsset = FromAsset;
+            _previousFilePath = FilePath;
         }
     }
 
@@ -98,35 +97,33 @@ public partial class MarkdownSection : FluentComponentBase
     }
 
     /// <summary>
-    /// Converts markdown, provided in Content or from markdown file stored as a static asset, to MarkupString for rendering.
+    /// Converts markdown, provided in Content or from markdown file loaded via StaticAssetService, to MarkupString for rendering.
     /// </summary>
     /// <returns>MarkupString</returns>
     private async Task<MarkupString> MarkdownToMarkupStringAsync()
     {
         string? markdown;
-        if (string.IsNullOrEmpty(FromAsset))
+        if (string.IsNullOrEmpty(FromAsset) && string.IsNullOrEmpty(FilePath))
         {
+            Console.WriteLine("MarkdownSection: Using provided Content");
             markdown = Content;
         }
         else
         {
-            var filePath = Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", FromAsset);
-            if (File.Exists(filePath))
+            // Use FilePath if provided, otherwise use FromAsset
+            var fileToLoad = !string.IsNullOrEmpty(FilePath) ? FilePath : FromAsset;
+            Console.WriteLine($"MarkdownSection: Loading file: {fileToLoad}");
+
+            markdown = await StaticAssetService.GetAsync(fileToLoad!);
+
+            if (string.IsNullOrEmpty(markdown))
             {
-                markdown = await File.ReadAllTextAsync(filePath);
+                Console.WriteLine($"MarkdownSection: File not found or empty: {fileToLoad}");
+                markdown = $"File not found: {fileToLoad}";
             }
             else
             {
-                // Try in the content root path
-                filePath = Path.Combine(HostEnvironment.ContentRootPath, "mdFilesToConvert", FromAsset);
-                if (File.Exists(filePath))
-                {
-                    markdown = await File.ReadAllTextAsync(filePath);
-                }
-                else
-                {
-                    markdown = $"File not found: {FromAsset}";
-                }
+                Console.WriteLine($"MarkdownSection: Successfully loaded {markdown.Length} characters");
             }
         }
 

@@ -1,0 +1,108 @@
+@page "/content/{FileName}"
+@using MarkdownToRazor.Services
+@using MarkdownToRazor.Components
+@inject IMdFileDiscoveryService FileDiscoveryService
+@inject IStaticAssetService StaticAssetService
+
+<PageTitle>@pageTitle</PageTitle>
+
+@if (isLoading)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else if (hasError)
+{
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">File Not Found</h4>
+        <p>The requested markdown file "@FileName" could not be found.</p>
+        <hr>
+        <p class="mb-0">Please check the URL and try again.</p>
+    </div>
+}
+else if (!string.IsNullOrEmpty(markdownContent))
+{
+    <MarkdownSection Content="@markdownContent" />
+}
+
+@code
+{
+    [Parameter] public string FileName { get; set; } = string.Empty;
+
+    private string markdownContent = string.Empty;
+    private string pageTitle = "Loading...";
+    private bool isLoading = true;
+    private bool hasError = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrEmpty(FileName))
+        {
+            hasError = true;
+            isLoading = false;
+            return;
+        }
+
+        try
+        {
+            isLoading = true;
+            hasError = false;
+
+            // Ensure the filename has .md extension
+            var fullFileName = FileName.EndsWith(".md") ? FileName : $"{FileName}.md";
+
+            // Try to load the markdown content
+            var filePath = $"content/{fullFileName}";
+            markdownContent = await StaticAssetService.GetAsync(filePath);
+
+            if (string.IsNullOrEmpty(markdownContent))
+            {
+                hasError = true;
+            }
+            else
+            {
+                // Extract title from YAML frontmatter or use filename
+                pageTitle = ExtractTitleFromContent(markdownContent) ?? FormatTitle(FileName);
+            }
+        }
+        catch (Exception)
+        {
+            hasError = true;
+            markdownContent = string.Empty;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private string? ExtractTitleFromContent(string content)
+    {
+        if (content.StartsWith("---"))
+        {
+            var lines = content.Split('\n');
+            var yamlEnd = Array.FindIndex(lines, 1, line => line.Trim() == "---");
+            if (yamlEnd > 0)
+            {
+                for (int i = 1; i < yamlEnd; i++)
+                {
+                    if (lines[i].StartsWith("title:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return lines[i].Substring(6).Trim().Trim('"', '\'');
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private string FormatTitle(string fileName)
+    {
+        // Remove .md extension and convert kebab-case to title case
+        var name = fileName.Replace(".md", "").Replace("-", " ").Replace("_", " ");
+        return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+    }
+}

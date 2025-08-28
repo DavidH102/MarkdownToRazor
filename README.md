@@ -3,7 +3,7 @@
 [![.NET](https://img.shields.io/badge/.NET-8.0%20%7C%209.0-blue)](https://dotnet.microsoft.com/download/dotnet)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![NuGet](https://img.shields.io/nuget/v/MarkdownToRazor?label=NuGet)](https://www.nuget.org/packages/MarkdownToRazor)
-[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Available-blue)](https://github.com/DavidH102/MDFileToRazor/packages)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-Available-blue)](https://github.com/DavidH102/MarkdownToRazor/packages)
 
 **Transform your Markdown files into beautiful Blazor pages with automatic routing and syntax highlighting.**
 
@@ -47,13 +47,13 @@ MarkdownToRazor is a powerful .NET library that bridges the gap between Markdown
 
 **Package Consolidation**:
 
-- **Old**: 3 separate packages (`MDFileToRazor.Components`, `MDFileToRazor.CodeGeneration`, `MDFileToRazor.MSBuild`)
+- **Old**: 3 separate packages (`MarkdownToRazor.Components`, `MarkdownToRazor.CodeGeneration`, `MarkdownToRazor.MSBuild`)
 - **New**: Single `MarkdownToRazor` package with everything included!
 
 **Modernized Naming**:
 
-- **Package**: `MDFileToRazor` → `MarkdownToRazor`
-- **Namespaces**: `MDFileToRazor.*` → `MarkdownToRazor.*`
+- **Package**: `MarkdownToRazor` → `MarkdownToRazor` (already updated)
+- **Namespaces**: `MarkdownToRazor.*` → `MarkdownToRazor.*` (already updated)
 - **Services**: `AddMarkdownToRazorServices()` → `AddMarkdownToRazorServices()`
 
 **Framework Support**:

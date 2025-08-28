@@ -6,8 +6,8 @@
         <Authors>MarkdownToRazor Team</Authors>
         <Company>MarkdownToRazor</Company>
         <Copyright>Copyright © 2025 MarkdownToRazor Team</Copyright>
-        <PackageProjectUrl>https://github.com/DavidH102/MDFileToRazor</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/DavidH102/MDFileToRazor</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/DavidH102/MarkdownToRazor</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/DavidH102/MarkdownToRazor</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

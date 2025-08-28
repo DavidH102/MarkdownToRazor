@@ -52,9 +52,9 @@ public interface IMdFileDiscoveryService
 public class MdFileDiscoveryService : IMdFileDiscoveryService
 {
     private readonly MarkdownToRazorOptions _options;
-    private readonly IHostEnvironment _hostEnvironment;
+    private readonly IHostEnvironment? _hostEnvironment;
 
-    public MdFileDiscoveryService(IOptions<MarkdownToRazorOptions> options, IHostEnvironment hostEnvironment)
+    public MdFileDiscoveryService(IOptions<MarkdownToRazorOptions> options, IHostEnvironment? hostEnvironment = null)
     {
         _options = options.Value;
         _hostEnvironment = hostEnvironment;
@@ -159,12 +159,26 @@ public class MdFileDiscoveryService : IMdFileDiscoveryService
     /// <inheritdoc />
     public string GetSourceDirectory()
     {
+        // For WASM applications, _hostEnvironment might be null
+        if (_hostEnvironment == null)
+        {
+            // In WASM, use the SourceDirectory as-is since it's relative to wwwroot
+            return _options.SourceDirectory;
+        }
+
         return _options.GetAbsoluteSourcePath(_hostEnvironment.ContentRootPath);
     }
 
     /// <inheritdoc />
     public string? GetOutputDirectory()
     {
+        // For WASM applications, _hostEnvironment might be null
+        if (_hostEnvironment == null)
+        {
+            // In WASM, output directory is not typically used (runtime-only)
+            return _options.OutputDirectory;
+        }
+
         return _options.GetAbsoluteOutputPath(_hostEnvironment.ContentRootPath);
     }
 }

@@ -7,11 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRazor", "src\MarkdownToRazor\MarkdownToRazor.csproj", "{F1E5C3A0-1234-4567-8901-123456789ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRazor.Sample.BlazorServer", "src\MDFileToRazor.Sample.BlazorServer\MDFileToRazor.Sample.BlazorServer.csproj", "{525F839A-0B56-4908-B108-52D837817FB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRazor.Sample.BlazorWasm", "src\MarkdownToRazor.Sample.BlazorWasm\MarkdownToRazor.Sample.BlazorWasm.csproj", "{525F839A-0B56-4908-B108-52D837817FB4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRazor.Tests", "tests\MDFileToRazor.Components.Tests\MDFileToRazor.Components.Tests.csproj", "{942E4740-73BA-4F1B-B1B5-23931047040A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkdownToRazor.Tests", "tests\MarkdownToRazor.Tests\MarkdownToRazor.Tests.csproj", "{942E4740-73BA-4F1B-B1B5-23931047040A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

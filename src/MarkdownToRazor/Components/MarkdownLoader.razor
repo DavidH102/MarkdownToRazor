@@ -1,0 +1,47 @@
+@using MarkdownToRazor.Components
+
+<div class="markdown-loader">
+    @if (IsLoading)
+    {
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <p>Loading content...</p>
+        </div>
+    }
+    else if (HasError)
+    {
+        <div class="error-container">
+            <p>❌ Failed to load content: @FilePath</p>
+            <button type="button" @onclick="@RetryLoad" class="retry-button">
+                Retry
+            </button>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(Content))
+    {
+        <MarkdownSection Content="@Content" />
+    }
+</div>
+
+<style>
+    .markdown-loader {
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loading-container,
+    .error-container {
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .error-container {
+        color: var(--error-color);
+    }
+
+    .error-container p {
+        margin: 1rem 0;
+    }
+</style>

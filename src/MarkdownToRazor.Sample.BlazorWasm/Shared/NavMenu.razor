@@ -1,0 +1,143 @@
+@using MarkdownToRazor.Services
+@inject IMdFileDiscoveryService FileDiscoveryService
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">MarkdownToRazor Sample</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        @* Static navigation items *@
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="explorer">
+                <span class="oi oi-folder" aria-hidden="true"></span> File Explorer
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="progressive-loading">
+                <span class="oi oi-dashboard" aria-hidden="true"></span> WASM Performance Demo
+            </NavLink>
+        </div>
+
+        @* Dynamic markdown file navigation *@
+        <hr class="nav-divider" />
+        <div class="nav-section-header px-3">
+            <small class="text-muted">Markdown Content</small>
+        </div>
+
+        @if (markdownRoutes != null && markdownRoutes.Any())
+        {
+            @foreach (var route in markdownRoutes.OrderBy(r => GetDisplayOrder(r.Key)))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="@($"content/{route.Key.Replace(".md", "")}")">
+                        <span class="@GetIconForFile(route.Key)" aria-hidden="true"></span> @FormatDisplayName(route.Key)
+                    </NavLink>
+                </div>
+            }
+        }
+        else if (isLoadingRoutes)
+        {
+            <div class="nav-item px-3">
+                <span class="text-muted">
+                    <span class="spinner-border spinner-border-sm" role="status"></span> Loading content...
+                </span>
+            </div>
+        }
+        else if (hasRoutesError)
+        {
+            <div class="nav-item px-3">
+                <span class="text-danger">
+                    <span class="oi oi-warning" aria-hidden="true"></span> Error loading content
+                </span>
+            </div>
+        }
+    </nav>
+</div>
+
+@code
+{
+    private bool collapseNavMenu = true;
+    private Dictionary<string, string>? markdownRoutes = null;
+    private bool isLoadingRoutes = false;
+    private bool hasRoutesError = false;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMarkdownRoutes();
+    }
+
+    private async Task LoadMarkdownRoutes()
+    {
+        try
+        {
+            isLoadingRoutes = true;
+            hasRoutesError = false;
+            markdownRoutes = await FileDiscoveryService.DiscoverMarkdownFilesWithRoutesAsync();
+        }
+        catch (Exception ex)
+        {
+            hasRoutesError = true;
+            Console.WriteLine($"Error loading markdown routes: {ex.Message}");
+        }
+        finally
+        {
+            isLoadingRoutes = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private string FormatDisplayName(string fileName)
+    {
+        // Remove .md extension and convert kebab-case to title case
+        var name = fileName.Replace(".md", "").Replace("-", " ").Replace("_", " ");
+        return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+    }
+
+    private string GetIconForFile(string fileName)
+    {
+        return fileName.ToLower() switch
+        {
+            var f when f.Contains("getting-started") => "oi oi-book",
+            var f when f.Contains("documentation") => "oi oi-document",
+            var f when f.Contains("features") => "oi oi-star",
+            var f when f.Contains("guide") => "oi oi-compass",
+            var f when f.Contains("tutorial") => "oi oi-play-circle",
+            var f when f.Contains("api") => "oi oi-code",
+            _ => "oi oi-file"
+        };
+    }
+
+    private int GetDisplayOrder(string fileName)
+    {
+        return fileName.ToLower() switch
+        {
+            var f when f.Contains("getting-started") => 1,
+            var f when f.Contains("documentation") => 2,
+            var f when f.Contains("features") => 3,
+            var f when f.Contains("guide") => 4,
+            var f when f.Contains("tutorial") => 5,
+            var f when f.Contains("api") => 6,
+            _ => 99
+        };
+    }
+}

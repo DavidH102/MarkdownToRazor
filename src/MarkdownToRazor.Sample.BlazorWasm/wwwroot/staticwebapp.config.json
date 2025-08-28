@@ -1,0 +1,22 @@
+{
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": [
+            "/_framework/*",
+            "/css/*",
+            "/content/*",
+            "*.{css,scss,js,png,gif,ico,jpg,svg}"
+        ]
+    },
+    "mimeTypes": {
+        ".md": "text/markdown"
+    },
+    "routes": [
+        {
+            "route": "/content/*",
+            "headers": {
+                "Cache-Control": "public, max-age=86400"
+            }
+        }
+    ]
+}
