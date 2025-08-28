@@ -20,9 +20,10 @@ public class MarkdownSectionUiTests : TestContext
         // Register required services for component testing
         Services.AddSingleton<IStaticAssetService, TestStaticAssetService>();
         Services.AddLogging();
-
-        // Mock IJSRuntime for component initialization
-        var jsRuntime = Services.AddMockJSRuntime();
+        
+        // Mock JSRuntime for Blazor components that use JavaScript
+        JSInterop.SetupVoid("highlight", _ => true);
+        JSInterop.SetupVoid("attachCopyHandlers", _ => true);
     }
 
     [Fact]
@@ -181,16 +182,29 @@ Configure your markdown processing options.
 Use the provided Blazor components."
     };
 
-    public async Task<string> LoadAssetAsync(string assetPath)
+    public async Task<string?> GetAsync(string path)
     {
         await Task.Delay(1); // Simulate async operation
 
-        if (_testFiles.TryGetValue(assetPath, out var content))
+        if (_testFiles.TryGetValue(path, out var content))
         {
             return content;
         }
 
-        throw new FileNotFoundException($"Asset not found: {assetPath}");
+        return null; // Return null for not found
+    }
+
+    public async Task<string?> GetMarkdownAsync(string relativePath)
+    {
+        // For test purposes, delegate to GetAsync
+        return await GetAsync(relativePath);
+    }
+
+    // Legacy methods for backward compatibility
+    public async Task<string> LoadAssetAsync(string assetPath)
+    {
+        var result = await GetAsync(assetPath);
+        return result ?? throw new FileNotFoundException($"Asset not found: {assetPath}");
     }
 
     public async Task<bool> AssetExistsAsync(string assetPath)

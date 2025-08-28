@@ -9,45 +9,49 @@ using System.Text;
 namespace MarkdownToRazor.Tests.Integration;
 
 /// <summary>
-/// Integration tests for sample pages to ensure proper FilePath usage
-/// Validates that sample pages use correct content paths and render properly
+/// Integration tests for sample pages to ensure proper service-only usage in WASM
+/// Validates that WASM sample follows service-only pattern without components
 /// </summary>
-public class SamplePageValidationTests : TestContext
+public class SamplePageValidationTests
 {
-    public SamplePageValidationTests()
+    [Fact]
+    public void WasmSample_UsesServiceOnlyApproach()
     {
-        // Register required services
-        Services.AddSingleton<IStaticAssetService, TestStaticAssetService>();
-        Services.AddLogging();
-        Services.AddMockJSRuntime();
-    }
+        // WASM sample should NOT contain any MarkdownSection components
+        // It should only demonstrate the service-based approach for navigation
 
-    [Theory]
-    [InlineData("Features", "content/features.md")]
-    [InlineData("GettingStarted", "content/getting-started.md")]
-    [InlineData("Documentation", "content/documentation.md")]
-    public void SamplePages_UseCorrectContentPaths(string pageName, string expectedPath)
-    {
-        // This test ensures sample pages use proper FilePath format
-        // with "content/" prefix, not relative paths like "features.md"
+        var samplePagesDir = "h:\\MDFIleTORazor\\src\\MarkdownToRazor.Sample.BlazorWasm\\Pages";
+        
+        if (!Directory.Exists(samplePagesDir))
+        {
+            Assert.Fail($"Sample pages directory not found: {samplePagesDir}");
+            return;
+        }
 
-        var pageFilePath = $"h:\\MDFIleTORazor\\src\\MarkdownToRazor.Sample.BlazorWasm\\Pages\\{pageName}.razor";
+        var pageFiles = Directory.GetFiles(samplePagesDir, "*.razor", SearchOption.TopDirectoryOnly);
 
-        // Read the actual page file content
-        var pageContent = File.ReadAllText(pageFilePath);
+        foreach (var pageFile in pageFiles)
+        {
+            var content = File.ReadAllText(pageFile);
+            var fileName = Path.GetFileName(pageFile);
 
-        // Assert correct FilePath usage
-        Assert.Contains($"FilePath=\"{expectedPath}\"", pageContent);
-
-        // Assert INCORRECT usage is NOT present
-        var incorrectPath = expectedPath.Replace("content/", "");
-        Assert.DoesNotContain($"FilePath=\"{incorrectPath}\"", pageContent);
+            // WASM sample should NOT use MarkdownSection components (actual component usage)
+            Assert.DoesNotContain("<MarkdownSection", content);
+            Assert.DoesNotContain("@using MarkdownToRazor.Components", content);
+        }
     }
 
     [Fact]
-    public void AllSamplePages_HaveValidPageDirectives()
+    public void WasmSample_HasValidPageStructure()
     {
         var samplePagesDir = "h:\\MDFIleTORazor\\src\\MarkdownToRazor.Sample.BlazorWasm\\Pages";
+        
+        if (!Directory.Exists(samplePagesDir))
+        {
+            Assert.Fail($"Sample pages directory not found: {samplePagesDir}");
+            return;
+        }
+        
         var pageFiles = Directory.GetFiles(samplePagesDir, "*.razor", SearchOption.TopDirectoryOnly);
 
         foreach (var pageFile in pageFiles)
@@ -62,29 +66,35 @@ public class SamplePageValidationTests : TestContext
             // Ensure page has proper route directive
             Assert.Contains("@page", content);
 
-            // If it uses MarkdownSection with FilePath, ensure proper format
-            if (content.Contains("MarkdownSection") && content.Contains("FilePath="))
+            // WASM pages should focus on service demonstration, not component usage
+            if (fileName.Equals("Index", StringComparison.OrdinalIgnoreCase))
             {
-                // Must use content/ prefix for WASM compatibility
-                Assert.Contains("FilePath=\"content/", content);
+                // Index should explain the service-only approach
+                Assert.Contains("IMdFileDiscoveryService", content);
             }
         }
     }
 
     [Fact]
-    public void NoSamplePages_UseRelativeFilePaths()
+    public void WasmSample_DoesNotUseProblematicPatterns()
     {
-        // Validates that no sample pages use problematic relative paths
+        // Validates that WASM sample does not use component-based patterns
         var samplePagesDir = "h:\\MDFIleTORazor\\src\\MarkdownToRazor.Sample.BlazorWasm\\Pages";
+        
+        if (!Directory.Exists(samplePagesDir))
+        {
+            Assert.Fail($"Sample pages directory not found: {samplePagesDir}");
+            return;
+        }
+        
         var pageFiles = Directory.GetFiles(samplePagesDir, "*.razor", SearchOption.TopDirectoryOnly);
 
-        var invalidPatterns = new[]
+        var prohibitedPatterns = new[]
         {
-            "FilePath=\"features.md\"",
-            "FilePath=\"getting-started.md\"",
-            "FilePath=\"documentation.md\"",
-            "FilePath=\"../",
-            "FilePath=\"./"
+            "<MarkdownSection",    // Component usage
+            "<MarkdownFileExplorer",   // Component usage
+            "FilePath=\"",         // Component property usage
+            "@using MarkdownToRazor.Components"   // Component namespace import
         };
 
         foreach (var pageFile in pageFiles)
@@ -92,44 +102,31 @@ public class SamplePageValidationTests : TestContext
             var content = File.ReadAllText(pageFile);
             var fileName = Path.GetFileName(pageFile);
 
-            foreach (var invalidPattern in invalidPatterns)
+            foreach (var prohibitedPattern in prohibitedPatterns)
             {
-                Assert.DoesNotContain(invalidPattern, content,
-                    $"Page {fileName} contains invalid FilePath pattern: {invalidPattern}");
+                Assert.DoesNotContain(prohibitedPattern, content);
             }
         }
     }
 
     [Fact]
-    public void SamplePages_ComponentsCanRender()
+    public void WasmSample_NavMenuUsesServicePattern()
     {
-        // Test that sample pages can actually render their MarkdownSection components
-        var testCases = new[]
+        // Test that NavMenu uses IMdFileDiscoveryService for navigation generation
+        var navMenuPath = "h:\\MDFIleTORazor\\src\\MarkdownToRazor.Sample.BlazorWasm\\Shared\\NavMenu.razor";
+        
+        if (File.Exists(navMenuPath))
         {
-            ("Features", "content/features.md"),
-            ("GettingStarted", "content/getting-started.md"),
-            ("Documentation", "content/documentation.md")
-        };
-
-        foreach (var (pageName, expectedPath) in testCases)
-        {
-            try
-            {
-                // Create a test component that mimics the sample page
-                var component = RenderComponent<MarkdownToRazor.Components.MarkdownSection>(parameters => parameters
-                    .Add(p => p.FilePath, expectedPath));
-
-                // Should render without throwing
-                Assert.NotNull(component);
-                var markup = component.Markup;
-
-                // Should contain markdown content div
-                Assert.Contains("markdown-content", markup);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false, $"Sample page {pageName} component failed to render: {ex.Message}");
-            }
+            var content = File.ReadAllText(navMenuPath);
+            
+            // Should use the discovery service
+            Assert.Contains("IMdFileDiscoveryService", content);
+            Assert.Contains("DiscoverMarkdownFilesWithRoutesAsync", content);
+            
+            // Should NOT have static links to removed pages
+            Assert.DoesNotContain("href=\"Documentation\"", content);
+            Assert.DoesNotContain("href=\"Features\"", content);
+            Assert.DoesNotContain("href=\"GettingStarted\"", content);
         }
     }
 }
@@ -182,16 +179,29 @@ Complete documentation for MarkdownToRazor.
 Use the MarkdownSection component properly."
     };
 
-    public async Task<string> LoadAssetAsync(string assetPath)
+    public async Task<string?> GetAsync(string path)
     {
         await Task.Delay(1); // Simulate async operation
 
-        if (_assets.TryGetValue(assetPath, out var content))
+        if (_assets.TryGetValue(path, out var content))
         {
             return content;
         }
 
-        throw new FileNotFoundException($"Test asset not found: {assetPath}");
+        return null; // Return null for not found instead of throwing
+    }
+
+    public async Task<string?> GetMarkdownAsync(string relativePath)
+    {
+        // For test purposes, delegate to GetAsync
+        return await GetAsync(relativePath);
+    }
+
+    // Legacy methods for backward compatibility with existing tests
+    public async Task<string> LoadAssetAsync(string assetPath)
+    {
+        var result = await GetAsync(assetPath);
+        return result ?? throw new FileNotFoundException($"Test asset not found: {assetPath}");
     }
 
     public async Task<bool> AssetExistsAsync(string assetPath)
