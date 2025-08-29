@@ -96,6 +96,14 @@ Thumbs.db
 .env.test.local
 .env.production.local
 
-# Temporary files
+# Temporary files and development notes
 *.tmp
 *.temp
+*.bak
+*.old
+*_SUMMARY.md
+*_CHANGES.md
+*_IMPROVEMENTS.md
+github-issue-body.md
+job_log.txt
+publish_log.txt
