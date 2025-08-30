@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 env:
   DOTNET_VERSION_8: "8.0.x"
@@ -33,9 +32,6 @@ jobs:
           dotnet-version: |
             ${{ env.DOTNET_VERSION_8 }}
             ${{ env.DOTNET_VERSION_9 }}
-          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.10.2
@@ -97,16 +93,6 @@ jobs:
           dotnet-version: |
             ${{ env.DOTNET_VERSION_8 }}
             ${{ env.DOTNET_VERSION_9 }}
-          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to GitHub Packages
-        run: |
-          for pkg in ./packages/*.nupkg; do
-            echo "Publishing $pkg to GitHub Packages"
-            dotnet nuget push "$pkg" --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
-          done
 
       - name: Publish to NuGet.org
         if: startsWith(github.ref, 'refs/tags/v')
@@ -131,18 +117,13 @@ jobs:
 
             See the [CHANGELOG.md](CHANGELOG.md) for details.
 
-            ## NuGet Packages
+            ## NuGet Package
 
-            The following package has been published to **NuGet.org** and GitHub Packages:
+            The following package has been published to **NuGet.org**:
 
             ### 📦 **Install from NuGet.org:**
             ```bash
             dotnet add package MarkdownToRazor
-            ```
-
-            ### 🐙 **Install from GitHub Packages:**
-            ```bash
-            dotnet add package MarkdownToRazor --source https://nuget.pkg.github.com/DavidH102/index.json
             ```
 
             ## Package Description
