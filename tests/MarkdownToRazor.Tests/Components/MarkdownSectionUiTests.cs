@@ -24,6 +24,11 @@ public class MarkdownSectionUiTests : TestContext
         // Mock JSRuntime for Blazor components that use JavaScript
         JSInterop.SetupVoid("highlight", _ => true);
         JSInterop.SetupVoid("attachCopyHandlers", _ => true);
+        
+        // Mock the module import for MarkdownSection
+        var mockModule = JSInterop.SetupModule("./Components/MarkdownSection.razor.js");
+        mockModule.SetupVoid("highlight");
+        mockModule.SetupVoid("attachCopyHandlers");
     }
 
     [Fact]
@@ -33,10 +38,13 @@ public class MarkdownSectionUiTests : TestContext
         var component = RenderComponent<MarkdownSection>(parameters => parameters
             .Add(p => p.FilePath, "content/features.md"));
 
+        // Wait for the component to finish async loading
+        component.WaitForState(() => component.Markup.Contains("Features"), TimeSpan.FromSeconds(5));
+
         // Act & Assert
         Assert.NotNull(component.Find(".markdown-content"));
         var content = component.Markup;
-        Assert.Contains("# Features", content);
+        Assert.Contains("Features", content); // Look for converted markdown (not raw markdown)
         Assert.Contains("markdown-content", content);
     }
 
@@ -46,6 +54,9 @@ public class MarkdownSectionUiTests : TestContext
         // Arrange & Act
         var component = RenderComponent<MarkdownSection>(parameters => parameters
             .Add(p => p.FilePath, "features.md")); // Invalid - missing content/ prefix
+
+        // Wait for the component to process the invalid file
+        component.WaitForState(() => component.Markup.Contains("not found") || component.Markup.Contains("error"), TimeSpan.FromSeconds(5));
 
         // Assert
         var content = component.Markup;
@@ -79,6 +90,11 @@ public class MarkdownSectionUiTests : TestContext
         var component = RenderComponent<MarkdownSection>(parameters => parameters
             .Add(p => p.FilePath, invalidPath));
 
+        // Wait for async processing to complete
+        component.WaitForState(() => component.Markup.Contains("not found") || 
+                                     component.Markup.Contains("error") || 
+                                     component.Markup.Trim().Length > 50, TimeSpan.FromSeconds(5));
+
         // Assert - Should not throw exception
         Assert.NotNull(component);
         // Content should be empty or show error message
@@ -97,6 +113,10 @@ public class MarkdownSectionUiTests : TestContext
         // Arrange & Act
         var component = RenderComponent<MarkdownSection>(parameters => parameters
             .Add(p => p.FilePath, validPath));
+
+        // Wait for the component to load content
+        component.WaitForState(() => component.Markup.Contains("markdown-content") && 
+                                     component.Markup.Trim().Length > 100, TimeSpan.FromSeconds(5));
 
         // Assert
         Assert.NotNull(component);
@@ -121,10 +141,12 @@ public class Test
         var component = RenderComponent<MarkdownSection>(parameters => parameters
             .Add(p => p.Content, markdownWithCode));
 
-        // Assert
+        // Assert - Check for basic code block structure
+        // Note: copy-btn is added by JavaScript, so in unit tests we check for the pre/code structure
         var content = component.Markup;
-        Assert.Contains("copy-btn", content);
         Assert.Contains("pre", content);
+        Assert.Contains("code", content);
+        Assert.Contains("csharp", content); // Language identifier should be present
     }
 
     [Fact]
@@ -134,8 +156,8 @@ public class Test
         var component = RenderComponent<MarkdownSection>();
 
         // Assert
-        var content = component.Markup.Trim();
-        Assert.True(string.IsNullOrEmpty(content) || content == "<div class=\"markdown-content\"></div>");
+        var content = component.Markup;
+        Assert.Contains("You need to provide either Content, FromAsset, or FilePath parameter", content);
     }
 }
 

@@ -16,5 +16,7 @@ internal class MarkdownSectionPreCodeRendererOptions
     /// <summary>
     /// html attributes for Code element in markdig generic attributes format
     /// </summary>
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
     public string? CodeTagAttributes;
+#pragma warning restore CS0649
 }
