@@ -22,7 +22,7 @@ public class SamplePageValidationTests
 
         var basePath = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Environment.CurrentDirectory)));
         var samplePagesDir = Path.Combine(basePath!, "src", "MarkdownToRazor.Sample.BlazorWasm", "Pages");
-        
+
         if (!Directory.Exists(samplePagesDir))
         {
             // Skip test if sample directory doesn't exist (e.g., in CI)
@@ -47,13 +47,13 @@ public class SamplePageValidationTests
     {
         var basePath = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Environment.CurrentDirectory)));
         var samplePagesDir = Path.Combine(basePath!, "src", "MarkdownToRazor.Sample.BlazorWasm", "Pages");
-        
+
         if (!Directory.Exists(samplePagesDir))
         {
             // Skip test if sample directory doesn't exist (e.g., in CI)
             return;
         }
-        
+
         var pageFiles = Directory.GetFiles(samplePagesDir, "*.razor", SearchOption.TopDirectoryOnly);
 
         foreach (var pageFile in pageFiles)
@@ -83,13 +83,13 @@ public class SamplePageValidationTests
         // Validates that WASM sample does not use component-based patterns
         var basePath = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Environment.CurrentDirectory)));
         var samplePagesDir = Path.Combine(basePath!, "src", "MarkdownToRazor.Sample.BlazorWasm", "Pages");
-        
+
         if (!Directory.Exists(samplePagesDir))
         {
             // Skip test if sample directory doesn't exist (e.g., in CI)
             return;
         }
-        
+
         var pageFiles = Directory.GetFiles(samplePagesDir, "*.razor", SearchOption.TopDirectoryOnly);
 
         var prohibitedPatterns = new[]
@@ -117,15 +117,15 @@ public class SamplePageValidationTests
     {
         // Test that NavMenu uses IMdFileDiscoveryService for navigation generation
         var navMenuPath = "h:\\MDFIleTORazor\\src\\MarkdownToRazor.Sample.BlazorWasm\\Shared\\NavMenu.razor";
-        
+
         if (File.Exists(navMenuPath))
         {
             var content = File.ReadAllText(navMenuPath);
-            
+
             // Should use the discovery service
             Assert.Contains("IMdFileDiscoveryService", content);
             Assert.Contains("DiscoverMarkdownFilesWithRoutesAsync", content);
-            
+
             // Should NOT have static links to removed pages
             Assert.DoesNotContain("href=\"Documentation\"", content);
             Assert.DoesNotContain("href=\"Features\"", content);

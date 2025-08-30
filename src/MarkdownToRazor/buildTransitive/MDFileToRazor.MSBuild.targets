@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <!-- Import the targets from the build directory -->
-    <Import Project="MarkdownToRazor.targets" />
+    <Import Project="../build/MarkdownToRazor.targets" />
 </Project>

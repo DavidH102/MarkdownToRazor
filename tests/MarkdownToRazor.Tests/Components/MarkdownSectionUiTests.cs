@@ -20,11 +20,11 @@ public class MarkdownSectionUiTests : TestContext
         // Register required services for component testing
         Services.AddSingleton<IStaticAssetService, TestStaticAssetService>();
         Services.AddLogging();
-        
+
         // Mock JSRuntime for Blazor components that use JavaScript
         JSInterop.SetupVoid("highlight", _ => true);
         JSInterop.SetupVoid("attachCopyHandlers", _ => true);
-        
+
         // Mock the module import for MarkdownSection
         var mockModule = JSInterop.SetupModule("./Components/MarkdownSection.razor.js");
         mockModule.SetupVoid("highlight");
@@ -91,8 +91,8 @@ public class MarkdownSectionUiTests : TestContext
             .Add(p => p.FilePath, invalidPath));
 
         // Wait for async processing to complete
-        component.WaitForState(() => component.Markup.Contains("not found") || 
-                                     component.Markup.Contains("error") || 
+        component.WaitForState(() => component.Markup.Contains("not found") ||
+                                     component.Markup.Contains("error") ||
                                      component.Markup.Trim().Length > 50, TimeSpan.FromSeconds(5));
 
         // Assert - Should not throw exception
@@ -115,7 +115,7 @@ public class MarkdownSectionUiTests : TestContext
             .Add(p => p.FilePath, validPath));
 
         // Wait for the component to load content
-        component.WaitForState(() => component.Markup.Contains("markdown-content") && 
+        component.WaitForState(() => component.Markup.Contains("markdown-content") &&
                                      component.Markup.Trim().Length > 100, TimeSpan.FromSeconds(5));
 
         // Assert
