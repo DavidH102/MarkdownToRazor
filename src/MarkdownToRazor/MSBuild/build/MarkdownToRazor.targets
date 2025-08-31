@@ -3,15 +3,15 @@
 
     <PropertyGroup>
         <MarkdownToRazor_MSBuildTasksPath Condition="'$(MarkdownToRazor_MSBuildTasksPath)' == ''">
-            $(MSBuildThisFileDirectory)../tasks/net8.0</MarkdownToRazor_MSBuildTasksPath>
+            $([System.IO.Path]::Combine('$(MSBuildThisFileDirectory)', '..', 'tasks', 'net8.0'))</MarkdownToRazor_MSBuildTasksPath>
         <MarkdownSourceDirectory Condition="'$(MarkdownSourceDirectory)' == ''">
-            $(MSBuildProjectDirectory)/MDFilesToConvert</MarkdownSourceDirectory>
+            $([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', 'MDFilesToConvert'))</MarkdownSourceDirectory>
         <GeneratedPagesDirectory Condition="'$(GeneratedPagesDirectory)' == ''">
-            $(MSBuildProjectDirectory)/Pages/Generated</GeneratedPagesDirectory>
+            $([System.IO.Path]::Combine('$(MSBuildProjectDirectory)', 'Pages', 'Generated'))</GeneratedPagesDirectory>
     </PropertyGroup>
 
     <UsingTask TaskName="GenerateMarkdownPagesTask"
-        AssemblyFile="$(MarkdownToRazor_MSBuildTasksPath)/MarkdownToRazor.dll" />
+        AssemblyFile="$([System.IO.Path]::Combine('$(MarkdownToRazor_MSBuildTasksPath)', 'MarkdownToRazor.dll'))" />
 
     <!-- Target to generate Razor pages from Markdown files -->
     <Target Name="GenerateMarkdownPages" BeforeTargets="CoreCompile">
@@ -35,15 +35,15 @@
 
         <!-- Include generated pages in compilation -->
         <ItemGroup Condition="'$(ShouldGeneratePages)' == 'true'">
-            <Compile Include="$(GeneratedPagesDirectory)/**/*.razor.cs" />
-            <Content Include="$(GeneratedPagesDirectory)/**/*.razor" />
+            <Compile Include="$(GeneratedPagesDirectory)\**\*.razor.cs" />
+            <Content Include="$(GeneratedPagesDirectory)\**\*.razor" />
         </ItemGroup>
     </Target>
 
     <!-- Target to clean generated files -->
     <Target Name="CleanGeneratedPages" BeforeTargets="BeforeClean">
         <ItemGroup>
-            <GeneratedFiles Include="$(GeneratedPagesDirectory)/**/*" />
+            <GeneratedFiles Include="$(GeneratedPagesDirectory)\**\*" />
         </ItemGroup>
         <Delete Files="@(GeneratedFiles)" Condition="Exists('$(GeneratedPagesDirectory)')" />
         <RemoveDir Directories="$(GeneratedPagesDirectory)"
