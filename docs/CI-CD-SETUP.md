@@ -1,32 +1,49 @@
 # CI/CD Pipeline Setup
 
-This document explains the complete CI/CD pipeline setup for MarkdownToRazor using GitHub Actions and GitHub Packages.
+This document explains the complete CI/CD pipeline setup for MarkdownToRazor using GitHub Actions for automated building, testing, and publishing to NuGet.org.
+
+## 🚀 Quick Release Process
+
+**To release a new version:**
+```bash
+# 1. Make your changes and commit with semantic versioning
+git commit -m "fix: resolve critical issue +semver: patch"
+
+# 2. Push to main
+git push
+
+# 3. Create and push a version tag to trigger NuGet publishing
+git tag v2.1.1  # Use the version GitVersion calculated
+git push origin v2.1.1
+```
+
+**That's it!** The CI/CD pipeline will automatically build, test, and publish to NuGet.org.
 
 ## Overview
 
-The project uses GitHub Actions for automated building, testing, and publishing of NuGet packages to GitHub Packages. The pipeline includes:
+The project uses GitHub Actions for automated building, testing, and publishing of NuGet packages to **NuGet.org**. The pipeline includes:
 
 - **Automated versioning** using GitVersion
-- **Build and test** all projects
-- **Package generation** for all three NuGet packages
-- **Publishing to GitHub Packages** for private distribution
-- **Branch-based deployment strategies**
+- **Build and test** on every push/PR
+- **Package generation** for the MarkdownToRazor package  
+- **Publishing to NuGet.org** ONLY when version tags are pushed
+- **GitHub releases** with automatic release notes
 
 ## Pipeline Components
 
 ### GitHub Actions Workflow
 
-**File:** `.github/workflows/build-and-publish.yml`
+**File:** `.github/workflows/ci-cd-release.yml`
 
 The workflow is triggered by:
 
-- Pushes to `main` and `develop` branches
-- Git tags (for releases)
+- Pushes to `main` and `develop` branches (build & test only)
+- Git tags starting with `v*.*.*` (build, test & publish to NuGet)
 - Pull requests (build and test only)
 
-**Build Job:**
+**Build & Test Job (runs on all pushes/PRs):**
 
-1. Sets up .NET 8.0
+1. Sets up .NET 8.0 and 9.0
 2. Installs GitVersion tool
 3. Determines version from Git history
 4. Restores dependencies
@@ -35,11 +52,12 @@ The workflow is triggered by:
 7. Creates NuGet packages
 8. Uploads packages as artifacts
 
-**Publish Job:**
+**Publish Job (only runs on version tags):**
 
 1. Downloads build artifacts
-2. Publishes packages to GitHub Packages
-3. Requires GitHub token with `packages:write` permission
+2. Publishes packages to **NuGet.org** (not GitHub Packages)
+3. Creates GitHub release with automated release notes
+4. Requires `NUGET_API_KEY` secret for NuGet.org authentication
 
 ### Semantic Versioning
 
