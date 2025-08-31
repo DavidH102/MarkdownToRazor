@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <!-- Import the targets from the build directory -->
-    <Import Project="../build/MarkdownToRazor.targets" />
+
+    <PropertyGroup>
+        <MarkdownToRazor_MSBuildTasksPath Condition="'$(MarkdownToRazor_MSBuildTasksPath)' == ''">
+            $(MSBuildThisFileDirectory)../tasks/net8.0</MarkdownToRazor_MSBuildTasksPath>
+        <MarkdownSourceDirectory Condition="'$(MarkdownSourceDirectory)' == ''">
+            $(MSBuildProjectDirectory)/MDFilesToConvert</MarkdownSourceDirectory>
+        <GeneratedPagesDirectory Condition="'$(GeneratedPagesDirectory)' == ''">
+            $(MSBuildProjectDirectory)/Pages/Generated</GeneratedPagesDirectory>
+    </PropertyGroup>
+
+    <UsingTask TaskName="GenerateMarkdownPagesTask"
+        AssemblyFile="$(MarkdownToRazor_MSBuildTasksPath)/MarkdownToRazor.dll" />
+
+    <!-- Target to generate Razor pages from Markdown files -->
+    <Target Name="GenerateMarkdownPages" BeforeTargets="CoreCompile">
+        <Message Text="Checking for markdown files in: $(MarkdownSourceDirectory)"
+            Importance="normal" />
+
+        <!-- Only run if markdown source directory exists -->
+        <PropertyGroup>
+            <ShouldGeneratePages Condition="Exists('$(MarkdownSourceDirectory)')">true</ShouldGeneratePages>
+        </PropertyGroup>
+
+        <!-- Create output directory if it doesn't exist -->
+        <MakeDir Directories="$(GeneratedPagesDirectory)"
+            Condition="'$(ShouldGeneratePages)' == 'true'" />
+
+        <!-- Generate pages -->
+        <GenerateMarkdownPagesTask
+            SourceDirectory="$(MarkdownSourceDirectory)"
+            OutputDirectory="$(GeneratedPagesDirectory)"
+            Condition="'$(ShouldGeneratePages)' == 'true'" />
+
+        <!-- Include generated pages in compilation -->
+        <ItemGroup Condition="'$(ShouldGeneratePages)' == 'true'">
+            <Compile Include="$(GeneratedPagesDirectory)/**/*.razor.cs" />
+            <Content Include="$(GeneratedPagesDirectory)/**/*.razor" />
+        </ItemGroup>
+    </Target>
+
+    <!-- Target to clean generated files -->
+    <Target Name="CleanGeneratedPages" BeforeTargets="BeforeClean">
+        <ItemGroup>
+            <GeneratedFiles Include="$(GeneratedPagesDirectory)/**/*" />
+        </ItemGroup>
+        <Delete Files="@(GeneratedFiles)" Condition="Exists('$(GeneratedPagesDirectory)')" />
+        <RemoveDir Directories="$(GeneratedPagesDirectory)"
+            Condition="Exists('$(GeneratedPagesDirectory)')" />
+    </Target>
+
 </Project>
