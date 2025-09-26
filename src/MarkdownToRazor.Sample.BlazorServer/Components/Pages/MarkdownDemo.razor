@@ -1,0 +1,198 @@
+@page "/markdown-demo"
+@using MarkdownToRazor.Services
+@inject IMdFileDiscoveryService MdFileDiscovery
+@inject ILogger<MarkdownDemo> Logger
+
+@* Using page title in h1 instead of PageTitle component *@
+
+<h1>Markdown File Discovery Demo</h1>
+
+<p>This page demonstrates the injected <code>IMdFileDiscoveryService</code> discovering markdown files from the configured source directory.</p>
+
+@if (isLoading)
+{
+    <div class="alert alert-info">
+        <strong>Loading...</strong> Discovering markdown files...
+    </div>
+}
+else if (discoveredFiles.Any())
+{
+    <div class="alert alert-success">
+        <strong>Success!</strong> Found @discoveredFiles.Count markdown files.
+    </div>
+
+    <h3>Discovered Markdown Files</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>File Path</th>
+                        <th>Generated Route</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var filePath in discoveredFiles)
+                    {
+                        <tr>
+                            <td><code>@filePath</code></td>
+                            <td>
+                                @{
+                                    var fileName = System.IO.Path.GetFileName(filePath);
+                                    var route = fileRoutes.ContainsKey(fileName) ? fileRoutes[fileName] : "No route";
+                                }
+                                @if (route != "No route")
+                                {
+                                    <a href="@route" class="btn btn-sm btn-outline-primary">@route</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">@route</span>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-info" @onclick="() => ShowFileDetails(filePath)">
+                                    Details
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (selectedFile != null)
+    {
+        <div class="mt-4">
+            <h4>File Details</h4>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@System.IO.Path.GetFileName(selectedFile)</h5>
+                    <p class="card-text">
+                        <strong>Full Path:</strong> <code>@selectedFile</code><br/>
+                        <strong>File Name:</strong> @System.IO.Path.GetFileName(selectedFile)<br/>
+                        <strong>Directory:</strong> @System.IO.Path.GetDirectoryName(selectedFile)<br/>
+                        @{
+                            var fileName = System.IO.Path.GetFileName(selectedFile);
+                            var route = fileRoutes.ContainsKey(fileName) ? fileRoutes[fileName] : "No route generated";
+                        }
+                        <strong>Generated Route:</strong> @route
+                    </p>
+                    @if (route != "No route generated")
+                    {
+                        <a href="@route" class="btn btn-primary">Visit Page</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+else if (errorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <strong>No files found.</strong> No markdown files were discovered in the configured source directory.
+    </div>
+}
+
+<div class="mt-3">
+    <button class="btn btn-secondary" @onclick="RefreshFiles" disabled="@isLoading">
+        @if (isLoading)
+        {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        }
+        Refresh Files
+    </button>
+</div>
+
+<h3 class="mt-4">Service Configuration</h3>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">IMdFileDiscoveryService</h5>
+        <p class="card-text">
+            This service is injected into the page and provides access to the markdown file discovery functionality.
+            It exposes two main methods:
+        </p>
+        <ul>
+            <li><code>DiscoverMarkdownFilesAsync()</code> - Returns file paths as <code>IEnumerable&lt;string&gt;</code></li>
+            <li><code>DiscoverMarkdownFilesWithRoutesAsync()</code> - Returns route mappings as <code>Dictionary&lt;string, string&gt;</code></li>
+        </ul>
+        <p class="card-text">
+            <strong>Files Found:</strong> @discoveredFiles.Count<br/>
+            <strong>Routes Mapped:</strong> @fileRoutes.Count<br/>
+            <strong>Service Type:</strong> @MdFileDiscovery.GetType().Name
+        </p>
+    </div>
+</div>
+
+@code {
+    private bool isLoading = true;
+    private string? errorMessage = null;
+    private List<string> discoveredFiles = new();
+    private Dictionary<string, string> fileRoutes = new();
+    private string? selectedFile = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DiscoverFiles();
+    }
+
+    private async Task DiscoverFiles()
+    {
+        try
+        {
+            isLoading = true;
+            errorMessage = null;
+            StateHasChanged();
+
+            Logger.LogInformation("Starting markdown file discovery...");
+            
+            // Discover markdown files - returns IEnumerable<string>
+            var files = await MdFileDiscovery.DiscoverMarkdownFilesAsync();
+            discoveredFiles = files.ToList();
+            
+            // Discover file routes - returns Dictionary<string, string>
+            fileRoutes = await MdFileDiscovery.DiscoverMarkdownFilesWithRoutesAsync();
+            
+            Logger.LogInformation("Discovered {Count} markdown files", discoveredFiles.Count);
+            
+            foreach (var filePath in discoveredFiles)
+            {
+                var fileName = System.IO.Path.GetFileName(filePath);
+                var route = fileRoutes.ContainsKey(fileName) ? fileRoutes[fileName] : "No route";
+                Logger.LogDebug("Found file: {FilePath} -> Route: {Route}", filePath, route);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error discovering markdown files");
+            errorMessage = ex.Message;
+            discoveredFiles.Clear();
+            fileRoutes.Clear();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task RefreshFiles()
+    {
+        selectedFile = null;
+        await DiscoverFiles();
+    }
+
+    private void ShowFileDetails(string filePath)
+    {
+        selectedFile = filePath;
+        StateHasChanged();
+    }
+}

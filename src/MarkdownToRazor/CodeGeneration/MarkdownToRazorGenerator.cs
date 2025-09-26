@@ -377,7 +377,7 @@ public class MarkdownToRazorGenerator
         }
 
         // Markdown section component
-        sb.AppendLine($"<MarkdownSection FromAsset=\"{markdownFile.Replace('\\', '/')}\" />");
+        sb.AppendLine($"<MarkdownSection FromAsset=\"MDFilesToConvert/{markdownFile.Replace('\\', '/')}\" />");
 
         // Optional tags section
         if (frontmatter?.Tags?.Any() == true)

@@ -1,0 +1,48 @@
+@page "/content/{*path}"
+@using MarkdownToRazor.Components
+@inject ILogger<ContentPage> Logger
+
+<PageTitle>@GetPageTitle()</PageTitle>
+
+<div class="content-page">
+    @if (!string.IsNullOrEmpty(Path))
+    {
+        <MarkdownSection SourceDirectory="content" FilePath="@GetMarkdownFilePath()" />
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <h3>No Content Path Specified</h3>
+            <p>Please navigate to a specific content page.</p>
+        </div>
+    }
+</div>
+
+@code
+{
+    [Parameter] public string? Path { get; set; }
+
+    private string GetMarkdownFilePath()
+    {
+        if (string.IsNullOrEmpty(Path))
+            return string.Empty;
+
+        // Navigation sends "documentation", we need "documentation.md"
+        return Path.EndsWith(".md") ? Path : $"{Path}.md";
+    }
+
+    private string GetPageTitle()
+    {
+        if (string.IsNullOrEmpty(Path))
+            return "Content - MarkdownToRazor Sample";
+
+        var title = Path.Replace("-", " ").Replace("/", " - ");
+        return $"{title} - MarkdownToRazor Sample";
+    }
+
+    protected override void OnParametersSet()
+    {
+        Logger.LogInformation("ContentPage: Rendering path '{Path}' as file '{MarkdownFile}'", Path, GetMarkdownFilePath());
+        base.OnParametersSet();
+    }
+}
