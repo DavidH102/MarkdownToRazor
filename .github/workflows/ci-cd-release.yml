@@ -15,8 +15,8 @@ on:
     branches: [main]
 
 permissions:
-  contents: write  # Required for creating GitHub releases
-  packages: write  # Required for publishing packages (if using GitHub Packages)
+  contents: write # Required for creating GitHub releases
+  packages: write # Required for publishing packages (if using GitHub Packages)
 
 env:
   DOTNET_VERSION_8: "8.0.x"

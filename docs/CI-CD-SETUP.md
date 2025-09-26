@@ -5,6 +5,7 @@ This document explains the complete CI/CD pipeline setup for MarkdownToRazor usi
 ## 🚀 Quick Release Process
 
 **To release a new version:**
+
 ```bash
 # 1. Make your changes and commit with semantic versioning
 git commit -m "fix: resolve critical issue +semver: patch"
@@ -25,7 +26,7 @@ The project uses GitHub Actions for automated building, testing, and publishing 
 
 - **Automated versioning** using GitVersion
 - **Build and test** on every push/PR
-- **Package generation** for the MarkdownToRazor package  
+- **Package generation** for the MarkdownToRazor package
 - **Publishing to NuGet.org** ONLY when version tags are pushed
 - **GitHub releases** with automatic release notes
 
