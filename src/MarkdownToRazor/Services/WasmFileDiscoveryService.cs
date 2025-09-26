@@ -16,14 +16,13 @@ public class WasmFileDiscoveryService : IMdFileDiscoveryService
     private bool _filesVerified = false;
 
     // Pre-configured list of markdown files for WASM (since we can't scan directories)
+    // Updated to match actual files in the WASM demo content directory
     private readonly string[] _knownMarkdownFiles =
     {
         "documentation.md",
-        "features.md",
+        "features.md", 
         "getting-started.md",
-        "quick-start.md",
-        "usage.md",
-        "troubleshooting.md"
+        "wasm-performance.md"
     };
 
     public WasmFileDiscoveryService(IOptions<MarkdownToRazorOptions> options, HttpClient httpClient)

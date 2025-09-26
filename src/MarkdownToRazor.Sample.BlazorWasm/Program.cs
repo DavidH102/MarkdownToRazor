@@ -13,7 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 // Add MarkdownToRazor services for WASM
 builder.Services.AddMarkdownToRazorServices(options =>
 {
-    options.SourceDirectory = "wwwroot/content";
+    options.SourceDirectory = "content";  // Fixed: removed wwwroot/ prefix for WASM
     options.SearchRecursively = true;
     options.EnableYamlFrontmatter = true;
     options.EnableHtmlCommentConfiguration = true;
