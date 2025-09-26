@@ -1,0 +1,108 @@
+﻿@page "/"
+
+<PageTitle>MarkdownToRazor Server Demo</PageTitle>
+
+<div class="hero-section">
+    <h1>🚀 MarkdownToRazor Server Demo</h1>
+    <p class="lead">Experience build-time code generation that converts markdown files into Blazor Razor pages!</p>
+</div>
+
+<div class="alert alert-info">
+    <h4>🎯 About This Demo</h4>
+    <p class="mb-3">
+        This Blazor Server application demonstrates <strong>build-time code generation</strong> using MarkdownToRazor. 
+        Unlike the WASM demo (which shows runtime file discovery), this demo converts markdown files into 
+        physical <code>.razor</code> pages during the build process.
+    </p>
+    <p class="mb-0">
+        Check the <strong>Generated Pages</strong> section in the navigation menu to see pages that were 
+        automatically created from markdown files in the <code>MDFilesToConvert/</code> directory.
+    </p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>🏗️ How Build-Time Generation Works</h3>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li><strong>Author Content:</strong> Write markdown files with YAML frontmatter in <code>MDFilesToConvert/</code></li>
+                    <li><strong>Build Process:</strong> Run <code>dotnet build</code> to trigger MSBuild code generation</li>
+                    <li><strong>Generated Pages:</strong> Physical <code>.razor</code> files are created in <code>Pages/Generated/</code></li>
+                    <li><strong>Automatic Routing:</strong> Pages are automatically routed based on frontmatter configuration</li>
+                    <li><strong>Blazor Integration:</strong> Generated pages work like normal Blazor components</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>✨ Key Benefits</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li>⚡ <strong>Performance:</strong> No runtime markdown processing</li>
+                    <li>🔍 <strong>SEO-Friendly:</strong> Pre-generated static HTML content</li>
+                    <li>🛠️ <strong>Type Safety:</strong> Full IntelliSense and compile-time checking</li>
+                    <li>🔄 <strong>Hot Reload:</strong> Changes reflect immediately in development</li>
+                    <li>📝 <strong>Easy Authoring:</strong> Write content in familiar markdown</li>
+                    <li>🎨 <strong>Customizable:</strong> YAML frontmatter controls page behavior</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5" />
+
+<div class="alert alert-success">
+    <h4>🔧 Try It Yourself!</h4>
+    <p>To see build-time generation in action:</p>
+    <ol class="mb-0">
+        <li>Modify any <code>.md</code> file in the <code>MDFilesToConvert/</code> directory</li>
+        <li>Run <code>dotnet build</code> to regenerate the pages</li>
+        <li>Refresh this application to see your changes</li>
+        <li>Check <code>Pages/Generated/</code> to see the physical <code>.razor</code> files that were created</li>
+    </ol>
+</div>
+
+<style>
+.hero-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.hero-section h1 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+}
+
+.hero-section .lead {
+    font-size: 1.25rem;
+    margin-bottom: 0;
+}
+
+.card {
+    margin-bottom: 1rem;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+</style>

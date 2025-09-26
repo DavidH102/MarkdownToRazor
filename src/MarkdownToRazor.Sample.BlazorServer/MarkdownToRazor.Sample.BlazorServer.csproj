@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!-- Configure MarkdownToRazor build-time code generation -->
+    <MarkdownSourceDirectory>$(MSBuildProjectDirectory)/MDFilesToConvert</MarkdownSourceDirectory>
+    <GeneratedPagesDirectory>$(MSBuildProjectDirectory)/Pages/Generated</GeneratedPagesDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the local MarkdownToRazor project for build-time generation -->
+    <ProjectReference Include="../MarkdownToRazor/MarkdownToRazor.csproj" />
+    
+    <!-- Add FluentUI for consistent styling -->
+    <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.1" />
+  </ItemGroup>
+
+  <!-- Include markdown files in the project -->
+  <ItemGroup>
+    <Content Include="MDFilesToConvert/**/*.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

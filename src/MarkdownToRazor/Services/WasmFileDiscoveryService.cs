@@ -13,23 +13,66 @@ public class WasmFileDiscoveryService : IMdFileDiscoveryService
     private readonly MarkdownToRazorOptions _options;
     private readonly HttpClient _httpClient;
     private readonly HashSet<string> _verifiedFiles = new();
+    private readonly HashSet<string> _knownMarkdownFiles = new();
     private bool _filesVerified = false;
 
-    // Pre-configured list of markdown files for WASM (since we can't scan directories)
-    private readonly string[] _knownMarkdownFiles =
+    /// <summary>
+    /// Default list of markdown files to check for in WASM environments.
+    /// Can be extended by calling AddKnownFile() method.
+    /// </summary>
+    private static readonly string[] DefaultKnownMarkdownFiles =
     {
         "documentation.md",
-        "features.md",
+        "features.md", 
         "getting-started.md",
-        "quick-start.md",
-        "usage.md",
-        "troubleshooting.md"
+        "wasm-performance.md",
+        "index.md",
+        "readme.md",
+        "README.md"
     };
 
     public WasmFileDiscoveryService(IOptions<MarkdownToRazorOptions> options, HttpClient httpClient)
     {
         _options = options.Value;
         _httpClient = httpClient;
+        
+        // Initialize with default known files
+        foreach (var file in DefaultKnownMarkdownFiles)
+        {
+            _knownMarkdownFiles.Add(file);
+        }
+    }
+
+    /// <summary>
+    /// Adds a known markdown file to check for during discovery.
+    /// Useful for dynamically extending the file list based on application needs.
+    /// </summary>
+    /// <param name="fileName">The markdown filename to add</param>
+    public void AddKnownFile(string fileName)
+    {
+        if (!string.IsNullOrWhiteSpace(fileName) && fileName.EndsWith(".md", StringComparison.OrdinalIgnoreCase))
+        {
+            _knownMarkdownFiles.Add(fileName);
+            
+            // Reset verification to force re-discovery
+            if (_filesVerified)
+            {
+                _filesVerified = false;
+                _verifiedFiles.Clear();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Adds multiple known markdown files to check for during discovery.
+    /// </summary>
+    /// <param name="fileNames">The markdown filenames to add</param>
+    public void AddKnownFiles(IEnumerable<string> fileNames)
+    {
+        foreach (var fileName in fileNames)
+        {
+            AddKnownFile(fileName);
+        }
     }
 
     /// <inheritdoc />
@@ -41,7 +84,7 @@ public class WasmFileDiscoveryService : IMdFileDiscoveryService
             return _verifiedFiles.Where(file => file.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
         }
 
-        // Fallback to known files
+        // Fallback to known files when not yet verified
         return _knownMarkdownFiles.Where(file => file.EndsWith(".md", StringComparison.OrdinalIgnoreCase));
     }
 
@@ -71,9 +114,10 @@ public class WasmFileDiscoveryService : IMdFileDiscoveryService
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // File doesn't exist or can't be accessed, skip it
+                // Log the error for debugging but don't throw
+                System.Diagnostics.Debug.WriteLine($"WASM File Discovery: Could not verify file '{fileName}': {ex.Message}");
             }
         });
 

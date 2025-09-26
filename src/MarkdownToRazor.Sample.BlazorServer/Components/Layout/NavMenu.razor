@@ -1,0 +1,73 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">MarkdownToRazor Server Demo</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        @* Build-time generated markdown pages *@
+        <hr class="nav-divider" />
+        <div class="nav-section-header px-3">
+            <small class="text-muted">Generated Pages</small>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="docs/welcome">
+                <span class="bi bi-star-fill-nav-menu" aria-hidden="true"></span> Welcome
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="docs/about">
+                <span class="bi bi-info-circle-fill-nav-menu" aria-hidden="true"></span> About
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="docs/features">
+                <span class="bi bi-gear-fill-nav-menu" aria-hidden="true"></span> Features
+            </NavLink>
+        </div>
+
+        @* Default Blazor demo pages *@
+        <hr class="nav-divider" />
+        <div class="nav-section-header px-3">
+            <small class="text-muted">Demo Pages</small>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="weather">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+<style>
+.nav-divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin: 0.5rem 1rem;
+}
+
+.nav-section-header {
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+</style>
+
