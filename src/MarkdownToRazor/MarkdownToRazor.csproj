@@ -33,6 +33,10 @@
 
     <!-- Package Dependencies for all target frameworks -->
     <ItemGroup>
+        <PackageReference Include="GitVersion.MsBuild" Version="6.0.5">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="Markdig" Version="0.38.0" />
         <PackageReference Include="YamlDotNet" Version="15.1.4" />
     </ItemGroup>
@@ -40,27 +44,17 @@
     <!-- .NET 8+ dependencies -->
     <ItemGroup>
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.12.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.18"
-            Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7"
-            Condition="'$(TargetFramework)' == 'net9.0'" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"
-            Version="8.0.2" Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"
-            Version="9.0.7" Condition="'$(TargetFramework)' == 'net9.0'" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2"
-            Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7"
-            Condition="'$(TargetFramework)' == 'net9.0'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1"
-            Condition="'$(TargetFramework)' == 'net8.0'" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7"
-            Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.18" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7" Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.7" Condition="'$(TargetFramework)' == 'net9.0'" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" Condition="'$(TargetFramework)' == 'net8.0'" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" Condition="'$(TargetFramework)' == 'net9.0'" />
         <PackageReference Include="Microsoft.Build.Framework" Version="17.0.0" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0"
-            PrivateAssets="all" />
-        <PackageReference Include="Microsoft.DotNet.PackageValidation"
-            Version="1.0.0-preview.7.21379.12" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.DotNet.PackageValidation" Version="1.0.0-preview.7.21379.12" PrivateAssets="all" />
     </ItemGroup>
 
     <!-- Package Content -->
@@ -72,18 +66,10 @@
 
     <!-- Include task assemblies for MSBuild integration -->
     <ItemGroup>
-        <None Include="$(OutputPath)net8.0\$(AssemblyName).dll" Pack="true"
-            PackagePath="tasks\net8.0\$(AssemblyName).dll" Visible="false"
-            Condition="Exists('$(OutputPath)net8.0\$(AssemblyName).dll')" />
-        <None Include="$(OutputPath)net8.0\$(AssemblyName).pdb" Pack="true"
-            PackagePath="tasks\net8.0\$(AssemblyName).pdb" Visible="false"
-            Condition="Exists('$(OutputPath)net8.0\$(AssemblyName).pdb')" />
-        <None Include="$(OutputPath)net9.0\$(AssemblyName).dll" Pack="true"
-            PackagePath="tasks\net9.0\$(AssemblyName).dll" Visible="false"
-            Condition="Exists('$(OutputPath)net9.0\$(AssemblyName).dll')" />
-        <None Include="$(OutputPath)net9.0\$(AssemblyName).pdb" Pack="true"
-            PackagePath="tasks\net9.0\$(AssemblyName).pdb" Visible="false"
-            Condition="Exists('$(OutputPath)net9.0\$(AssemblyName).pdb')" />
+        <None Include="$(OutputPath)net8.0\$(AssemblyName).dll" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).dll" Visible="false" Condition="Exists('$(OutputPath)net8.0\$(AssemblyName).dll')" />
+        <None Include="$(OutputPath)net8.0\$(AssemblyName).pdb" Pack="true" PackagePath="tasks\net8.0\$(AssemblyName).pdb" Visible="false" Condition="Exists('$(OutputPath)net8.0\$(AssemblyName).pdb')" />
+        <None Include="$(OutputPath)net9.0\$(AssemblyName).dll" Pack="true" PackagePath="tasks\net9.0\$(AssemblyName).dll" Visible="false" Condition="Exists('$(OutputPath)net9.0\$(AssemblyName).dll')" />
+        <None Include="$(OutputPath)net9.0\$(AssemblyName).pdb" Pack="true" PackagePath="tasks\net9.0\$(AssemblyName).pdb" Visible="false" Condition="Exists('$(OutputPath)net9.0\$(AssemblyName).pdb')" />
     </ItemGroup>
 
     <!-- Platform Support -->
